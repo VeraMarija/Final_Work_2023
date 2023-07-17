@@ -71,7 +71,7 @@ userSchema.pre('save', async function save(next) {
  * my methods
  */
 userSchema.method({
-  generateToken() {
+  token() {
     const payload = {
       exp: moment().add(jwtExpirationInterval, 'minutes').unix(),
       iat: moment().unix(),

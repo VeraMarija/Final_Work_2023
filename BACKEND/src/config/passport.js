@@ -19,17 +19,6 @@ const jwt = async (payload, done) => {
   }
 };
 
-/*const oAuth = (service) => async (token, done) => {
-  try {
-    const userData = await authProviders[service](token);
-    const user = await User.oAuthLogin(userData);
-    return done(null, user);
-  } catch (err) {
-    return done(err);
-  }
-};
-*/
 
-exports.jwt = new JwtStrategy(jwtOptions, jwt);
-//exports.facebook = new BearerStrategy(oAuth('facebook'));
-//exports.google = new BearerStrategy(oAuth('google'));
+module.exports = new JwtStrategy(jwtOptions, jwt);
+
