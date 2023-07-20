@@ -1,5 +1,12 @@
 const UserModel = require("../models/UserModel");
 
+module.exports.getAll = async () => {
+  const users = await UserModel.find();
+  if(!users){
+    throw new Error("No users in database!");
+  }
+  return users;
+};
 
 module.exports.createUser = async (req) => {
 

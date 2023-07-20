@@ -5,6 +5,15 @@ const {
     update,
   } = require('../validation/userValidation');
 
+  module.exports.getAll = async (req, res, next) => {
+    try {
+      const result = await UserService.getAll();
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
 module.exports.createUser = async (req, res, next) => {
   try {
     const result = await UserService.createUser(req);

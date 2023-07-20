@@ -1,6 +1,6 @@
 const express = require('express');
 const validate = require('express-validation');
-const userController = require('../../controllers/UserController');
+const exerciseController = require('../../controllers/ExerciseController');
 const { authorize, ADMIN, LOGGED_USER } = require('../../middleware/auth');
 
 
@@ -8,11 +8,11 @@ const router = express.Router();
 
 router.get(
     '/',
-    userController.getAll
+    exerciseController.getAll
 );
 
 router.post(
     '/',
-    userController.createUser
+    exerciseController.createExercise
 );
 module.exports = router;
