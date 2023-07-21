@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const moment = require("moment-timezone");
 const jwt = require("jwt-simple");
 const uuidv4 = require("uuid");
-const APIError = require("../errors/api-error");
+const APIError = require("../errors/apiError");
 const { env, jwtSecret, jwtExpirationInterval } = require("../../config/vars");
 
 const Schema = mongoose.Schema;

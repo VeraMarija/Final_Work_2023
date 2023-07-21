@@ -1,38 +1,27 @@
-const httpStatus = require('http-status');
-const passport = require('passport');
-const UserModel = require('../models/UserModel');
-const APIError = require('../errors/api-error');
+const httpStatus = require("http-status");
+const passport = require("passport");
+const UserModel = require("../models/UserModel");
+const APIError = require("../errors/apiError");
 
-const ADMIN = 'admin';
-const LOGGED_USER = '_loggedUser';
-
-const handleJWT = (req, res, next, roles) => async (err, user, info) => {
-  const error = err || info;
-  const logIn = Promise.promisify(req.logIn);
+const jwtAuth = (req, res, next, role) => async (err, user, info) => {
+  console.log("---------roles---------", role);
+  const logIn = req.logIn;
   const apiError = new APIError({
-    message: error ? error.message : 'Unauthorized',
+    message: err ? err.message : "Unauthorized",
     status: httpStatus.UNAUTHORIZED,
-    stack: error ? error.stack : undefined,
+    stack: err ? err.stack : undefined,
   });
 
   try {
-    if (error || !user) throw error;
+    if (err || !user) throw err;
     await logIn(user, { session: false });
   } catch (e) {
     return next(apiError);
   }
 
-  if (roles === LOGGED_USER) {
-    if (user.role !== 'admin' && req.params.userId !== user._id.toString()) {
-      apiError.status = httpStatus.FORBIDDEN;
-      apiError.message = 'Forbidden';
-      return next(apiError);
-    }
-  } else if (!roles.includes(user.role)) {
+  if (role === "user" && req.params.userId !== user._id.toString()) {
     apiError.status = httpStatus.FORBIDDEN;
-    apiError.message = 'Forbidden';
-    return next(apiError);
-  } else if (err || !user) {
+    apiError.message = "Forbidden";
     return next(apiError);
   }
 
@@ -41,11 +30,9 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   return next();
 };
 
-exports.ADMIN = ADMIN;
-exports.LOGGED_USER = LOGGED_USER;
-
-exports.authorize = (roles = UserModel.roles) => (req, res, next) => passport.authenticate(
-  'jwt', { session: false },
-  handleJWT(req, res, next, roles),
-)(req, res, next);
-
+exports.authorize = (role) => (req, res, next) =>
+  passport.authenticate(
+    "jwt",
+    { session: false },
+    jwtAuth(req, res, next, role)
+  )(req, res, next);

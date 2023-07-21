@@ -11,8 +11,7 @@ module.exports.getAll = async () => {
 module.exports.createUser = async (req) => {
 
     const { email, password, firstName, lastName } = req.body;
-  
-    // const title = req.body.title;
+
     const user = new UserModel({
       email,
       password,

@@ -5,8 +5,7 @@ const UserModel = require("../models/UserModel");
 const RefreshToken = require("../models/RefreshTokenModel");
 const PasswordResetToken = require("../models/PasswordResetToken");
 const { jwtExpirationInterval } = require("../../config/vars");
-const APIError = require("../errors/api-error");
-const emailProvider = require("../helpers/email");
+const APIError = require("../errors/apiError");
 
 function generateTokenResponse(user, accessToken) {
   const tokenType = "Bearer";
