@@ -1,6 +1,7 @@
 const { Int32 } = require("mongodb");
 const mongoose = require("mongoose");
 
+//napravljeno kako bi se pratio progres mozda tablica
 const userExerciseWeightSchema = new mongoose.Schema(
   {
     userExercise: {
@@ -19,7 +20,8 @@ const userExerciseWeightSchema = new mongoose.Schema(
         type: Int32,
         required: true,
     },
-    timeUpdated: {
+    timeUpdated: { //updatat ce se kad se reacha maximum ponavljanja
+                  //ili kada korisnik updata svoj userexercise s novim repmaxom
         type: Date,
         required: true,
     },

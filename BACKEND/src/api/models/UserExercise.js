@@ -19,6 +19,10 @@ const userExerciseSchema = new mongoose.Schema(
       type: Int32,
       required: true,
     },
+    repMax: {
+      type: Int32,
+      required: true,
+    },
   },
   {
     timestamps: true,
