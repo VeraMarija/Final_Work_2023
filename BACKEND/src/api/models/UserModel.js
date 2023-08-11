@@ -76,9 +76,10 @@ userSchema.method({
     const payload = {
       exp: moment().add(jwtExpirationInterval, "minutes").unix(),
       iat: moment().unix(),
-      sub: this._id,
+      userId: this._id, //u sub spremim id usera ciji je token
     };
-    return jwt.encode(payload, jwtSecret);
+    const token = jwt.encode(payload, jwtSecret);
+    return { token }; //vrati stvoren token
   },
 
   async passwordMatches(password) {
@@ -108,7 +109,7 @@ userSchema.statics = {
 
     const user = await this.findOne({ email }).exec();
     const err = {
-      status: httpStatus.UNAUTHORIZED,
+      code: httpStatus.UNAUTHORIZED,
       isPublic: true,
     };
     if (password) {
@@ -136,9 +137,9 @@ userSchema.statics = {
    * @returns {Error|APIError}
    */
   checkDuplicateEmail(error) {
-    if (error.name === "MongoError" && error.code === 11000) {
+    if (error.name === "MongoServerError" && error.code === 11000) {
       return new APIError({
-        message: "Validation Error",
+        message: "User with that email already exists, try with another email or go to login",
         errors: [
           {
             field: "email",
@@ -146,7 +147,7 @@ userSchema.statics = {
             messages: ['"email" already exists'],
           },
         ],
-        status: httpStatus.CONFLICT,
+        code: httpStatus.CONFLICT,
         isPublic: true,
         stack: error.stack,
       });

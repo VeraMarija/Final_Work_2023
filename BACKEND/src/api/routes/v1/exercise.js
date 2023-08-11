@@ -1,14 +1,14 @@
 const express = require('express');
 const validate = require('express-validation');
 const exerciseController = require('../../controllers/ExerciseController');
-const { authorize } = require('../../middleware/auth');
+const { checkAuth, checkPermission } = require('../../middleware/auth');
 
 
 const router = express.Router();
 
 router.get(
     '/',
-    authorize('admin'),
+    (req, res, next) => checkPermission(req, res,next, 'admin'),
     exerciseController.getAll
 );
 

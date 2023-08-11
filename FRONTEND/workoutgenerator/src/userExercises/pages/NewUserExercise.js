@@ -1,45 +1,17 @@
-import React, { useCallback, useReducer } from "react";
+import React from "react";
 
 import "./UserExerciseForm.css";
 import Input from "../../shared/components/FormElements/Input";
 import {
   VALIDATOR_REQUIRE,
-  VALIDATOR_MINLENGTH,
   VALIDATOR_MIN,
 } from "../../shared/util/validators";
 import Button from "../../shared/components/FormElements/Button";
-
-//using for form entire
-const formReducer = (state, action) => {
-  switch (action.type) {
-    case "change_input":
-      let formIsValid = true;
-      for (const input in state.inputs) {
-        if (input === action.inputId) {
-          //currently updated froma action
-          formIsValid = formIsValid && action.isValid;
-        } else {
-          //if input is not currently getting updated
-          formIsValid = formIsValid && state.inputs[input].isValid;
-        }
-      }
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          //dynamically updating one of the fields in inputs object
-          [action.inputId]: { value: action.value, isValid: action.isValid },
-        },
-        isValid: formIsValid,
-      };
-    default:
-      return state;
-  }
-};
+import { useForm } from "../../shared/hooks/formHook";
 
 const NewUserExercise = () => {
-  const [formState, dispatch] = useReducer(formReducer, {
-    inputs: {
+  const [formState, inputHandler] = useForm(
+    {
       name: {
         value: "",
         isValid: false,
@@ -53,21 +25,11 @@ const NewUserExercise = () => {
         isValid: false,
       },
     },
-    isValid: false,
-  });
-  //this function is reused with usecallback hook (not creating new function
-  // every time component function rerenders)
-  const inputHandler = useCallback((id, value, isValid) => {
-    dispatch({
-      type: "change_input",
-      value: value,
-      isValid: isValid,
-      inputId: id,
-    });
-  }, []);
+    false
+  );
 
   //logic for sending to server(to backend part)
-  const submitHandler = event => {
+  const submitHandler = (event) => {
     event.preventDefault();
     console.log(formState.inputs);
   };
@@ -93,7 +55,7 @@ const NewUserExercise = () => {
         errorText="Min value must be 1"
         onInput={inputHandler}
       />
-        <Input
+      <Input
         id="repetition"
         element="input"
         type="number"

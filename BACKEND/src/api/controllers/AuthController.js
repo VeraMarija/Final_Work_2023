@@ -1,3 +1,4 @@
+const { BulkWriteResult } = require('mongodb');
 const authService = require('../services/AuthService');
 
 
@@ -5,16 +6,18 @@ const authService = require('../services/AuthService');
 exports.register = async (req, res, next) => {
   try {
     const result = await authService.register(req); 
-    return res.json(result);
+    return res.status(200).json(result);
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
 
 exports.login = async (req, res, next) => {
   try {
     const result = await authService.login(req); 
-    return res.json(result);
+    console.log('----', result);
+    return res.status(200).json(result);
+
   } catch (error) {
     return next(error);
   }

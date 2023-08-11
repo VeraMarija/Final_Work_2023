@@ -14,10 +14,10 @@ class APIError extends ErrorExtendable {
   constructor({
     message,
     stack,
-    status = httpStatus.INTERNAL_SERVER_ERROR,
+    code = httpStatus.INTERNAL_SERVER_ERROR,
   }) {
     super({
-      message, stack, status
+      message, stack, code
     });
   }
 }

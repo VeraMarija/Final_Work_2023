@@ -34,9 +34,9 @@ const Input = (props) => {
    * dispatch function -> a way to set state (to dispatch user action to the reducer)
    **/
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: props.value || "",
+    value: props.initialValue || "",
     isTouched: false,
-    isValid: props.valid || false,
+    isValid: props.initialValid || false,
   });
 
 
@@ -57,6 +57,7 @@ const Input = (props) => {
       value: event.target.value, //event.target the element on which event happens
       validators: props.validators,
     });
+    console.log('--', inputState)
   };
 
   const TouchHandler = () => {
@@ -93,7 +94,7 @@ const Input = (props) => {
     >
       <label htmlFor={props.id}>{props.label}</label>
       {element}
-      {!inputState.isValid && <p>{props.errorText}</p>}
+      {!inputState.isValid  && inputState.isTouched  && <p>{props.errorText}</p>}
     </div>
   );
 };

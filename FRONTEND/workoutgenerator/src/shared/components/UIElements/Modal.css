@@ -4,7 +4,7 @@
     top: 22vh;
     left: 10%;
     width: 80%;
-    background: white;
+    background: rgba(255, 255, 255);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
     border-radius: 8px;
   }
@@ -12,7 +12,7 @@
   .modal__header {
     width: 100%;
     padding: 1rem 0.5rem;
-    background: #2a006e;
+    background: #f37d39;
     color: white;
   }
   
@@ -23,7 +23,10 @@
   .modal__content {
     padding: 1rem 0.5rem;
   }
-  
+  .modal__content p {
+    color:black;
+    font-size: large;
+  }
   .modal__footer {
     padding: 1rem 0.5rem;
   }

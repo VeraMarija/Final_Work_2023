@@ -4,7 +4,7 @@ module.exports = {
   register: {
     body: Joi.object().keys({
       email: Joi.string().email().required(),
-      password: Joi.string().required().min(6).max(128),
+      password: Joi.string().required().min(5).max(128),
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
     }),
@@ -33,7 +33,7 @@ module.exports = {
   passwordReset: {
     body: Joi.object().keys({
       email: Joi.string().email().required(),
-      password: Joi.string().required().min(6).max(128),
+      password: Joi.string().required().min(5).max(128),
       resetToken: Joi.string().required(),
     }),
   },

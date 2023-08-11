@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./UsersList.css";
 import UserItem from "./UserItem";
@@ -19,10 +19,14 @@ const UsersList = (props) => {
     <ul className="users-list">
       {props.items.map((user) => (
         <UserItem
-          key={user.id}
-          id={user.id}
-          image={user.image}
-          name={user.name}
+          key={user._id}
+          id={user._id}
+          picture={user.picture}
+          firstName={user.firstName}
+          lastName={user.lastName}
+          email={user.email}
+          role={user.role}
+          profileCreated = {user.createdAt}
         />
       ))}
     </ul>
