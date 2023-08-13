@@ -13,7 +13,7 @@ const UserItem = (props) => {
     <li className="user-item">
       <div>
         <Card className="user-item__content">
-          <Link to={`/${props.id}/profile`}>
+          <Link to={`/profile/${props.id}`}>
             <div className="user-item__image">
               <Avatar image={props.picture} alt={props.firstName} />
             </div>
@@ -23,10 +23,14 @@ const UserItem = (props) => {
               <h3>Role: {props.role}</h3>
             </div>
           </Link>
-          <div className="user-item__exercises">
-            <Link to={`/${props.id}/userExercises`}>
-              <h2>Exercises</h2>
+          <div className="user-item__Update">
+            <Link to={`/editUser/${props.id}`}>
+              <h2>Edit</h2>
             </Link>
+            <Link to={`deleteUser/${props.id}`}>
+              <h2>Delete</h2>
+            </Link>
+            
           </div>
         </Card>
       </div>

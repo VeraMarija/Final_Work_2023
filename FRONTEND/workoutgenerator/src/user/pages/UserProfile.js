@@ -1,40 +1,38 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState,useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import UsersList from "../components/UsersList";
-import "./Users.css";
+import "../components/UserItem.css";
+import { AuthContext } from "../../shared/context/authContext";
 import { port_string } from "../../config/global";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
-import { AuthContext } from "../../shared/context/authContext";
-import { useHttpHook } from "../../shared/hooks/httpHook";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import UserItem from "../components/UserItem";
 
-const Users = () => {
+
+const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [loadedUsers, setLoadedUsers] = useState();
+  const [loadedUser, setLoadedUser] = useState();
   const auth = useContext(AuthContext);
-  // const { isLoading, error, sendRequest, removeError } = useHttpHook();
 
-  //useeffect does not want a promise
+  const id = useParams().userId;
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        console.log("token", auth.token);
-        const response = await fetch(port_string + "/users/all", {
+        const response = await fetch(port_string + "/users/" + id, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + auth.token.token,
-            User: auth.userId,
           },
         });
         const responseData = await response.json();
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-        setLoadedUsers(responseData.users);
+        setLoadedUser(responseData.loadedUser);
       } catch (error) {
         setError(error.message);
       }
@@ -56,9 +54,20 @@ const Users = () => {
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && loadedUsers && <UsersList items={loadedUsers} />}
+      {!isLoading && loadedUser && (
+        <UserItem
+          key={loadedUser._id}
+          id={loadedUser._id}
+          picture={loadedUser.picture}
+          firstName={loadedUser.firstName}
+          lastName={loadedUser.lastName}
+          email={loadedUser.email}
+          role={loadedUser.role}
+          profileCreated={loadedUser.createdAt}
+        />
+      )}
     </React.Fragment>
   );
 };
 
-export default Users;
+export default UserProfile;

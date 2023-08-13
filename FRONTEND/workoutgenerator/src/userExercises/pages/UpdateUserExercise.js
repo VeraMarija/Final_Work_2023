@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
-import { VALIDATOR_MIN } from "../../shared/util/validators";
+import { VALIDATOR_MIN, VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import "./UserExerciseForm.css";
 import { useForm } from "../../shared/hooks/formHook";
 import Card from "../../shared/components/UIElements/Card";
+
 
 const DUMMY_USER_EXERCISES = [
   {

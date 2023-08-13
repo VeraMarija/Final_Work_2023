@@ -24,7 +24,7 @@
 }
 
 
-.user-item__exercises {
+.user-item__Update {
   background-color:  #246aec;
 }
 
@@ -37,9 +37,9 @@
 }
 
 .user-item__info h2,
-.user-item__exercises h2 {
+.user-item__Update h2 {
   font-size: 1.5rem;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0 0;
   font-weight: bold;
   color:  #246aec;
 }

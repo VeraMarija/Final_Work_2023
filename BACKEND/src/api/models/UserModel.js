@@ -121,7 +121,7 @@ userSchema.statics = {
       if (moment(refreshObject.expires).isBefore()) {
         err.message = "Invalid refresh token.";
       } else {
-        return { user, accessToken: user.generateToken() };
+        return { user, accessToken: user.token() };
       }
     } else {
       err.message = "Incorrect email or refreshToken";

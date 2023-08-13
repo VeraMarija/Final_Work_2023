@@ -1,7 +1,9 @@
-const { Int32 } = require("mongodb");
+//const { Int32 } = require("mongodb");
 const mongoose = require("mongoose");
+const { Decimal } = require("mongoose/lib/schema/index");
+const {Schema} = mongoose;
 
-const userExerciseSchema = new mongoose.Schema(
+const userExerciseSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -12,15 +14,15 @@ const userExerciseSchema = new mongoose.Schema(
       ref: "Exercise",
     },
     liftWeight: {
-      type: Int32,
+      type: Decimal,
       required: true,
     },
     repetition: {
-      type: Int32,
+      type: Decimal,
       required: true,
     },
     repMax: {
-      type: Int32,
+      type: Decimal,
       required: true,
     },
   },

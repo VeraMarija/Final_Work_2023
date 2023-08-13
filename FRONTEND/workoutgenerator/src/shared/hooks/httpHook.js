@@ -33,22 +33,13 @@ export const useHttpHook = () => {
         if (!response.ok) {
           throw new Error(responseData.error);
         }
-       
-        /*if (responseData.user.role === "admin") {
-          auth.setAdminTrue();
-        } else {
-          auth.setAdminFalse();
-        }*/
-
-        setIsLoading(false);
-      
+        setIsLoading(false);    
         return responseData;
       } catch (err) {
         setError(err.message || "Something went wrong, please try again");
         setIsLoading(false);
         throw error;
       }
-
     },
     []
   );

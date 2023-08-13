@@ -8,6 +8,7 @@ const { jwtExpirationInterval } = require("../../config/vars");
 const APIError = require("../errors/apiError");
 const HttpError = require("../errors/httpError");
 const { validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
 
 function generateTokenResponse(user, accessToken) {
   const tokenType = "Bearer";
@@ -34,28 +35,40 @@ module.exports.register = async (req) => {
       firstName,
       lastName,
     }).save();
-    const finalUser = await UserModel.findOne({email: email}, '-password -updatedAt -__v');
-    //const token = generateTokenResponse(user, user.token());
+    const finalUser = await UserModel.findOne(
+      { email: email },
+      "-password -updatedAt -__v"
+    );
     const token = finalUser.token(); //token smo kreirali
-    return { token, user: finalUser };
+    const tokenExpiration = new Date(token.exp * 1000);
+    return {
+      token,
+      tokenExpiration: tokenExpiration,
+      userId: finalUser.id,
+      role: finalUser.role,
+    };
   } catch (error) {
     throw UserModel.checkDuplicateEmail(error);
   }
 };
 
 module.exports.login = async (req) => {
-  const { email, password } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
   try {
-    const user = await UserModel.findOne({email: email}, '-password -updatedAt -__v');
-    //const token = generateTokenResponse(user, accessToken);
-    const token = user.token();
-    return {token, user};
+    const { user, accessToken } = await UserModel.findAndGenerateToken(req.body)
+    const expiresIn = moment().add(jwtExpirationInterval, "minutes");
+    const tokenExpiration = expiresIn.toDate();
+    return {
+      token: accessToken,
+      tokenExpiration: tokenExpiration,
+      userId: user.id,
+      role: user.role,
+    };
   } catch (error) {
-    console.log('---error--', error.code);
+    console.log("---error--", error.code);
     throw error;
   }
 };

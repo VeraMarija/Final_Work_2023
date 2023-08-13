@@ -3,22 +3,18 @@ import { NavLink } from "react-router-dom";
 
 import "./NavLinks.css";
 import { AuthContext } from "../../context/authContext";
-import { loggedIn, admin } from "../../../config/global";
+
 
 const NavLinks = (props) => {
   const auth = useContext(AuthContext);
+  const userId = auth.userId;
 
-  const logoutHandler = () => {
-    window.localStorage.removeItem("isLoggedIn");
-    window.localStorage.removeItem("isAdmin");
-    window.location.replace('/auth');
-  }
-  const loggedState = loggedIn==="true" ? true : false;
-  const adminState = admin==="true" ? true : false;
+  const loggedState = auth.isLoggedIn;
 
   return (
     <ul className="nav-links">
-      {loggedState && adminState && (
+      
+      {loggedState && auth.role && (
         <li>
           <NavLink to="/users" exact>
             Users
@@ -37,7 +33,7 @@ const NavLinks = (props) => {
       )}
       {loggedState && (
         <li>
-          <NavLink to="/u1/profile">Profile</NavLink>
+          <NavLink to={`/profile/${userId}`}>Profile</NavLink>
         </li>
       )}
       {loggedState && (
@@ -57,7 +53,7 @@ const NavLinks = (props) => {
       )}
       {loggedState && (
         <li>
-          <button onClick={logoutHandler}>LOGOUT</button>
+          <button onClick={auth.logout}>LOGOUT</button>
         </li>
       )}
     </ul>

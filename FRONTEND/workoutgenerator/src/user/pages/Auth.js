@@ -1,4 +1,4 @@
-import React, { useState, useContext,  useEffect} from "react";
+import React, { useState, useContext} from "react";
 
 import "./Auth.css";
 import Card from "../../shared/components/UIElements/Card";
@@ -11,34 +11,17 @@ import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
 import { useForm } from "../../shared/hooks/formHook";
 import { AuthContext } from "../../shared/context/authContext";
-import { loggedIn, admin , port_string } from "../../config/global";
+import { port_string } from "../../config/global";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { useHttpHook } from "../../shared/hooks/httpHook";
-import reactRouterDom from "react-router-dom";
 
 const Auth = () => {
+
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
-
   const [isLoginMode, setIsLoginMode] = useState(true);
-
-  const [localStorageloggedIn, setLocalStorageLoggedIn] = useState(false);
-  const [localStorageAdmin, setLocalStorageAdmin] = useState(false);
-
   const auth = useContext(AuthContext);
 
- 
- 
-
-  useEffect(() => { 
-    window.localStorage.setItem("isAdmin", localStorageAdmin);
-    window.localStorage.setItem("isLoggedIn", localStorageloggedIn);
-    if (!localStorageloggedIn) {
-      
-    } else {
-      
-    }
-    }, [localStorageloggedIn, localStorageAdmin]);
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -99,21 +82,13 @@ const Auth = () => {
             "Content-Type": "application/json",
           }
         );
-        if(responseData.user.role === "admin"){
-          setLocalStorageAdmin(true);
-        }
-        else{
-          setLocalStorageAdmin(false);
-        }
+
         console.log("responseData", responseData);
-        //auth.login();
-        setLocalStorageLoggedIn(true);
-        window.location.replace("/");
-        
+        auth.login(responseData.userId, responseData.token, responseData.role, responseData.tokenExpiration);
       } catch (err) {}
     } else {
       try {
-        await sendRequest(
+        const responseData = await sendRequest(
           port_string + "auth/register",
           "POST",
           JSON.stringify({
@@ -126,15 +101,9 @@ const Auth = () => {
             "Content-Type": "application/json",
           }
         );
-        //auth.login();
-        setLocalStorageLoggedIn(true);
-        setLocalStorageAdmin(false);
-        window.location.replace("/");
-  
+        auth.login(responseData.userId, responseData.token, responseData.role, responseData.tokenExpiration);
       } catch (err) {}
     }
-
-   
   };
 
   return (

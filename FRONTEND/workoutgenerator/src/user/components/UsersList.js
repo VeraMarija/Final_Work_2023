@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 import "./UsersList.css";
 import UserItem from "./UserItem";
@@ -16,20 +17,32 @@ const UsersList = (props) => {
   }
 
   return (
-    <ul className="users-list">
-      {props.items.map((user) => (
-        <UserItem
-          key={user._id}
-          id={user._id}
-          picture={user.picture}
-          firstName={user.firstName}
-          lastName={user.lastName}
-          email={user.email}
-          role={user.role}
-          profileCreated = {user.createdAt}
-        />
-      ))}
-    </ul>
+    <React.Fragment>
+      <div className="users-list-main">
+      <div className="link-to">
+        <Link to={`/user/new`}>
+          <div className="link-div">
+          <h2>CREATE NEW USER</h2>
+          </div>
+        </Link>
+      </div>
+
+      <ul className="users-list">
+        {props.items.map((user) => (
+          <UserItem
+            key={user._id}
+            id={user._id}
+            picture={user.picture}
+            firstName={user.firstName}
+            lastName={user.lastName}
+            email={user.email}
+            role={user.role}
+            profileCreated={user.createdAt}
+          />
+        ))}
+      </ul>
+      </div>
+    </React.Fragment>
   );
 };
 
