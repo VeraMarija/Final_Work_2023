@@ -19,6 +19,8 @@ import HomePage from "./shared/pages/HomePage";
 import NewUser from "./user/pages/NewUser";
 import UserProfile from "./user/pages/UserProfile";
 import UpdateUser from "./user/pages/UpdateUser";
+import NewExercise from "./exercise/pages/NewExercise";
+import UpdateExercise from "./exercise/pages/UpdateExercise";
 
 /*<Route path="/editUser/:userId" exact>
             <UpdateUser />
@@ -99,12 +101,15 @@ const App = () => {
       console.log("u adminu");
       routes = (
         <Routes>
+           <Route path="/" element={<HomePage />} />
           <Route path="/users" element={<Users />} />
           <Route path="/user/new" element={<NewUser />} />
           <Route path="/profile/:userId" element={<UserProfile />} />
-          <Route path="/editUser/:userId" element={<UpdateUser />} />
-          <Route path="/" element={<HomePage />} />
+          <Route path="/editUser/:userId" element={<UpdateUser />} />      
           <Route path="/exercises" element={<Exercises />} />
+          <Route path="/exercise/new" element={<NewExercise />} />
+          <Route path="/exerciseProfile/:exerciseId" element={<UserProfile />} />
+          <Route path="/editExercise/:exerciseId" element={<UpdateExercise />} />
           <Route path="/:userId/userExercises" element={<UserExercises />} />
           <Route path="/userExercise/new" element={<NewUserExercise />} />
           <Route path="/userExercise/:id" element={<UpdateUserExercise />} />

@@ -17,14 +17,15 @@ const UsersList = (props) => {
 
   return (
     <React.Fragment>
-      <div className="users-list-main">
-      <div className="link-to">
+       <div className="link-to">
         <Link to={`/user/new`}>
           <div className="link-div">
           <h2>CREATE NEW USER</h2>
           </div>
         </Link>
       </div>
+      <div className="users-list-main">
+     
 
       <ul className="users-list">
         {props.items.map((user) => (

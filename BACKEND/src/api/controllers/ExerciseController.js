@@ -10,6 +10,7 @@ module.exports.getAll = async (req, res, next) => {
 };
 
 module.exports.createExercise = async (req, res, next) => {
+  console.log('evo me ovde');
   try {
     const result = await exerciseService.createExercise(req);
     return res.status(200).json({ exercise: result });
@@ -33,6 +34,15 @@ module.exports.deleteExercise = async (req, res, next) => {
   try {
     const result = await exerciseService.deleteExercise(req.params.exerciseId);
     return res.json({message: result});
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports.getByExerciseId = async (req, res, next) => {
+  try {
+    const result = await exerciseService.getByExerciseId(req.params.exerciseId);
+    return res.status(200).json({ loadedExercise: result });
   } catch (error) {
     return next(error);
   }

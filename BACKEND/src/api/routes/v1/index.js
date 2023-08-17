@@ -21,6 +21,6 @@ router.use('/docs', express.static('docs'));
 
 router.use('/users', userRoutes);
 router.use('/auth', authRoutes);
-router.use('/exercise', exerciseRoutes);
+router.use('/exercises', exerciseRoutes);
 
 module.exports = router;

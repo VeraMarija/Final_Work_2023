@@ -26,11 +26,7 @@ const NavLinks = (props) => {
           <NavLink to="/exercises">Exercises</NavLink>
         </li>
       )}
-      {loggedState && (
-        <li>
-          <NavLink to="/userExercise/new">New Exercise</NavLink>
-        </li>
-      )}
+     
       {loggedState && (
         <li>
           <NavLink to={`/profile/${userId}`}>Profile</NavLink>

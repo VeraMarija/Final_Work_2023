@@ -15,9 +15,9 @@
   margin:0 auto;
   padding: 0;
   width: 90%;
-  max-width: 60rem;
-  display: flex;
-  justify-content: center;
+  max-width: 50rem;
+  display:flex;
+  justify-content:center;
   flex-wrap: wrap;
   color: #010d35;
 }

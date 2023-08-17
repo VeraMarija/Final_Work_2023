@@ -1,0 +1,54 @@
+.exercise-form-main {
+    background-image: linear-gradient(0deg, rgba(255 255 255 / 34%), rgba(100, 1, 1, 0.49)),url("https://images.pexels.com/photos/791763/pexels-photo-791763.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-repeat: no-repeat;
+    height: 590px;
+    margin: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .exercise-form {
+    list-style: none;
+    margin: 5rem auto;
+    padding: 1rem;
+    width: 90%;
+    max-width: 40rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    border-radius: 6px;
+    background: white;
+  }
+  
+  .exercise-form p {
+    color: red;
+  }
+  
+  .exercise-form  label,
+  .exercise-form  input,
+  .exercise-form  textarea {
+      display: block;
+    }
+    
+    .exercise-form  label {
+      font-weight: bold;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      color: rgb(0, 0, 0);
+    }
+    
+    .exercise-form  input,
+    .exercise-form  textarea {
+      width: 100%;
+      font: inherit;
+      border: 1px solid #ccc;
+      background: #f8f8f8;
+      padding: 0.15rem 0.25rem;
+    }
+    .exercise-form  input:focus,
+    .exercise-form  textarea:focus {
+      outline: none;
+      background: #ebebeb;
+      border-color: #510077;
+    }
+    
+  

@@ -4,19 +4,18 @@ const ExerciseModel = require("../models/Exercise");
 module.exports.getAll = async () => {
   try {
     const exercises = await ExerciseModel.find();
+    /*if (!exercises || exercises.length === 0) {
+      throw new HttpError("No exercises found.", 404);
+    }*/
+    return exercises;
   } catch (err) {
     throw new HttpError("fetching exercises failed. Please try again.", 500);
   }
-
-  if (!exercises || exercises.length === 0) {
-    throw new HttpError("No exercises found.", 404);
-  }
-  return exercises;
 };
 
 module.exports.createExercise = async (req) => {
   const { name, instructions, equipment } = req.body;
-
+  console.log("------req", req);
   const exercise = new ExerciseModel({
     name,
     instructions,
@@ -33,13 +32,26 @@ module.exports.createExercise = async (req) => {
 };
 
 module.exports.updateExercise = async (req) => {
-  const { name, instructions, equipment} = req.body;
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    throw new HttpError("Invalid inputs passed, please check your data.", 422);
-  }
+  console.log("helooo");
+  const { name, instructions, equipment } = req.body;
+  let exercise;
   try {
-    const exercise = await ExerciseModel.findById(req.params.exerciseId);
+    exercise = await ExerciseModel.findById(req.params.exerciseId);
+    if (exercise) {
+      exercise.name = name;
+      exercise.instructions = instructions;
+      exercise.equipment = equipment;
+      try {
+        await exercise.save();
+      } catch (err) {
+        const error = new HttpError(
+          "Something went wrong, could not update exercise.",
+          500
+        );
+        throw error;
+      }
+    }
+    return exercise;
   } catch (err) {
     const error = new HttpError(
       "Updating exercise failed, exercise with that id doesnt exists.",
@@ -47,40 +59,39 @@ module.exports.updateExercise = async (req) => {
     );
     throw error;
   }
-
-  if (exercise) {
-    user.name = name;
-    user.instructions = instructions;
-    user.equipment = equipment;
-    try {
-      await exercise.save();
-    } catch (err) {
-      const error = new HttpError(
-        "Something went wrong, could not update exercise.",
-        500
-      );
-      throw error;
-    }
-  }
-
-  return exercise;
 };
 
 module.exports.deleteExercise = async (exerciseId) => {
   try {
     const exercise = await ExerciseModel.findById(exerciseId);
+    if (!user) {
+      throw new HttpError(
+        "Updating exercise failed, exercise with that id doesnt exists.",
+        404
+      );
+    }
+    await ExerciseModel.findByIdAndRemove(exerciseId);
+
+    return "Exercise deleted successfuly";
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports.getByExerciseId = async (exerciseId) => {
+  let exercise;
+  try {
+    exercise = await ExerciseModel.findById(exerciseId);
   } catch (err) {
     const error = new HttpError(
-      "Updating exercise failed, exercise with that id doesnt exists.",
-      404
+      "Fetching exercise failed, please try again later.",
+      500
     );
     throw error;
   }
-  try {
-    await ExerciseModel.deleteOne({ id: exerciseId });
-  } catch (error) {
-    throw new HttpError("deleting exercise failed. Please try again", 500);
-  }
-  return "Exercise deleted successfuly";
-};
 
+  if (!exercise || exercise.length === 0) {
+    throw new HttpError("Could not find exercise in database.", 404);
+  }
+  return user;
+};

@@ -1,40 +1,37 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import UsersList from "../components/UsersList";
-import "./Users.css";
+import "../components/ExerciseItem.css";
+import { AuthContext } from "../../shared/context/authContext";
 import { port_string } from "../../config/global";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
-import { AuthContext } from "../../shared/context/authContext";
-import { useHttpHook } from "../../shared/hooks/httpHook";
-import { Link } from "react-router-dom";
+import ExerciseItem from "../components/ExerciseItem";
 
-const Users = () => {
+const ExerciseProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [loadedUsers, setLoadedUsers] = useState();
+  const [loadedExercise, setLoadedExercise] = useState();
   const auth = useContext(AuthContext);
-  // const { isLoading, error, sendRequest, removeError } = useHttpHook();
 
-  //useeffect does not want a promise
+  const id = useParams().exerciseId;
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        console.log("token", auth.token);
-        const response = await fetch(port_string + "users/all", {
+        const response = await fetch(port_string + "exercises/" + id, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + auth.token.token,
-            User: auth.userId,
           },
         });
         const responseData = await response.json();
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-        setLoadedUsers(responseData.users);
+        setLoadedExercise(responseData.loadedExercise);
       } catch (error) {
         setError(error.message);
       }
@@ -50,17 +47,23 @@ const Users = () => {
 
   return (
     <React.Fragment>
-      <div className="main-users">
       <ErrorModal error={error} onClear={errorClearHandler} />
       {isLoading && (
         <div className="center">
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && loadedUsers && <UsersList items={loadedUsers} />}
-      </div>
+      {!isLoading && loadedExercise && (
+        <ExerciseItem
+          key={loadedExercise._id}
+          id={loadedExercise._id}
+          name={loadedExercise.name}
+          instructions={loadedExercise.instructions}
+          equipment={loadedExercise.equipment}
+        />
+      )}
     </React.Fragment>
   );
 };
 
-export default Users;
+export default ExerciseProfile;
