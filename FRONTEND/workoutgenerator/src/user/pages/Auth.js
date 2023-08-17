@@ -1,4 +1,5 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./Auth.css";
 import Card from "../../shared/components/UIElements/Card";
@@ -17,11 +18,11 @@ import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { useHttpHook } from "../../shared/hooks/httpHook";
 
 const Auth = () => {
+  const navigate = useNavigate();
 
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
   const [isLoginMode, setIsLoginMode] = useState(true);
   const auth = useContext(AuthContext);
-
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -84,7 +85,13 @@ const Auth = () => {
         );
 
         console.log("responseData", responseData);
-        auth.login(responseData.userId, responseData.token, responseData.role, responseData.tokenExpiration);
+        auth.login(
+          responseData.userId,
+          responseData.token,
+          responseData.role,
+          responseData.tokenExpiration
+        );
+        navigate("/");
       } catch (err) {}
     } else {
       try {
@@ -101,7 +108,13 @@ const Auth = () => {
             "Content-Type": "application/json",
           }
         );
-        auth.login(responseData.userId, responseData.token, responseData.role, responseData.tokenExpiration);
+        auth.login(
+          responseData.userId,
+          responseData.token,
+          responseData.role,
+          responseData.tokenExpiration
+        );
+        navigate("/");
       } catch (err) {}
     }
   };

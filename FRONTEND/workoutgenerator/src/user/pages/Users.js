@@ -7,7 +7,7 @@ import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { AuthContext } from "../../shared/context/authContext";
 import { useHttpHook } from "../../shared/hooks/httpHook";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,7 @@ const Users = () => {
       setIsLoading(true);
       try {
         console.log("token", auth.token);
-        const response = await fetch(port_string + "/users/all", {
+        const response = await fetch(port_string + "users/all", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

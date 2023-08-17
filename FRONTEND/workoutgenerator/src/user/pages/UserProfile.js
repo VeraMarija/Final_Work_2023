@@ -21,7 +21,7 @@ const UserProfile = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(port_string + "/users/" + id, {
+        const response = await fetch(port_string + "users/" + id, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

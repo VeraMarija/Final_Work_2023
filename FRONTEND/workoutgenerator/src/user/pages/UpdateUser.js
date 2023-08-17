@@ -1,137 +1,70 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
 import { VALIDATOR_MIN, VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import "./UserForm.css";
-import { useForm } from "../../shared/hooks/formHook";
 import { AuthContext } from "../../shared/context/authContext";
 import { useHttpHook } from "../../shared/hooks/httpHook";
 import { port_string } from "../../config/global";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
-
-
-let data;
-let formDataExtended;
-let finalDataExtended;
+import Avatar from "../../shared/components/UIElements/Avatar";
 
 const UpdateUser = () => {
-  const id = useParams().id;
+  const location= useLocation();
+  console.log('location', location);
+  const id = useParams().userId;
   const auth = useContext(AuthContext);
-  const [loadedUser, setLoadedUser] = useState();
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: location?.state?.email,
+      firstName: location?.state?.firstName,
+      lastName: location?.state?.lastName,
+      picture: location?.state?.picture,
+    },
+  });
 
-  data = {
-    firstName: {
-      value: "",
-      isValid: false,
-    },
 
-    lastName: {
-      value: "",
-      isValid: false,
-    },
-    email: {
-      value: "",
-      isValid: false,
-    },
+  const [imgSrc, setImgSrc] = useState(
+    "http://localhost:3001/uploads/" + location?.state?.picture
+  );
+  
+
+  const handleImageChange = (e) => {
+    setImgSrc(URL.createObjectURL(e.target.files[0]));
   };
 
 
-  
-  if (auth.role === "admin") {
-     data = {
-      ...data,
-      role: {
-        value: "",
-        isValid: false,
-      },
-    };
-  }
-
-  
-/*try { probaj prvo fetcaht usera
-    const response = await fetch(port_string + "/users/" + id, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + auth.token.token,
-      },
-    });
-    const responseData = await response.json();
-    if (!response.ok) {
-      throw new Error(responseData.message);
-    }
-    setLoadedUser(responseData.loadedUser);
-  } catch (error) {
-    setError(error.message);
-  }*/ 
-
-  const [formState, inputHandler, setFormData] = useForm(data, false);
-
-  const updateSubmitHandler = async (event) => {
-    event.preventDefault();
+  const picture = location?.state?.picture;
+  const updateOnSubmit = async (data) => {
     try {
-        formDataExtended = {
-        firstName: formState.inputs.firstName.value,
-        lastName: formState.inputs.lastName.value,
-        email: formState.inputs.email.value,
-      };
-      
-      if (auth.role === "admin") {
-        formDataExtended = {
-          ...formDataExtended,
-          role: formState.inputs.role.value,
-        };
+      const formData = new FormData();
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("email", data.email);
+      if (data.picture) {
+        formData.append("picture", data.picture[0]);
       }
 
       const responseData = await sendRequest(
         port_string + "users/" + id,
         "PUT",
-        JSON.stringify(formDataExtended),
+        formData,
         {
-          "Content-Type": "application/json",
           Authorization: "Bearer " + auth.token.token,
         }
       );
-
-      setLoadedUser(responseData.updatedUser);
+      console.log("....responsedata", responseData);
     } catch (err) {}
   };
-
-  useEffect(() => {
-    if (loadedUser) {
-        finalDataExtended = {
-        firstName: {
-          value: loadedUser.firstName,
-          isValid: true,
-        },
-        lastName: {
-          value: loadedUser.lastName,
-          isValid: true,
-        },
-        email: {
-          value: loadedUser.email,
-          isValid: true,
-        },
-      };
-     
-      if (auth.role === "admin") {
-         finalDataExtended = {
-          ...finalDataExtended,
-          role: {
-            value: loadedUser.role,
-            isValid: true,
-          },
-        };
-      }
-
-      setFormData(finalDataExtended, true);
-    }
-    //setIsLoading(false);
-  }, [setFormData, loadedUser]);
 
   if (isLoading) {
     return (
@@ -145,51 +78,64 @@ const UpdateUser = () => {
     <div className="user-form-main">
       <ErrorModal error={error} onClear={removeError} />
       {isLoading && <LoadingSpinner asOverlay />}
-
-      <form className="user-form" onSubmit={updateSubmitHandler}>
-        <h3>Update user:</h3>
-        <Input
-          id="firstName"
-          element="input"
+      <form
+        className="user-form"
+        onSubmit={handleSubmit(updateOnSubmit)}
+        encType="multipart/form-data"
+      >
+        <h3>Update user</h3>
+        <label>First Name</label>
+        <input
           type="text"
-          label="First Name"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid text"
-          onInput={inputHandler}
+          name="firstName"
+          {...register("firstName", {
+            required: "First name is required.",
+          })}
         />
-        <Input
-          id="lastName"
-          element="input"
-          type="text"
-          label="Last Name"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid text"
-          onInput={inputHandler}
-        />
-        <Input
-          id="email"
-          element="input"
-          type="text"
-          label="E-mail"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid text"
-          onInput={inputHandler}
-        />
-     
-        {auth.role === "admin" && (
-          <Input
-            id="role"
-            element="input"
-            type="role"
-            label="Role"
-            validators={[VALIDATOR_REQUIRE()]}
-            errorText="Please enter a valid text"
-            onInput={inputHandler}
-          />
+        {errors.firstName && (
+          <p className="errorMsg">{errors.firstName.message}</p>
         )}
-        <Button type="subit" disabled={!formState.isValid}>
-          UPDATE USER
-        </Button>
+        <label>Last Name</label>
+        <input
+          type="text"
+          name="lastName"
+          {...register("lastName", {
+            required: "Last name is required.",
+          })}
+        />
+        {errors.lastName && (
+          <p className="errorMsg">{errors.lastName.message}</p>
+        )}
+        <label>Email</label>
+        <input
+          type="text"
+          name="email"
+          {...register("email", {
+            required: "Email is required.",
+            pattern: {
+              value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+              message: "Email is not valid.",
+            },
+          })}
+        />
+        {errors.email && <p className="errorMsg">{errors.email.message}</p>}
+        <label>Picture</label>
+        <input
+          type="file"
+          name="picture"
+          {...register("picture")}
+          onChange={handleImageChange}
+        />
+        {errors.picture && <p className="errorMsg">{errors.picture.message}</p>}
+
+        <Avatar
+          image={imgSrc} 
+          alt="picture-update"
+        />
+        <div className="form-control">
+          <label></label>
+          <Button type="submit">Edit</Button>
+        </div>
       </form>
     </div>
   );

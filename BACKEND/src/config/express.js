@@ -7,13 +7,14 @@ const routes = require("../api/routes/v1");
 const { logs } = require("./vars");
 const jwt = require("./passport");
 const HttpError = require("../api/errors/httpError");
-//const error = require('../api/middlewares/error');
+const path = require("path");
+const fs = require("fs");
 
-/**
- * Express instance
- * @public
- */
 const app = express();
+
+
+app.use("/uploads", express.static('C:/Users/gujav/OneDrive/Radna površina/FinalWork_Backup/Final_Work_2023/BACKEND/src/api/uploads'));
+
 app.use(express.json());
 
 // lets you use HTTP verbs such as PUT or DELETE
@@ -21,7 +22,7 @@ app.use(express.json());
 app.use(methodOverride());
 
 // secure apps by setting various HTTP headers
-app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
@@ -29,10 +30,6 @@ app.use(cors());
 // enable authentication
 app.use(passport.initialize());
 passport.use("jwt", jwt);
-//passport.use('facebook', strategies.facebook);
-//passport.use('google', strategies.google);F
-
-// mount api v1 routes
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -47,21 +44,35 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/v1", routes);
 
+
+app.use("/v1", routes);
+app.get('/*', function (req, res) {
+  console.log('dosa je ovde');
+  res.sendFile(path.join(__dirname, 'C:/Users/gujav/Documents/Final_Work_2023/FRONTEND/workoutgenerator/public/index.html'), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;
 });
 
 app.use((error, req, res, next) => {
-    if (res.headerSent) {
-      return next(error);
-    }
-    console.log(error);
-    res.status(error.code || 500);
-    res.json({ error: error.message || 'An unknown error occurred!' });
-    
-  });
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
+  if (res.headerSent) {
+    return next(error);
+  }
+  res.status(error.code || 500);
+  res.json({ message: error.message || "An unknown error occurred!" });
+});
+
+
 
 module.exports = app;

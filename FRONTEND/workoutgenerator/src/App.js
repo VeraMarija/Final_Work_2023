@@ -1,9 +1,9 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Redirect,
-  Switch,
+  Routes,
+  Navigate,
 } from "react-router-dom";
 
 import Users from "./user/pages/Users";
@@ -17,7 +17,7 @@ import UpdateUserExercise from "./userExercises/pages/UpdateUserExercise";
 import { AuthContext } from "./shared/context/authContext";
 import HomePage from "./shared/pages/HomePage";
 import NewUser from "./user/pages/NewUser";
-import Userprofile from "./user/pages/UserProfile";
+import UserProfile from "./user/pages/UserProfile";
 import UpdateUser from "./user/pages/UpdateUser";
 
 /*<Route path="/editUser/:userId" exact>
@@ -30,11 +30,15 @@ import UpdateUser from "./user/pages/UpdateUser";
 let logoutTimer;
 
 const App = () => {
-  const [userId, setUserId] = useState(false);
-  const [token, setToken] = useState(false);
-  const [role, setRole] = useState(false);
-  const [tokenExpiration, setTokenExpiration] = useState(false);
+  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [role, setRole] = useState(localStorage.getItem("role"));
+  const [tokenExpiration, setTokenExpiration] = useState(
+    localStorage.getItem("tokenExpiration")
+  );
 
+  console.log("token", token);
+  console.log("userid", userId);
   const logIn = useCallback((userId, token, role, tokenExpiration) => {
     setToken(token);
     setUserId(userId);
@@ -90,76 +94,41 @@ const App = () => {
 
   if (token) {
     //korisnik je autenticiran s tokenom(logiran)
+    console.log("usli");
     if (role === "admin") {
-      console.log("ruta je admin");
+      console.log("u adminu");
       routes = (
-        <Switch>
-          <Route path="/users" exact>
-            <Users />
-          </Route>
-          <Route path="/user/new" exact>
-            <NewUser />
-          </Route>
-          <Route path="/profile/:userId" exact>
-            <Userprofile />
-          </Route>
-          <Route path="/editUser/:userId" exact>
-            <UpdateUser />
-          </Route>
-          <Route path="/" exact>
-            <HomePage />
-          </Route>
-          <Route path="/exercises" exact>
-            <Exercises />
-          </Route>
-          <Route path="/:userId/userExercises" exact>
-            <UserExercises />
-          </Route>
-          <Route path="/userExercise/new" exact>
-            <NewUserExercise />
-          </Route>
-          <Route path="/userExercise/:id" exact>
-            <UpdateUserExercise />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
+        <Routes>
+          <Route path="/users" element={<Users />} />
+          <Route path="/user/new" element={<NewUser />} />
+          <Route path="/profile/:userId" element={<UserProfile />} />
+          <Route path="/editUser/:userId" element={<UpdateUser />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/exercises" element={<Exercises />} />
+          <Route path="/:userId/userExercises" element={<UserExercises />} />
+          <Route path="/userExercise/new" element={<NewUserExercise />} />
+          <Route path="/userExercise/:id" element={<UpdateUserExercise />} />
+        </Routes>
       );
     } else {
       routes = (
-        <Switch>
-          <Route path="/" exact>
-            <HomePage />
-          </Route>
-          <Route path="/profile/:userId" exact>
-            <Userprofile />
-          </Route>
-          <Route path="/exercises" exact>
-            <Exercises />
-          </Route>
-          <Route path="/:userId/userExercises" exact>
-            <UserExercises />
-          </Route>
-          <Route path="/userExercise/new" exact>
-            <NewUserExercise />
-          </Route>
-          <Route path="/userExercise/:id" exact>
-            <UpdateUserExercise />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/profile/:userId" element={<UserProfile />} />
+          <Route path="/exercises" element={<Exercises />} />
+          <Route path="/:userId/userExercises" element={<UserExercises />} />
+          <Route path="/userExercise/new" element={<NewUserExercise />} />
+          <Route path="/userExercise/:id" element={<UpdateUserExercise />} />
+        </Routes>
       );
     }
   } else {
     routes = (
-      <Switch>
-        <Route path="/" exact>
-          <HomePage />
-        </Route>
-        <Route path="/auth" exact>
-          <Auth />
-        </Route>
-        <Redirect to="/auth" />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/auth" element={<Navigate to="/" />} />
+      </Routes>
     );
   }
 
@@ -176,8 +145,8 @@ const App = () => {
       }}
     >
       <Router>
-        <MainNavigation />
         <main>{routes}</main>
+        <MainNavigation />
       </Router>
     </AuthContext.Provider>
   );

@@ -20,6 +20,7 @@ module.exports.createUser = async (req, res, next) => {
 };
 
 module.exports.updateUser = async (req, res, next) => {
+  console.log('update useraaaaaaaaaaaaaaaaaaaaaaa');
   try {
     const result = await UserService.updateUser(req);
     return res.status(200).json({ updatedUser: result });

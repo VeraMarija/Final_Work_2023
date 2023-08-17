@@ -18,3 +18,36 @@
   border-radius: 6px;
   background: white;
 }
+
+.user-form p {
+  color: red;
+}
+
+.user-form  label,
+.user-form  input,
+.user-form  textarea {
+    display: block;
+  }
+  
+  .user-form  label {
+    font-weight: bold;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: rgb(0, 0, 0);
+  }
+  
+  .user-form  input,
+  .user-form  textarea {
+    width: 100%;
+    font: inherit;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    padding: 0.15rem 0.25rem;
+  }
+  .user-form  input:focus,
+  .user-form  textarea:focus {
+    outline: none;
+    background: #ebebeb;
+    border-color: #510077;
+  }
+  

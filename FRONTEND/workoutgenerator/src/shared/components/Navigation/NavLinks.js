@@ -14,7 +14,7 @@ const NavLinks = (props) => {
   return (
     <ul className="nav-links">
       
-      {loggedState && auth.role && (
+      {loggedState && auth.role==="admin" && (
         <li>
           <NavLink to="/users" exact>
             Users

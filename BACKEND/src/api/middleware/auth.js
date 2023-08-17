@@ -10,6 +10,7 @@ exports.checkAuth = async (req, res, next) => {
   if (req.method === "OPTIONS") {
     return next();
   }
+
   try {
     const token = req.headers.authorization.split(" ")[1]; // Bearer 'mytoken'
 
@@ -47,38 +48,3 @@ exports.checkPermission = async (req, res, next) => {
   }
 };
 
-/*const jwtAuth = (req, res, next, role) => async (err, user, info) => {
-  console.log("---------roles---------", role);
-  const logIn = req.logIn;
-  const apiError = new APIError({
-    message: err ? err.message : "Unauthorized",
-    code: httpStatus.UNAUTHORIZED,
-    stack: err ? err.stack : undefined,
-  });cd
-
-  try {
-    if (err || !user) throw err;
-    await logIn(user, { session: false });
-  } catch (e) {
-    return next(apiError);
-  }
-
-  if (role === "user" && req.params.userId !== user._id.toString()) {
-    apiError.code = httpStatus.FORBIDDEN;
-    apiError.message = "Forbidden";
-    return next(apiError);
-  }
-
-  req.user = user;
-
-  return next();
-};
-
-exports.authorize = (role) => (req, res, next) =>
-  passport.authenticate(
-    "jwt",
-    { session: false },
-    jwtAuth(req, res, next, role)
-  )(req, res, next);
-
-  */
