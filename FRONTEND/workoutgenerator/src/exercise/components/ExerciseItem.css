@@ -44,7 +44,14 @@
     color:  #246aec;
   }
   
-  .exercise-item__info h4, h3{
+  .exercise-item__info h4{
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: bold;
+    color:  #071838;
+  }
+
+  .exercise-item__info h3{
     font-size: 1rem;
     margin: 0 0 0.5rem 0;
     font-weight: bold;

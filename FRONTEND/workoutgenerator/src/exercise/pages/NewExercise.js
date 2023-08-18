@@ -1,5 +1,8 @@
-import React, { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useContext, Component } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { Multiselect } from "multiselect-react-dropdown";
+
+
 import "./ExerciseForm.css";
 import Button from "../../shared/components/FormElements/Button";
 
@@ -10,10 +13,13 @@ import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Avatar from "../../shared/components/UIElements/Avatar";
 
+import {equipmentOptions} from '../../config/dropdown_equipment';
+
 const NewExercise = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -81,8 +87,8 @@ const NewExercise = () => {
         {errors.instructions && (
           <p className="errorMsg">{errors.instructions.message}</p>
         )}
-        <label>Equipment</label>
-        <input
+        <label>Equipment</label>       
+        {/* <input
           type="text"
           name="equipment"
           {...register("equipment", {
@@ -91,7 +97,23 @@ const NewExercise = () => {
         />
         {errors.equipment && (
           <p className="errorMsg">{errors.equipment.message}</p>
-        )}
+        )} */}
+        <Controller
+          control={control}
+          name="equipment"
+          render={({ field: { value, onChange } }) => (
+            <Multiselect
+              options={equipmentOptions}
+              isObject={false}
+              showCheckbox={true}
+              hidePlaceholder={true}
+              closeOnSelect={false}
+              onSelect={onChange}
+              onRemove={onChange}
+              selectedValues={value}
+            />
+          )}
+        />
         <div className="form-control">
           <label></label>
           <Button type="submit">Create</Button>

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import { Multiselect } from "multiselect-react-dropdown";
 
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
@@ -12,6 +13,8 @@ import { port_string } from "../../config/global";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Avatar from "../../shared/components/UIElements/Avatar";
+import {equipmentOptions} from '../../config/dropdown_equipment';
+
 
 const UpdateExercise = () => {
   const location = useLocation();
@@ -19,6 +22,7 @@ const UpdateExercise = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -99,12 +103,21 @@ const UpdateExercise = () => {
           <p className="errorMsg">{errors.instructions.message}</p>
         )}
         <label>Equipment</label>
-        <input
-          type="text"
+        <Controller
+          control={control}
           name="equipment"
-          {...register("equipment", {
-            required: "Equipment is required.",
-          })}
+          render={({ field: { value, onChange } }) => (
+            <Multiselect
+              options={equipmentOptions}
+              isObject={false}
+              showCheckbox={true}
+              hidePlaceholder={true}
+              closeOnSelect={false}
+              onSelect={onChange}
+              onRemove={onChange}
+              selectedValues={value}
+            />
+          )}
         />
         {errors.equipment && (
           <p className="errorMsg">{errors.equipment.message}</p>

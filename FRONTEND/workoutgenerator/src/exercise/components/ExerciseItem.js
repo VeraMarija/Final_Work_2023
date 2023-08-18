@@ -52,6 +52,7 @@ const ExerciseItem = (props) => {
   const removeError = () => {
     setError(null);
   };
+  console.log(props.equipment);
 
   return (
     <React.Fragment>
@@ -87,8 +88,9 @@ const ExerciseItem = (props) => {
               </div> */}
               <div className="exercise-item__info">
                 <h2>{props.name} </h2>
-                <h3>Instructions: {props.instructions}</h3>
-                <h3>Equipment: {props.equipment}</h3>
+                <h3>Instructions:<h4>{props.instructions}</h4></h3>
+                <h3>Equipment:
+                { props.equipment.map( e => <h4>{e}</h4>)}</h3>
               </div>
             </Link>
             <div className="exercise-item__Update">

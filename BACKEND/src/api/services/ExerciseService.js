@@ -7,6 +7,7 @@ module.exports.getAll = async () => {
     /*if (!exercises || exercises.length === 0) {
       throw new HttpError("No exercises found.", 404);
     }*/
+    console.log(exercises);
     return exercises;
   } catch (err) {
     throw new HttpError("fetching exercises failed. Please try again.", 500);
@@ -80,6 +81,7 @@ module.exports.deleteExercise = async (exerciseId) => {
 
 module.exports.getByExerciseId = async (exerciseId) => {
   let exercise;
+  console.log('evo ga');
   try {
     exercise = await ExerciseModel.findById(exerciseId);
   } catch (err) {
@@ -93,5 +95,5 @@ module.exports.getByExerciseId = async (exerciseId) => {
   if (!exercise || exercise.length === 0) {
     throw new HttpError("Could not find exercise in database.", 404);
   }
-  return user;
+  return exercise;
 };

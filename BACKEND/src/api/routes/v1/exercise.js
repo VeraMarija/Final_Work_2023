@@ -34,5 +34,7 @@ router.delete(
     exerciseController.deleteExercise
 );
 
+router.get("/:exerciseId", checkAuth, checkPermission, exerciseController.getByExerciseId);
+
 
 module.exports = router;

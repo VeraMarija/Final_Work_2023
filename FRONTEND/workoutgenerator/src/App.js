@@ -21,7 +21,7 @@ import UserProfile from "./user/pages/UserProfile";
 import UpdateUser from "./user/pages/UpdateUser";
 import NewExercise from "./exercise/pages/NewExercise";
 import UpdateExercise from "./exercise/pages/UpdateExercise";
-
+import ExerciseProfile from "./exercise/pages/ExerciseProfile";
 /*<Route path="/editUser/:userId" exact>
             <UpdateUser />
           </Route>
@@ -108,7 +108,7 @@ const App = () => {
           <Route path="/editUser/:userId" element={<UpdateUser />} />      
           <Route path="/exercises" element={<Exercises />} />
           <Route path="/exercise/new" element={<NewExercise />} />
-          <Route path="/exerciseProfile/:exerciseId" element={<UserProfile />} />
+          <Route path="/exerciseProfile/:exerciseId" element={<ExerciseProfile />} />
           <Route path="/editExercise/:exerciseId" element={<UpdateExercise />} />
           <Route path="/:userId/userExercises" element={<UserExercises />} />
           <Route path="/userExercise/new" element={<NewUserExercise />} />
