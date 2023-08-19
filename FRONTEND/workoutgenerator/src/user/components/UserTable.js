@@ -79,6 +79,7 @@ const UserTable = () => {
           <th>Last Name</th>
           <th>Email</th>
           <th>Profile Created</th>
+          <th>Profile Updated</th>
           <th>Role</th>
           <th>Profile</th>
           <th>Edit</th>
@@ -91,6 +92,7 @@ const UserTable = () => {
               <td>{val.lastName}</td>
               <td>{val.email}</td>
               <td>{val.createdAt}</td>
+              <td>{val.updatedAt}</td>
               <td>{val.role}</td>
               <td>
                 <Link to={`/profile/${val._id}`}>

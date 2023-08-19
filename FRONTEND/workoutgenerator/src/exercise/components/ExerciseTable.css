@@ -1,0 +1,36 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 2rem;
+}
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  color: rgb(3, 0, 0);
+}
+
+.container {
+  position: relative;
+  margin: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.56);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow: hidden;
+  background: rgb(224, 224, 224, 0.7);
+}
+
+.container a {
+  font-size: large;
+}
+
+.icon {
+  color: rgb(77, 22, 228);
+  font-size: larger;
+}
+
+p {
+  color: black;
+}

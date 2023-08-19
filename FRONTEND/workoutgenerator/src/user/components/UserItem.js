@@ -76,7 +76,7 @@ const UserItem = (props) => {
         }
       >
         <p>
-          Do you want to proceed and delete this user? Please note that it can't
+          Do you want to proceed and delete this account? Please note that it can't
           be undone.
         </p>
       </Modal>
@@ -92,6 +92,7 @@ const UserItem = (props) => {
                 <h2>{props.firstName + " " + props.lastName} </h2>
                 <h3>Email: {props.email}</h3>
                 <h3>Profile created: {new Date(props.profileCreated).toLocaleString()}</h3>
+                <h3>Profile updated: {new Date(props.profileUpdated).toLocaleString()}</h3>
                 <h3>Role: {props.role}</h3>
               </div>
             </Link>
@@ -104,14 +105,15 @@ const UserItem = (props) => {
                     email: props.email,
                     role: props.role,
                     picture: props.picture
+                    
                   }}
               
               >
                 <h2>Edit</h2>
               </Link>
-              <Button danger onClick={showDeleteWarningHandler}>
+              {auth.role === "admin " && <Button danger onClick={showDeleteWarningHandler}>
                 DELETE
-              </Button>
+              </Button>}
             </div>
           </Card>
         </div>

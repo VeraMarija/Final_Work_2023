@@ -5,6 +5,7 @@ import ExerciseItem from "./ExerciseItem";
 import Card from "../../shared/components/UIElements/Card";
 
 const ExercisesList = (props) => {
+
   if (props.items.length === 0) {
     return (
         <React.Fragment>

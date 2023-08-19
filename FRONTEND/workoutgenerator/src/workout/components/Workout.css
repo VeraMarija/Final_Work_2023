@@ -1,0 +1,14 @@
+.main-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+a {
+    text-decoration: none;
+}
+
+.workout-item__info h4{
+    color:blue;
+}

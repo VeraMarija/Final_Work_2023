@@ -5,6 +5,8 @@ const HttpError = require("../errors/httpError");
 const { validationResult } = require("express-validator");
 const userExerciseService = require("../services/UserExerciseService");
 const fs = require("fs");
+const UserModel = require("../models/UserModel");
+const { findById } = require("../models/ExerciseWeigh");
 
 module.exports.getAll = async () => {
   const workouts = await WorkoutModel.find();
@@ -15,18 +17,33 @@ module.exports.getAll = async () => {
 };
 
 module.exports.createWorkout = async (req) => {
-  const { userExercises } = req.body;
-
+  const { name, user, userExercises } = req.body;
+  console.log("user", user);
+  console.log("req.user", req.user);
+  if (user !== req.user) {
+    throw new HttpError("Forbidden, you do not have permission.", 403);
+  }
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
 
   const workout = await new WorkoutModel({
+    name,
+    user,
     userExercises,
   });
+
   try {
     await workout.save();
+    const populatedWorkout = await WorkoutModel.findById(workout.id)
+      .populate({
+        path: "userExercises",
+        select: "-user",
+        populate: { path: "exercise", select: "name" },
+      })
+      .populate({ path: "user", select: "-password" });
+    return populatedWorkout;
   } catch (err) {
     const error = new HttpError(
       "Creating workout failed, please try again later.",
@@ -34,11 +51,10 @@ module.exports.createWorkout = async (req) => {
     );
     throw error;
   }
-  return workout;
 };
 
 module.exports.updateWorkout = async (req) => {
-  const { userExercises } = req.body;
+  const { name, userExercises } = req.body;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -47,6 +63,7 @@ module.exports.updateWorkout = async (req) => {
   try {
     const workout = await WorkoutModel.findById(req.params.workoutId);
     if (workout) {
+      workout.name = name;
       workout.userExercises = userExercises;
       try {
         await workout.save();
@@ -58,7 +75,13 @@ module.exports.updateWorkout = async (req) => {
         throw error;
       }
     }
-    return workout;
+    return workout
+      .populate({
+        path: "userExercises",
+        select: "-user",
+        populate: { path: "exercise", select: "name" },
+      })
+      .populate("user");
   } catch (err) {
     const error = new HttpError(
       "Updating workout failed, workout with that id doesnt exists.",
@@ -88,12 +111,23 @@ module.exports.deleteWorkout = async (workoutId) => {
   }
 };
 
-module.exports.getByWorkoutId = async (workoutId) => {
-  let user;
+module.exports.getByWorkoutId = async (req) => {
   try {
-    const workout = await WorkoutModel.findById(workoutId);
+    const workout = await WorkoutModel.findById(req.params.workoutId)
+      .populate({
+        path: "userExercises",
+        select: "-user",
+        populate: { path: "exercise", select: "name" },
+      })
+      .populate("user");
+      console.log('workout-----------------', workout);
     if (!workout) {
       throw new HttpError("Could not find workout in database.", 404);
+    }
+    if (workout.user.id !== req.user) {
+      console.log('evo', workout.user._id);
+      console.log('evo', req.user);
+      throw new HttpError("Forbidden, you do not have permission.", 403);
     }
     return workout;
   } catch (err) {
@@ -102,5 +136,24 @@ module.exports.getByWorkoutId = async (workoutId) => {
       500
     );
     throw error;
+  }
+};
+
+module.exports.getallByUserId = async (userId) => {
+  try {
+    console.log("evo me");
+    const workouts = await WorkoutModel.find({ user: userId })
+      .populate({
+        path: "userExercises",
+        populate: { path: "exercise" },
+      })
+      .populate("user");
+    console.log(workouts);
+    if (!workouts || workouts.length === 0) {
+      return [];
+    }
+    return workouts;
+  } catch (err) {
+    throw err;
   }
 };

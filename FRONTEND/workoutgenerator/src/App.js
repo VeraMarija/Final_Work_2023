@@ -23,6 +23,8 @@ import NewExercise from "./exercise/pages/NewExercise";
 import UpdateExercise from "./exercise/pages/UpdateExercise";
 import ExerciseProfile from "./exercise/pages/ExerciseProfile";
 import UserTable from "./user/components/UserTable";
+import Workouts from "./workout/pages/Workouts";
+import WorkoutProfile from "./workout/pages/WorkoutProfile";
 /*<Route path="/editUser/:userId" exact>
             <UpdateUser />
           </Route>
@@ -102,7 +104,7 @@ const App = () => {
       console.log("u adminu");
       routes = (
         <Routes>
-           <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/users" element={<UserTable />} />
           <Route path="/user/new" element={<NewUser />} />
           <Route path="/profile/:userId" element={<UserProfile />} />
@@ -114,6 +116,9 @@ const App = () => {
           <Route path="/:userId/userExercises" element={<UserExercises />} />
           <Route path="/userExercise/new" element={<NewUserExercise />} />
           <Route path="/userExercise/:id" element={<UpdateUserExercise />} />
+          <Route path="/workouts/all" element={<Workouts />} />
+          <Route path="/workoutProfile/:workoutId" element={<WorkoutProfile />} />
+
         </Routes>
       );
     } else {
@@ -122,10 +127,11 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/profile/:userId" element={<UserProfile />} />
           <Route path="/editUser/:userId" element={<UpdateUser />} />  
-          <Route path="/exercises" element={<Exercises />} />
           <Route path="/:userId/userExercises" element={<UserExercises />} />
           <Route path="/userExercise/new" element={<NewUserExercise />} />
           <Route path="/userExercise/:id" element={<UpdateUserExercise />} />
+          <Route path="/workouts/all" element={<Workouts />} />
+          <Route path="/workoutProfile/:workoutId" element={<WorkoutProfile />} />
         </Routes>
       );
     }

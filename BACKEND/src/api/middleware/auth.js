@@ -52,4 +52,3 @@ exports.checkPermission = async (req, res, next) => {
     return next(err);
   }
 };
-

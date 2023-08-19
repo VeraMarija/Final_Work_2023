@@ -5,6 +5,14 @@ const { Schema } = mongoose;
 
 const workoutSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     userExercises: [
       {
         type: mongoose.Schema.Types.ObjectId,

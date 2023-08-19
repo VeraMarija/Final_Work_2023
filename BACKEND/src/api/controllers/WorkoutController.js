@@ -39,8 +39,17 @@ module.exports.deleteWorkout = async (req, res, next) => {
 
 module.exports.getByWorkoutId = async (req, res, next) => {
   try {
-    const result = await workoutService.getByWorkoutId(req.params.workoutId);
-    return res.status(200).json({ loadedWorkout: result });
+    const result = await workoutService.getByWorkoutId(req);
+    return res.status(200).json({loadedWorkout: result });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports.getallByUserId = async (req, res, next) => {
+  try {
+    const result = await workoutService.getallByUserId(req.params.userId);
+    return res.status(200).json({ workouts: result });
   } catch (error) {
     return next(error);
   }

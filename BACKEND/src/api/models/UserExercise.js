@@ -1,6 +1,4 @@
-//const { Int32 } = require("mongodb");
 const mongoose = require("mongoose");
-const { Decimal } = require("mongoose/lib/schema/index");
 const {Schema} = mongoose;
 
 const userExerciseSchema = new Schema(
@@ -14,15 +12,27 @@ const userExerciseSchema = new Schema(
       ref: "Exercise",
     },
     liftWeight: {
-      type: Decimal,
+      type: Number,
       required: true,
     },
     repetition: {
-      type: Decimal,
+      type: Number,
       required: true,
     },
     repMax: {
-      type: Decimal,
+      type: Number,
+      required: true,
+    },
+    firstSet: { //12-15 ponavljanja
+      type: Number,
+      required: true,
+    },
+    secondSet: {  //8-12 ponavljanja
+      type: Number,
+      required: true,
+    },
+    thirdSet: {  //5-8 ponavljanja
+      type: Number,
       required: true,
     },
   },

@@ -6,6 +6,7 @@ import { port_string } from "../../config/global";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { AuthContext } from "../../shared/context/authContext";
+import ExerciseTable from "../components/ExerciseTable";
 
 
 const Exercises = () => {
@@ -52,7 +53,7 @@ const Exercises = () => {
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && loadedExercises && <ExercisesList items={loadedExercises} />}
+      {!isLoading && loadedExercises && <ExerciseTable items={loadedExercises} />}
     </React.Fragment>
   );
 };

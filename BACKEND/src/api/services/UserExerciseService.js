@@ -4,7 +4,7 @@ const { validationResult } = require("express-validator");
 
 module.exports.getAll = async () => {
   try {
-    const exercises = await UserExerciseModel.find();
+    const exercises = await UserExerciseModel.find().populate({path:'exercise' , select: 'name'});
     if (!exercises || exercises.length === 0) {
       throw new HttpError("No exercises found.", 404);
     }
@@ -18,18 +18,40 @@ module.exports.getAll = async () => {
  * Epley formula: Weight x (1 + (0.0333 x number of reps))
 Example: 75 kg x (1 + (0.0333 x 6) = 90 kg or 198 pounds
   */
+
+const fixWeights = (weight) =>{
+  if(weight%5 === 0){
+    return weight;
+  }
+  else{
+    const difference = weight%5 ;
+    if(difference < 3){
+      return weight - difference;
+    }
+    return weight + (5-difference);
+  }
+}
+
 module.exports.createExercise = async (req) => {
+
   const { user, exercise, liftWeight, repetition } = req.body; //sam kreiraj repmax
+  if (user !== req.user) {
+    throw new HttpError("Forbidden, you do not have permission.", 403);
+  }
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
+  const repMax =  fixWeights(Math.ceil(liftWeight * (1 + 0.0333 * repetition)));
   const userExercise = new UserExerciseModel({
     user,
     exercise,
     liftWeight,
     repetition,
-    repMax: Math.ceil(liftWeight * (1 + 0.0333 * repetition)),
+    repMax,
+    firstSet: fixWeights(Math.ceil(0.65 * repMax)),
+    secondSet: fixWeights(Math.ceil(0.75 * repMax)),
+    thirdSet: fixWeights(Math.ceil(0.85 * repMax)),
   });
 
   try {
@@ -37,7 +59,7 @@ module.exports.createExercise = async (req) => {
   } catch (err) {
     throw new HttpError("Saving exercise to database failed.", 500);
   }
-  return userExercise;
+  return userExercise.populate({path:'exercise' , select: 'name'});
 };
 
 module.exports.updateExercise = async (req) => {
@@ -62,7 +84,10 @@ module.exports.updateExercise = async (req) => {
 
     userExercise.liftWeight = liftWeight;
     userExercise.repetition = repetition;
-    userExercise.repMax = Math.ceil(liftWeight * (1 + 0.0333 * repetition));
+    userExercise.repMax = fixWeights(Math.ceil(liftWeight * (1 + 0.0333 * repetition)));
+    userExercise.firstSet= fixWeights(Math.ceil(0.65 * repMax));
+    userExercise.secondSet= fixWeights(Math.ceil(0.75 * repMax));
+    userExercise.thirdSet= fixWeights(Math.ceil(0.85 * repMax));
 
     try {
       await userExercise.save();
@@ -73,7 +98,7 @@ module.exports.updateExercise = async (req) => {
       );
       throw error;
     }
-    return userExercise;
+    return userExercise.populate({path:'exercise' , select: 'name'});;
   } catch (err) {
     throw err;
   }
@@ -101,7 +126,7 @@ module.exports.getByExerciseId = async (exerciseId) => {
     if (!exercise) {
       throw new HttpError("Could not find exercise in database.", 404);
     }
-    return exercise;
+    return exercise.populate({path:'exercise' , select: 'name'});;
   } catch (err) {
     const error = new HttpError(
       "Fetching exercise failed, please try again later.",

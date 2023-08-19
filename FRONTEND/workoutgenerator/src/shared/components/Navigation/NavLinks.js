@@ -21,7 +21,7 @@ const NavLinks = (props) => {
           </NavLink>
         </li>
       )}
-      { (
+      { loggedState && auth.role==="admin" &&(
         <li>
           <NavLink to="/exercises">Exercises</NavLink>
         </li>

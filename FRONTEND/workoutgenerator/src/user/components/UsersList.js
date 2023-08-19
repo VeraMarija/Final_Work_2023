@@ -42,6 +42,7 @@ const UsersList = (props) => {
               email={user.email}
               role={user.role}
               profileCreated={user.createdAt}
+              profileUpdated={user.updatedAt}
             />
           ))}
         </ul>

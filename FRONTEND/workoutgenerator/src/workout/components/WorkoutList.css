@@ -1,0 +1,19 @@
+.workout-list {
+  display: inline-block;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  justify-content: center;
+  margin-left: 30%;
+  justify-items: center;
+
+}
+
+.icon {
+  color: rgb(77, 22, 228);
+  font-size: larger;
+}
+
+a {
+  color: white;
+}

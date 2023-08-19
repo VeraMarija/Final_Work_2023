@@ -7,3 +7,38 @@
   overflow: hidden;
   background: rgba(44, 58, 255, 0.444);
 }
+
+.workout-item__content {
+  position:relative;
+  margin: 5px;
+  margin-right: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow: hidden;
+  background: rgba(156, 156, 163, 0.444);
+  display: flex;
+  justify-content: center;
+  width:max-content;
+
+
+}
+
+.workout-item__content a {
+  text-decoration: none;
+}
+
+.workout-item__content h4 {
+  color: blue;
+  background-color: rgba(255, 255, 255, 0.829);
+}
+
+.workout-item__content h2 {
+  color: rgb(251, 251, 255);
+  background-color: rgba(0, 0, 0, 0.404);
+}
+
+.workout-item__content p {
+  font-weight: 800;
+  color: rgb(3, 3, 44);
+}

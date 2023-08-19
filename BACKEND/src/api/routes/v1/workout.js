@@ -11,7 +11,6 @@ router.get("/all", checkAuth, checkPermission, workoutController.getAll);
 router.post(
   "/",
   checkAuth,
-  checkPermission,
   workoutController.createWorkout
 );
 
@@ -29,6 +28,8 @@ router.delete(
   workoutController.deleteWorkout
 );
 
-router.get("/:workoutId", checkAuth, checkPermission, workoutController.getByWorkoutId);
+router.get("/allByUserId/:userId", checkAuth, checkPermission, workoutController.getallByUserId);
+
+router.get("/:workoutId", checkAuth, workoutController.getByWorkoutId);
 
 module.exports = router;

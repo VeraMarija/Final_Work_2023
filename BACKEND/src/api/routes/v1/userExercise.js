@@ -11,7 +11,6 @@ router.get("/all", checkAuth, checkPermission, userExerciseController.getAll);
 router.post(
   "/",
   checkAuth,
-  checkPermission,
   userExerciseController.createExercise
 );
 
