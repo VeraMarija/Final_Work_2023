@@ -55,6 +55,7 @@ const UserItem = (props) => {
     setError(null);
   };
 
+
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={removeError} />
@@ -89,6 +90,7 @@ const UserItem = (props) => {
               </div>
               <div className="user-item__info">
                 <h2>{props.firstName + " " + props.lastName} </h2>
+                <h3>Email: {props.email}</h3>
                 <h3>Profile created: {new Date(props.profileCreated).toLocaleString()}</h3>
                 <h3>Role: {props.role}</h3>
               </div>

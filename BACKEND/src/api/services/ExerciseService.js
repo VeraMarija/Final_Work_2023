@@ -1,4 +1,5 @@
 const HttpError = require("../errors/httpError");
+const Exercise = require("../models/Exercise");
 const ExerciseModel = require("../models/Exercise");
 
 module.exports.getAll = async () => {
@@ -65,9 +66,9 @@ module.exports.updateExercise = async (req) => {
 module.exports.deleteExercise = async (exerciseId) => {
   try {
     const exercise = await ExerciseModel.findById(exerciseId);
-    if (!user) {
+    if (!exercise) {
       throw new HttpError(
-        "Updating exercise failed, exercise with that id doesnt exists.",
+        "Deleting exercise failed, exercise with that id doesnt exists.",
         404
       );
     }

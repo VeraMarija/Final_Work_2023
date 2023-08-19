@@ -30,6 +30,7 @@ exports.checkAuth = async (req, res, next) => {
 };
 
 exports.checkPermission = async (req, res, next) => {
+  console.log('ajmooooooooooooooooooooooooooooooo');
   try {
     const user = await UserModel.findById(req.user); 
     console.log('user', user);// umjesto headera mogu res.user koristit ubaččen u auth

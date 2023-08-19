@@ -2,10 +2,13 @@
   margin: 1rem;
   width: calc(45% - 2rem);
   min-width: 17.5rem;
+  display:inline-block;
+
+
 }
 
 .user-item a {
-  display:block;
+  display:inline-block;
   align-items:center;
   width: 100%;
   height: 100%;
@@ -43,6 +46,7 @@
   font-weight: bold;
   color:  #246aec;
 }
+
 
 .user-item__info h4, h3{
   font-size: 1rem;

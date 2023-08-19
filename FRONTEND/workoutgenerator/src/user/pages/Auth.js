@@ -121,63 +121,61 @@ const Auth = () => {
 
   return (
     <React.Fragment>
-      <div className="main">
-        <ErrorModal error={error} onClear={removeError} />
-        <Card className="authentication">
-          {isLoading && <LoadingSpinner asOverlay />}
-          <h2>Enjoy in your personal workout </h2>
-          <form onSubmit={submitHandler}>
-            {!isLoginMode && (
-              <Input
-                id="firstName"
-                element="input"
-                type="text"
-                label="First Name"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter your first name"
-                onInput={inputHandler}
-              />
-            )}
-            {!isLoginMode && (
-              <Input
-                id="lastName"
-                element="input"
-                type="text"
-                label="Last Name"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter your last name"
-                onInput={inputHandler}
-              />
-            )}
+      <ErrorModal error={error} onClear={removeError} />
+      <Card className="authentication">
+        {isLoading && <LoadingSpinner asOverlay />}
+        <h2>Enjoy in your personal workout </h2>
+        <form onSubmit={submitHandler}>
+          {!isLoginMode && (
             <Input
-              id="email"
+              id="firstName"
               element="input"
-              type="email"
-              label="E-mail"
-              validators={[VALIDATOR_EMAIL()]}
-              errorText="Please enter valid email format"
+              type="text"
+              label="First Name"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter your first name"
               onInput={inputHandler}
             />
+          )}
+          {!isLoginMode && (
             <Input
-              id="password"
+              id="lastName"
               element="input"
-              type="password"
-              label="Password"
-              validators={[VALIDATOR_MINLENGTH(5)]}
-              errorText="You need to enter a min of 5 characters"
+              type="text"
+              label="Last Name"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter your last name"
               onInput={inputHandler}
             />
+          )}
+          <Input
+            id="email"
+            element="input"
+            type="email"
+            label="E-mail"
+            validators={[VALIDATOR_EMAIL()]}
+            errorText="Please enter valid email format"
+            onInput={inputHandler}
+          />
+          <Input
+            id="password"
+            element="input"
+            type="password"
+            label="Password"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="You need to enter a min of 5 characters"
+            onInput={inputHandler}
+          />
 
-            <Button type="subit" disabled={!formState.isValid}>
-              {isLoginMode ? "LOGIN" : "REGISTER"}
-            </Button>
-          </form>
-          <p>Not a member yet? Create an Account</p>
-          <Button inverse onClick={changeModeHandler}>
-            {isLoginMode ? " REGISTER" : " LOGIN"}
+          <Button type="subit" disabled={!formState.isValid}>
+            {isLoginMode ? "LOGIN" : "REGISTER"}
           </Button>
-        </Card>
-      </div>
+        </form>
+        <p>Not a member yet? Create an Account</p>
+        <Button inverse onClick={changeModeHandler}>
+          {isLoginMode ? " REGISTER" : " LOGIN"}
+        </Button>
+      </Card>
     </React.Fragment>
   );
 };

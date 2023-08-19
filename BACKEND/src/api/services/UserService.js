@@ -102,7 +102,7 @@ module.exports.deleteUser = async (userId) => {
     const user = await UserModel.findById(userId);
     if (!user) {
       throw new HttpError(
-        "Updating user failed, user with that id doesnt exists.",
+        "Deleting user failed, user with that id doesnt exists.",
         404
       );
     }

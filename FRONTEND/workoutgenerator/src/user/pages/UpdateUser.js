@@ -31,7 +31,7 @@ const UpdateUser = () => {
       picture: location?.state?.picture,
     },
   });
-
+  console.log('di smo');
 
   const [imgSrc, setImgSrc] = useState(
     "http://localhost:3001/uploads/" + location?.state?.picture

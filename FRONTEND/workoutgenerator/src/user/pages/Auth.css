@@ -1,12 +1,3 @@
-.main {
-  background-image: url("https://images.pexels.com/photos/791763/pexels-photo-791763.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
-  background-repeat: no-repeat;
-  height: 590px;
-  margin: auto;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 
 .authentication__header {
   color: white;

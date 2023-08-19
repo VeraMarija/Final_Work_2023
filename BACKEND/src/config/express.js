@@ -47,6 +47,7 @@ app.use((req, res, next) => {
 
 
 app.use("/v1", routes);
+
 app.get('/*', function (req, res) {
   console.log('dosa je ovde');
   res.sendFile(path.join(__dirname, 'C:/Users/gujav/Documents/Final_Work_2023/FRONTEND/workoutgenerator/public/index.html'), function (err) {

@@ -10,7 +10,15 @@ html {
 
 body {
   margin: 0;
-  background:#010d35;
+  background:url("https://images.pexels.com/photos/791763/pexels-photo-791763.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-repeat: no-repeat;
+  min-height: fit-content;
+  margin: auto;
+  background-position: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+
 }
 
 .slide-in-left-enter {

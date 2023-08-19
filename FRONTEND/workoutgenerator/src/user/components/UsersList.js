@@ -1,10 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { BsPersonFillAdd } from "react-icons/bs";
+
 import "./UsersList.css";
 import UserItem from "./UserItem";
 import Card from "../../shared/components/UIElements/Card";
+import Button from "../../shared/components/FormElements/Button";
 
 const UsersList = (props) => {
+  const navigate = useNavigate();
   if (props.items.length === 0) {
     return (
       <div className="center">
@@ -15,32 +19,32 @@ const UsersList = (props) => {
     );
   }
 
+  const navigateToCreateUser = () => {
+    navigate('/user/new');
+  };
   return (
     <React.Fragment>
-       <div className="link-to">
-        <Link to={`/user/new`}>
-          <div className="link-div">
-          <h2>CREATE NEW USER</h2>
-          </div>
-        </Link>
-      </div>
       <div className="users-list-main">
+      
+          <p className="p-add-user">Add new user</p>
+          <button onClick={navigateToCreateUser}>
+            <BsPersonFillAdd className="add-icon" />
+          </button>
      
-
-      <ul className="users-list">
-        {props.items.map((user) => (
-          <UserItem
-            key={user._id}
-            id={user._id}
-            picture={user.picture}
-            firstName={user.firstName}
-            lastName={user.lastName}
-            email={user.email}
-            role={user.role}
-            profileCreated={user.createdAt}
-          />
-        ))}
-      </ul>
+        <ul className="users-list">
+          {props.items.map((user) => (
+            <UserItem
+              key={user._id}
+              id={user._id}
+              picture={user.picture}
+              firstName={user.firstName}
+              lastName={user.lastName}
+              email={user.email}
+              role={user.role}
+              profileCreated={user.createdAt}
+            />
+          ))}
+        </ul>
       </div>
     </React.Fragment>
   );

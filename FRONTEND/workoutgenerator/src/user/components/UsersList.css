@@ -1,25 +1,12 @@
-.users-list-main{
-  background:url("https://images.pexels.com/photos/791763/pexels-photo-791763.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
-  background-repeat: no-repeat;
-
-  margin: auto;
-  background-position: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-
-}
 
 .users-list {
+  display:inline-block;
   list-style: none;
   margin:0 auto;
   padding: 0;
   width: 90%;
-  max-width: 50rem;
-  display:flex;
-  justify-content:center;
-  flex-wrap: wrap;
-  color: #010d35;
+ 
+
 }
 
 .link-to {
