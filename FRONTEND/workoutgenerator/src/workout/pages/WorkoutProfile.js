@@ -58,6 +58,7 @@ const WorkoutProfile = () => {
           name={loadedWorkout.name}
           userExercises={loadedWorkout.userExercises}
           user={loadedWorkout.user}
+          createdAt = {loadedWorkout.createdAt}
         />
       )}
     </React.Fragment>

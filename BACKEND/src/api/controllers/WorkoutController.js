@@ -1,6 +1,5 @@
 const workoutService = require("../services/WorkoutService");
 
-
 module.exports.getAll = async (req, res, next) => {
   try {
     const result = await workoutService.getAll();
@@ -13,6 +12,16 @@ module.exports.getAll = async (req, res, next) => {
 module.exports.createWorkout = async (req, res, next) => {
   try {
     const result = await workoutService.createWorkout(req);
+    return res.status(200).json({ createdWorkout: result });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports.createWorkoutNext = async (req, res, next) => {
+  console.log("usa unutra");
+  try {
+    const result = await workoutService.createWorkoutNext(req);
     return res.status(200).json({ createdWorkout: result });
   } catch (error) {
     return next(error);
@@ -40,7 +49,7 @@ module.exports.deleteWorkout = async (req, res, next) => {
 module.exports.getByWorkoutId = async (req, res, next) => {
   try {
     const result = await workoutService.getByWorkoutId(req);
-    return res.status(200).json({loadedWorkout: result });
+    return res.status(200).json({ loadedWorkout: result });
   } catch (error) {
     return next(error);
   }

@@ -8,7 +8,7 @@
   background: rgba(44, 58, 255, 0.444);
 }
 
-.workout-item__content {
+ .workout-item__content {
   position:relative;
   margin: 5px;
   margin-right: 5px;
@@ -20,9 +20,11 @@
   display: flex;
   justify-content: center;
   width:max-content;
+  min-height: 20rem;
 
 
 }
+
 
 .workout-item__content a {
   text-decoration: none;
@@ -42,3 +44,15 @@
   font-weight: 800;
   color: rgb(3, 3, 44);
 }
+
+.user-item__content {
+  display: inline-block;
+  padding: 0;
+  justify-content: center;
+  margin-left: 40%;
+  min-width: 80%;
+  justify-items: center;
+
+  
+
+}  

@@ -34,12 +34,7 @@ const WorkoutList = (props) => {
   return (
     <React.Fragment>
       <div className="workout-list-main">
-        <div>
-        <a className="p-add-workout">Add new workout</a>
-        <button onClick={navigateToCreateWorkout}>
-          <BsPersonFillAdd className="add-icon" />
-        </button>
-        </div>
+       
         <ul className="workout-list">
           {props.items.map((workout) => (
             <WorkoutItem

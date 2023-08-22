@@ -25,13 +25,12 @@ export const useHttpHook = () => {
 
         //parsing response body
         const responseData = await response.json();
-        console.log('response---->', response);
         activeHttpRequests.current = activeHttpRequests.current.filter(
           (reqCtrl) => reqCtrl !== httpAbortController
         );
 
         if (!response.ok) {
-          throw new Error(responseData.error);
+          throw new Error(responseData.message);
         }
         setIsLoading(false);    
         return responseData;

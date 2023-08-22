@@ -7,6 +7,8 @@ const userExerciseService = require("../services/UserExerciseService");
 const fs = require("fs");
 const UserModel = require("../models/UserModel");
 const { findById } = require("../models/ExerciseWeigh");
+const ExerciseModel = require("../models/Exercise");
+const { nextTick } = require("process");
 
 module.exports.getAll = async () => {
   const workouts = await WorkoutModel.find();
@@ -16,10 +18,20 @@ module.exports.getAll = async () => {
   return workouts;
 };
 
+const fixWeights = (weight) => {
+  if (weight % 5 === 0) {
+    return weight;
+  } else {
+    const difference = weight % 5;
+    if (difference < 3) {
+      return weight - difference;
+    }
+    return weight + (5 - difference);
+  }
+};
+
 module.exports.createWorkout = async (req) => {
   const { name, user, userExercises } = req.body;
-  console.log("user", user);
-  console.log("req.user", req.user);
   if (user !== req.user) {
     throw new HttpError("Forbidden, you do not have permission.", 403);
   }
@@ -27,10 +39,76 @@ module.exports.createWorkout = async (req) => {
   if (!errors.isEmpty()) {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
+  if (!userExercises || userExercises.length === 0) {
+    throw new HttpError(
+      "You did not choose any exercise in workout, can not create workout.",
+      422
+    );
+  }
+  let newUserExercises = await Promise.all(
+    userExercises.map(async (exercise) => {
+      const liftWeight = exercise.liftWeight;
+      const repetition = exercise.repetition;
+      const repMax = fixWeights(
+        Math.ceil(liftWeight * (1 + 0.0333 * repetition))
+      );
+      const exerciseId = await ExerciseModel.find({ name: exercise.exercise }).exec();
+      console.log(exerciseId);
+      const userExercise = await new UserExerciseModel({
+        user,
+        exercise: exerciseId[0].id,
+        liftWeight,
+        repetition,
+        repMax,
+        firstSet: fixWeights(Math.ceil(0.65 * repMax)),
+        secondSet: fixWeights(Math.ceil(0.75 * repMax)),
+        thirdSet: fixWeights(Math.ceil(0.85 * repMax)),
+      });
+      try {
+        console.log("userecerciseid", userExercise._id);
+        await userExercise.save();
+        return userExercise._id;
+
+      } catch (err) {
+        throw new HttpError(
+          "Can not save your exercise to database.",
+          500
+        );
+      }   
+    })
+  );
 
   const workout = await new WorkoutModel({
     name,
     user,
+    userExercises:newUserExercises,
+  });
+  try {
+    await workout.save();
+    const populatedWorkout = await WorkoutModel.findById(workout.id)
+      .populate({
+        path: "userExercises",
+        select: "-user",
+        populate: { path: "exercise", select: "name" },
+      })
+      .populate({ path: "user", select: "-password" });
+    return populatedWorkout;
+  } catch (err) {
+    const error = new HttpError(
+      "Creating workout failed, please try again later.",
+      500
+    );
+    throw error;
+  }
+};
+
+module.exports.createWorkoutNext = async (req) => {
+  console.log("evo");
+  const userExercises = req.newUserExercises;
+  const name = req.name;
+  const workout = await new WorkoutModel({
+    name,
+    user: req.user,
     userExercises,
   });
 
@@ -43,6 +121,7 @@ module.exports.createWorkout = async (req) => {
         populate: { path: "exercise", select: "name" },
       })
       .populate({ path: "user", select: "-password" });
+   
     return populatedWorkout;
   } catch (err) {
     const error = new HttpError(
@@ -120,13 +199,13 @@ module.exports.getByWorkoutId = async (req) => {
         populate: { path: "exercise", select: "name" },
       })
       .populate("user");
-      console.log('workout-----------------', workout);
+    console.log("workout-----------------", workout);
     if (!workout) {
       throw new HttpError("Could not find workout in database.", 404);
     }
     if (workout.user.id !== req.user) {
-      console.log('evo', workout.user._id);
-      console.log('evo', req.user);
+      console.log("evo", workout.user._id);
+      console.log("evo", req.user);
       throw new HttpError("Forbidden, you do not have permission.", 403);
     }
     return workout;

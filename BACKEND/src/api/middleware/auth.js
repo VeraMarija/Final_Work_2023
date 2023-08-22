@@ -30,15 +30,12 @@ exports.checkAuth = async (req, res, next) => {
 };
 
 exports.checkPermission = async (req, res, next) => {
-  console.log('ajmooooooooooooooooooooooooooooooo');
   try {
     const user = await UserModel.findById(req.user); 
-    console.log('user', user);// umjesto headera mogu res.user koristit ubaččen u auth
     if (!user) {
       throw new APIError("Something went wrong, try again", 500);
     }
     const role = user.role;
-    console.log('role', role);
     if (role === "admin" || req.user === req.params.userId) {
       return next();
     } else {

@@ -34,7 +34,7 @@ const NavLinks = (props) => {
       )}
       {loggedState && (
         <li>
-          <NavLink to="/workout/new">Generate New Workout</NavLink>
+          <NavLink to="/workout/new">Create Workout</NavLink>
         </li>
       )}
       {loggedState && (

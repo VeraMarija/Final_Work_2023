@@ -35,6 +35,7 @@ import React, {
     return (
       <div className="container">
         <h2>{props.name}</h2>
+        <h4>Workout created at {new Date(props.createdAt).toLocaleString()}</h4>
         <table>
           <tr>
             <th>Exercise</th>

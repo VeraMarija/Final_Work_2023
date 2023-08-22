@@ -1,0 +1,48 @@
+
+.workout-form {
+  list-style: none;
+  margin: 5rem auto;
+  padding: 1rem;
+  width: 90%;
+  max-width: 40rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 6px;
+  background: white;
+}
+
+.workout-form p {
+  color: red;
+}
+
+.workout-form label,
+.workout-form input,
+.workout-form textarea {
+  display: block;
+}
+
+.workout-form label {
+  font-weight: bold;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: rgb(0, 0, 0);
+}
+
+.workout-form select{
+    min-width: 100px;
+    min-height: 30px;
+} 
+
+.workout-form input,
+.workout-form textarea {
+  width: 100%;
+  font: inherit;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+  padding: 0.15rem 0.25rem;
+}
+.workout-form input:focus,
+.workout-form textarea:focus {
+  outline: none;
+  background: #ebebeb;
+  border-color: #510077;
+}
