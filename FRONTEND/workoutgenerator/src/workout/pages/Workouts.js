@@ -19,7 +19,7 @@ const Workouts = () => {
  
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
+      //setIsLoading(true);
       try {
         const response = await fetch(
           port_string + "workout/allByUserId/" + id,
@@ -37,8 +37,7 @@ const Workouts = () => {
           throw new Error(responseData.message);
         }
         setLoadedWorkouts(responseData.workouts);
-        console.log('loadeeeeeeeeeeeeed', responseData.workouts);
-        console.log('loadeeeeed', loadedWorkouts);
+        
       } catch (error) {
         setError(error.message);
       }
@@ -51,7 +50,7 @@ const Workouts = () => {
   const errorClearHandler = () => {
     setError(null);
   };
-
+console.log('loaded workouts', loadedWorkouts);
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={errorClearHandler} />

@@ -5,5 +5,7 @@ export const equipmentOptions = [
   "Machine",
   "Cable",
   "Kettlebells",
+ "E-Z Curl Bar",
+ "Rope",
   "Other",
 ];

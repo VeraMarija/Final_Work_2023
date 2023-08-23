@@ -74,7 +74,7 @@ const NewWorkout = () => {
       );
       setIsLoading(false);
       const workoutId = responseData.createdWorkout._id.toString();
-      navigate(`/workoutProfile/${workoutId}`);
+     // navigate(`/workoutProfile/${workoutId}`);
     } catch (err) {}
   };
 

@@ -47,6 +47,7 @@ const Exercises = () => {
 
   return (
     <React.Fragment>
+      <div className="exercisesdiv">
       <ErrorModal error={error} onClear={errorClearHandler} />
       {isLoading && (
         <div className="center">
@@ -54,6 +55,7 @@ const Exercises = () => {
         </div>
       )}
       {!isLoading && loadedExercises && <ExerciseTable items={loadedExercises} />}
+      </div>
     </React.Fragment>
   );
 };

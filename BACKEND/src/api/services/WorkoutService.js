@@ -52,7 +52,9 @@ module.exports.createWorkout = async (req) => {
       const repMax = fixWeights(
         Math.ceil(liftWeight * (1 + 0.0333 * repetition))
       );
-      const exerciseId = await ExerciseModel.find({ name: exercise.exercise }).exec();
+      const exerciseId = await ExerciseModel.find({
+        name: exercise.exercise,
+      }).exec();
       console.log(exerciseId);
       const userExercise = await new UserExerciseModel({
         user,
@@ -68,20 +70,16 @@ module.exports.createWorkout = async (req) => {
         console.log("userecerciseid", userExercise._id);
         await userExercise.save();
         return userExercise._id;
-
       } catch (err) {
-        throw new HttpError(
-          "Can not save your exercise to database.",
-          500
-        );
-      }   
+        throw new HttpError("Can not save your exercise to database.", 500);
+      }
     })
   );
 
   const workout = await new WorkoutModel({
     name,
     user,
-    userExercises:newUserExercises,
+    userExercises: newUserExercises,
   });
   try {
     await workout.save();
@@ -121,7 +119,7 @@ module.exports.createWorkoutNext = async (req) => {
         populate: { path: "exercise", select: "name" },
       })
       .populate({ path: "user", select: "-password" });
-   
+
     return populatedWorkout;
   } catch (err) {
     const error = new HttpError(
@@ -222,12 +220,14 @@ module.exports.getallByUserId = async (userId) => {
   try {
     console.log("evo me");
     const workouts = await WorkoutModel.find({ user: userId })
+      .populate("user")
       .populate({
         path: "userExercises",
-        populate: { path: "exercise" },
-      })
-      .populate("user");
-    console.log(workouts);
+        select: "-user",
+        populate: { path: "exercise", select: "name" },
+      });
+    workouts.forEach( w => console.log(w.userExercises));
+
     if (!workouts || workouts.length === 0) {
       return [];
     }
