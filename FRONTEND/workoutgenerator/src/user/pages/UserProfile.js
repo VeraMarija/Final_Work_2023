@@ -65,6 +65,9 @@ const UserProfile = () => {
           role={loadedUser.role}
           profileCreated={loadedUser.createdAt}
           profileUpdated={loadedUser.updatedAt}
+          isActive={loadedUser.isActive}
+          height={loadedUser.height}
+          weight={loadedUser.weight}
         />
       )}
     </React.Fragment>

@@ -14,10 +14,12 @@ import { useHttpHook } from "../../shared/hooks/httpHook";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Avatar from "../../shared/components/UIElements/Avatar";
+import { useNavigate } from "react-router-dom";
 
 const NewUser = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -49,7 +51,7 @@ const NewUser = () => {
           Authorization: "Bearer " + auth.token.token,
         }
       );
-      console.log("....responsedata", responseData);
+      navigate('/users');
     } catch (err) {}
   };
 

@@ -54,6 +54,7 @@ const NewWorkout = () => {
       setLoadedExercises(responseData.exercises);
       setClicked(true);
       setIsLoading(false);
+
     } catch (error) {}
   };
 
@@ -74,7 +75,7 @@ const NewWorkout = () => {
       );
       setIsLoading(false);
       const workoutId = responseData.createdWorkout._id.toString();
-     // navigate(`/workoutProfile/${workoutId}`);
+      navigate('/workoutProfile/' + workoutId);
     } catch (err) {}
   };
 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import Input from "../../shared/components/FormElements/Input";
@@ -14,11 +14,14 @@ import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Avatar from "../../shared/components/UIElements/Avatar";
 
 const UpdateUser = () => {
-  const location= useLocation();
-  console.log('location', location);
+  const location = useLocation();
+  console.log("location", location);
   const id = useParams().userId;
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
+  const navigate = useNavigate();
+  const [status, setStatus] = useState(location?.state?.isActive);
+  console.log("status", location?.state?.isActive);
   const {
     register,
     handleSubmit,
@@ -29,29 +32,47 @@ const UpdateUser = () => {
       firstName: location?.state?.firstName,
       lastName: location?.state?.lastName,
       picture: location?.state?.picture,
+      height: location?.state?.height,
+      weight: location?.state?.weight
     },
   });
-  console.log('di smo');
 
-  const [imgSrc, setImgSrc] = useState(
+  const [imgSrc, setImgSrc] = useState(false);
+
+  useEffect(() => {
+    if (location?.state?.picture) {
+      setImgSrc("http://localhost:3001/uploads/" + location?.state?.picture);
+    }
+  }, []);
+
+  /*  const [imgSrc, setImgSrc] = useState(
     "http://localhost:3001/uploads/" + location?.state?.picture
   );
-  
-
+ */
   const handleImageChange = (e) => {
     setImgSrc(URL.createObjectURL(e.target.files[0]));
   };
 
-
   const picture = location?.state?.picture;
   const updateOnSubmit = async (data) => {
+    console.log("data", data);
     try {
       const formData = new FormData();
       formData.append("firstName", data.firstName);
       formData.append("lastName", data.lastName);
       formData.append("email", data.email);
+      if(data.isActive){
+        formData.append("isActive", data.isActive);
+      }
+
       if (data.picture) {
         formData.append("picture", data.picture[0]);
+      }
+      if (data.height) {
+        formData.append("height", data.height);
+      }
+      if (data.weight) {
+        formData.append("weight", data.weight);
       }
 
       const responseData = await sendRequest(
@@ -62,7 +83,7 @@ const UpdateUser = () => {
           Authorization: "Bearer " + auth.token.token,
         }
       );
-      console.log("....responsedata", responseData);
+      navigate("/profile/" + id);
     } catch (err) {}
   };
 
@@ -119,19 +140,40 @@ const UpdateUser = () => {
           })}
         />
         {errors.email && <p className="errorMsg">{errors.email.message}</p>}
-        <label>Picture</label>
-        <input
-          type="file"
-          name="picture"
-          {...register("picture")}
-          onChange={handleImageChange}
-        />
-        {errors.picture && <p className="errorMsg">{errors.picture.message}</p>}
+        {auth.role === "admin" && !status && (
+          <React.Fragment>
+            <div className="checkbox">
+              <a>Make user active again</a>
+              <input
+                name="isActive"
+                type="checkbox"
+                {...register("isActive")}
+                id="isActive"
+              />
+            </div>
+          </React.Fragment>
+        )}
+        <label>Height </label>
+        <input type="number" {...register("height")} />
+        <label>Weight </label>
+        <input type="number" {...register("weight")} />
+        {imgSrc && (
+          <React.Fragment>
+            <label>Picture</label>
+            <input
+              type="file"
+              name="picture"
+              {...register("picture")}
+              onChange={handleImageChange}
+            />
+            {errors.picture && (
+              <p className="errorMsg">{errors.picture.message}</p>
+            )}
 
-        <Avatar
-          image={imgSrc} 
-          alt="picture-update"
-        />
+            <Avatar image={imgSrc} alt="picture-update" />
+          </React.Fragment>
+        )}
+
         <div className="form-control">
           <label></label>
           <Button type="submit">Edit</Button>

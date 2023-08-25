@@ -26,7 +26,8 @@ import UserTable from "./user/components/UserTable";
 import Workouts from "./workout/pages/Workouts";
 import WorkoutProfile from "./workout/pages/WorkoutProfile";
 import NewWorkout from "./workout/pages/NewWorkout";
-import LoadExercises from "./workout/pages/LoadExercises";
+import Upgrade1RM from "./workout/components/Upgrade1RM";
+
 /*<Route path="/editUser/:userId" exact>
             <UpdateUser />
           </Route>
@@ -118,9 +119,7 @@ const App = () => {
           <Route path="/:userId/userExercises" element={<UserExercises />} />
           <Route path="/userExercise/new" element={<NewUserExercise />} />
           <Route path="/userExercise/:id" element={<UpdateUserExercise />} />
-          <Route path="/workouts/all" element={<Workouts />} />
-          <Route path="/workoutProfile/:workoutId" element={<WorkoutProfile />} />
-          <Route path="/workout/new" element={<NewWorkout />} />
+         
 
         </Routes>
       );
@@ -136,6 +135,7 @@ const App = () => {
           <Route path="/workouts/all" element={<Workouts />} />
           <Route path="/workoutProfile/:workoutId" element={<WorkoutProfile />} />
           <Route path="/workout/new" element={<NewWorkout />} />
+          <Route path="/upgrade1RM/:exerciseId" element={<Upgrade1RM />} />
         </Routes>
       );
     }

@@ -14,10 +14,12 @@ import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Avatar from "../../shared/components/UIElements/Avatar";
 
 import {equipmentOptions} from '../../config/dropdown_equipment';
+import { useNavigate } from "react-router-dom";
 
 const NewExercise = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
+  const navigate = useNavigate();
   const {
     control,
     register,
@@ -46,6 +48,7 @@ const NewExercise = () => {
           Authorization: "Bearer " + auth.token.token,
         }
       );
+      navigate('/exercises');
     } catch (err) {}
   };
 

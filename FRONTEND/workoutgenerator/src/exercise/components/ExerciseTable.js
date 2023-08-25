@@ -41,17 +41,16 @@ const ExerciseTable = (props) => {
       <table>
         <tr>
           <th>Name</th>
-          <th>Instructions</th>
+
           <th>Equipment</th>
           <th>Details</th>
           <th>Edit</th>
-          <th>Delete</th>
         </tr>
         {props.items.map((val, key) => {
           return (
             <tr key={key}>
               <td>{val.name}</td>
-              <td>{val.instructions}</td>
+     
               <td>
                 {val.equipment.map((e) => (
                   <p>{e}</p>
@@ -74,11 +73,7 @@ const ExerciseTable = (props) => {
                   <BiEdit className="icon" />
                 </Link>
               </td>
-              <td>
-                <Link to={`/exerciseProfile/${val._id}`}>
-                  <BiSolidUserMinus className="icon" />
-                </Link>
-              </td>
+              
             </tr>
           );
         })}

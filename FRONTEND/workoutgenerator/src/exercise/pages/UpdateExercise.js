@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { Multiselect } from "multiselect-react-dropdown";
 
@@ -14,6 +14,7 @@ import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Avatar from "../../shared/components/UIElements/Avatar";
 import {equipmentOptions} from '../../config/dropdown_equipment';
+import ExerciseProfile from "./ExerciseProfile";
 
 
 const UpdateExercise = () => {
@@ -21,6 +22,7 @@ const UpdateExercise = () => {
   const id = useParams().exerciseId;
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
+  const navigate= useNavigate();
   const {
     control,
     register,
@@ -60,7 +62,7 @@ const UpdateExercise = () => {
             Authorization: "Bearer " + auth.token.token,
           }
       );
-      console.log("....responsedata", responseData);
+      navigate('/exerciseProfile/' + id);
     } catch (err) {}
   };
 

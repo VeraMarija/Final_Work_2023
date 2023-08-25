@@ -20,17 +20,16 @@ const UsersList = (props) => {
   }
 
   const navigateToCreateUser = () => {
-    navigate('/user/new');
+    navigate("/user/new");
   };
   return (
     <React.Fragment>
       <div className="users-list-main">
-      
-          <p className="p-add-user">Add new user</p>
-          <button onClick={navigateToCreateUser}>
-            <BsPersonFillAdd className="add-icon" />
-          </button>
-     
+        <p className="p-add-user">Add new user</p>
+        <button onClick={navigateToCreateUser}>
+          <BsPersonFillAdd className="add-icon" />
+        </button>
+
         <ul className="users-list">
           {props.items.map((user) => (
             <UserItem
@@ -43,6 +42,9 @@ const UsersList = (props) => {
               role={user.role}
               profileCreated={user.createdAt}
               profileUpdated={user.updatedAt}
+              isActive={user.isActive}
+              height={user.height}
+              weight={user.weight}
             />
           ))}
         </ul>

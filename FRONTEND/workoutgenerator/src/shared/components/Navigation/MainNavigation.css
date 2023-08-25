@@ -19,12 +19,13 @@
 }
 
 .main-navigation__title {
-  color: rgb(245, 187, 153);
+  color: orange;
 }
 
 .main-navigation__title a {
   text-decoration: none;
-  color: rgb(245, 187, 153);
+  color:white;
+  font-weight: 700;
 }
 
 .main-navigation {
@@ -35,7 +36,7 @@
   margin-top: 1.2rem;
   width: 4rem;
   height: 3rem;
-  color: rgb(245, 187, 153);
+  color: white;
 
 }
 

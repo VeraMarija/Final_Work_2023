@@ -1,6 +1,7 @@
 const HttpError = require("../errors/httpError");
 const Exercise = require("../models/Exercise");
 const ExerciseModel = require("../models/Exercise");
+const UserExerciseModel = require("../models/UserExercise");
 
 module.exports.getAll = async () => {
   try {
@@ -17,7 +18,6 @@ module.exports.getAll = async () => {
 
 module.exports.createExercise = async (req) => {
   const { name, instructions, equipment } = req.body;
-  console.log("------req", req);
   const exercise = new ExerciseModel({
     name,
     instructions,
@@ -72,6 +72,13 @@ module.exports.deleteExercise = async (exerciseId) => {
         404
       );
     }
+    const userExercise = await UserExerciseModel.find({ exercise: exerciseId });
+    if (userExercise && userExercise.length !==0 )  {
+      throw new HttpError(
+        "Forbidden, can not delete exercise while users are using it for workouts",
+        403
+      );
+    }
     await ExerciseModel.findByIdAndRemove(exerciseId);
 
     return "Exercise deleted successfuly";
@@ -82,7 +89,7 @@ module.exports.deleteExercise = async (exerciseId) => {
 
 module.exports.getByExerciseId = async (exerciseId) => {
   let exercise;
-  console.log('evo ga');
+  console.log("evo ga");
   try {
     exercise = await ExerciseModel.findById(exerciseId);
   } catch (err) {

@@ -23,7 +23,7 @@ function generateTokenResponse(user, accessToken) {
 }
 
 module.exports.register = async (req) => {
-  const { email, password, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName, picture } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
@@ -34,6 +34,7 @@ module.exports.register = async (req) => {
       password,
       firstName,
       lastName,
+      ...( req.file && { picture : req.file.filename}),
     }).save();
     const finalUser = await UserModel.findOne(
       { email: email },

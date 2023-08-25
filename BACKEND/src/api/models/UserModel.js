@@ -47,6 +47,16 @@ const userSchema = new mongoose.Schema(
     picture: {
       type: String,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    height: {
+      type: Number
+    },
+    weight: {
+      type: Number
+    }
   },
   {
     timestamps: true,
@@ -112,6 +122,10 @@ userSchema.statics = {
       code: httpStatus.UNAUTHORIZED,
       isPublic: true,
     };
+    if(!user.isActive){
+      err.message = "Your account is deactivated";
+      throw new APIError(err);
+    }
     if (password) {
       if (user && (await user.passwordMatches(password))) {
         return { user, accessToken: user.token() };
@@ -139,7 +153,8 @@ userSchema.statics = {
   checkDuplicateEmail(error) {
     if (error.name === "MongoServerError" && error.code === 11000) {
       return new APIError({
-        message: "User with that email already exists, try with another email or go to login",
+        message:
+          "User with that email already exists, try with another email or go to login",
         errors: [
           {
             field: "email",

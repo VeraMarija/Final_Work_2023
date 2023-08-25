@@ -44,7 +44,7 @@ module.exports.createUser = async (req) => {
     password,
     firstName,
     lastName,
-  ...( req.file && { picture : req.file.filename}),
+    ...(req.file && { picture: req.file.filename }),
   });
   try {
     await user.save();
@@ -59,9 +59,9 @@ module.exports.createUser = async (req) => {
 };
 
 module.exports.updateUser = async (req) => {
-  const { firstName, lastName, email } = req.body;
-  
- 
+  const { firstName, lastName, email, isActive, height, weight } = req.body;
+  console.log("req.body", req.body);
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
@@ -69,16 +69,20 @@ module.exports.updateUser = async (req) => {
   try {
     console.log("userid", req.params.userId);
     const user = await UserModel.findById(req.params.userId);
- 
+
     if (user) {
       user.email = email;
       user.firstName = firstName;
       user.lastName = lastName;
-      if(req.file) user.picture = req.file.filename;
-
+      if (isActive === true || isActive === false ) user.isActive = isActive;
+      if (height) user.height = height;
+      if (weight) user.weight = weight;
+      if (req.file) user.picture = req.file.filename;
+      console.log(user);
       try {
         await user.save();
       } catch (err) {
+        console.log(err);
         const error = new HttpError(
           "Something went wrong, could not update user.",
           500
@@ -97,7 +101,6 @@ module.exports.updateUser = async (req) => {
 };
 
 module.exports.deleteUser = async (userId) => {
-
   try {
     const user = await UserModel.findById(userId);
     if (!user) {
@@ -106,14 +109,19 @@ module.exports.deleteUser = async (userId) => {
         404
       );
     }
-    const imagePath = "C:/Users/gujav/Documents/Final_Work_2023/BACKEND/src/api/uploads/" + user.picture;
-    await UserModel.findByIdAndRemove(userId);
- 
-    fs.unlink(imagePath, err => {
-      if(err){
-        throw new HttpError(err.message, 500);
-      }
-    });
+
+    user.isActive = false;
+    await user.save();
+    /*  if(user.picture){
+      const imagePath = "C:/Users/gujav/Documents/Final_Work_2023/BACKEND/src/api/uploads/" + user.picture;
+      fs.unlink(imagePath, err => {
+        if(err){
+          throw new HttpError(err.message, 500);
+        }
+      });
+    } */
+    //await UserModel.findByIdAndRemove(userId);
+
     return "User deleted successfuly";
   } catch (err) {
     throw err;

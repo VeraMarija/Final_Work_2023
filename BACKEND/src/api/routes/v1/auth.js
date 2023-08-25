@@ -1,6 +1,7 @@
 const express = require("express");
 const {validate} = require("express-validation");
 const authController = require("../../controllers/AuthController");
+
 const {
   login,
   register,
@@ -11,9 +12,11 @@ const {
 
 const router = express.Router();
 
+
+
+
 router.post(
     "/register",
-    validate(register),
     authController.register
 );
 

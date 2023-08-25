@@ -46,3 +46,14 @@ module.exports.getByExerciseId = async (req, res, next) => {
     return next(error);
   }
 };
+
+
+module.exports.upgrade1RM = async (req, res, next) => {
+  try {
+    const result = await userExerciseService.upgrade1RM(req);
+    return res.status(200).json({ loadedExercise: result });
+  } catch (error) {
+    return next(error);
+  }
+};
+

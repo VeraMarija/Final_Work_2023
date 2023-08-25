@@ -30,4 +30,6 @@ router.delete(
 
 router.get("/:exerciseId", checkAuth, checkPermission, userExerciseController.getByExerciseId);
 
+router.get("/upgrade/:userExerciseId", checkAuth, userExerciseController.upgrade1RM);
+
 module.exports = router;

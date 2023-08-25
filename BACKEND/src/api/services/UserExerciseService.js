@@ -135,3 +135,30 @@ module.exports.getByExerciseId = async (exerciseId) => {
     throw error;
   }
 };
+
+module.exports.upgrade1RM = async (req) => {
+  try {
+ 
+    const userExercise = await UserExerciseModel.findById(req.params.userExerciseId);
+    
+    if(!userExercise){
+      throw new HttpError('Can not get exercise from database with that id', 404);
+    }
+    if (req.user != userExercise.user){
+
+      throw new HttpError('Forbidden', 403);
+    }
+   
+    const newRepMax = fixWeights(Math.ceil(userExercise.repMax + (userExercise.repMax * 0.05)));
+    userExercise.repMax = newRepMax;
+    userExercise.firstSet= fixWeights(Math.ceil(0.65 * newRepMax));
+    userExercise.secondSet= fixWeights(Math.ceil(0.75 * newRepMax));
+    userExercise.thirdSet= fixWeights(Math.ceil(0.85 * newRepMax));
+    console.log('exercise', userExercise);
+    await userExercise.save();
+    return userExercise;
+  } catch (err) {
+    throw err;
+  }
+};
+

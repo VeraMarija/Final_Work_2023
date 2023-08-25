@@ -10,7 +10,7 @@ import {
 } from "../../shared/util/validators";
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
-import { useForm } from "../../shared/hooks/formHook";
+import { useForm } from "react-hook-form";
 import { AuthContext } from "../../shared/context/authContext";
 import { port_string } from "../../config/global";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
@@ -18,7 +18,148 @@ import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { useHttpHook } from "../../shared/hooks/httpHook";
 
 const Auth = () => {
+  const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, removeError } = useHttpHook();
+  const [isLoginMode, setIsLoginMode] = useState(true);
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm();
+
+  const imgSrc = "/profile.jpeg";
+  const changeModeHandler = () => {
+    setIsLoginMode(!isLoginMode);
+  };
+
+  const onSubmit = async (data) => {
+    if (isLoginMode) {
+      try {
+        const responseData = await sendRequest(
+          port_string + "auth/login",
+          "POST",
+          JSON.stringify({
+            email: data.email,
+            password: data.password,
+          }),
+          {
+            "Content-Type": "application/json",
+          }
+        );
+
+        console.log("responseData", responseData);
+        auth.login(
+          responseData.userId,
+          responseData.token,
+          responseData.role,
+          responseData.tokenExpiration
+        );
+        navigate("/");
+      } catch (err) {}
+    } else {
+      try {
+        const responseData = await sendRequest(
+          port_string + "auth/register",
+          "POST",
+          JSON.stringify({
+            email: data.email,
+            password: data.password,
+            firstName: data.firstName,
+            lastName: data.lastName,
+          }),
+          {
+            "Content-Type": "application/json",
+          }
+        );
+        auth.login(
+          responseData.userId,
+          responseData.token,
+          responseData.role,
+          responseData.tokenExpiration
+        );
+        navigate("/");
+      } catch (err) {}
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="center">
+        <h2>Loading....</h2>
+      </div>
+    );
+  }
+
+  return (
+    <React.Fragment>
+      <ErrorModal error={error} onClear={removeError} />
+      <Card className="authentication">
+        {isLoading && <LoadingSpinner asOverlay />}
+        <h2>Enjoy in your personal workout </h2>
+        <form
+          className="user-form"
+          onSubmit={handleSubmit(onSubmit)}
+          encType="multipart/form-data"
+        >
+          {!isLoginMode && (
+            <React.Fragment>
+              <label>First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                {...register("firstName", {
+                  required: "First name is required.",
+                })}
+              />
+             
+              <label>Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                {...register("lastName", {
+                  required: "Last name is required.",
+                })}
+              />
+             
+            </React.Fragment>
+          )}
+          <label>Email</label>
+          <input
+            type="text"
+            name="email"
+            {...register("email", {
+              required: "Email is required.",
+              pattern: {
+                value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                message: "Email is not valid.",
+              },
+            })}
+          />
+         
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            {...register("password", {
+              required: "Password is required.",
+            })}
+          />
+         
+          <Button type="subit" disabled={!isValid} >
+          {isLoginMode ? "LOGIN" : "REGISTER"}
+          </Button>
+          </form>
+          <p>Not a member yet? Create an Account</p>
+          <Button inverse type="submit" onClick={changeModeHandler}>
+          {isLoginMode ? " REGISTER" : " LOGIN"}
+          </Button>
+ 
+      </Card>
+    </React.Fragment>
+  );
+  /*const navigate = useNavigate();
 
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -177,7 +318,7 @@ const Auth = () => {
         </Button>
       </Card>
     </React.Fragment>
-  );
+  );*/
 };
 
 export default Auth;

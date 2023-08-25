@@ -19,6 +19,7 @@
 .user-form  input,
 .user-form  textarea {
     display: block;
+    margin-bottom: 0.25rem;
   }
   
   .user-form  label {
@@ -35,6 +36,7 @@
     border: 1px solid #ccc;
     background: #f8f8f8;
     padding: 0.15rem 0.25rem;
+
   }
   .user-form  input:focus,
   .user-form  textarea:focus {
@@ -43,3 +45,13 @@
     border-color: #510077;
   }
   
+  .checkbox{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display:inline-block;
+
+  }
+
+  .checkbox a {
+    color: black;
+  }

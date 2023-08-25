@@ -53,6 +53,39 @@
   min-width: 80%;
   justify-items: center;
 
-  
 
-}  
+}
+
+.exercise-item__content{
+  display:inline-block;
+  padding: 0;
+  justify-content: center;
+  margin-left: 40%;
+  min-width: 100%;
+  justify-items: center;
+
+}
+
+.authentication p{
+  color: rgb(255, 255, 255);
+  font-weight: 800;
+}
+
+.home-description{
+  position:relative;
+  justify-content: center;
+  justify-self: center;
+  margin-top: 6%;
+  margin-left: 20%;
+  margin-right: 20%;
+  background-color: rgba(255, 123, 0, 0.5);
+  margin-bottom: 100px;
+}
+
+.home-description a {
+  font-size: 23px;
+  font-weight:bold;
+  margin-bottom:200px;
+ 
+
+}

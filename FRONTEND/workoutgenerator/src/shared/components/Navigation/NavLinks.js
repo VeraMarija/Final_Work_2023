@@ -32,12 +32,12 @@ const NavLinks = (props) => {
           <NavLink to={`/profile/${userId}`}>Profile</NavLink>
         </li>
       )}
-      {loggedState && (
+      {loggedState && auth.role!=="admin" && (
         <li>
           <NavLink to="/workout/new">Create Workout</NavLink>
         </li>
       )}
-      {loggedState && (
+      {loggedState && auth.role!=="admin" && (
         <li>
           <NavLink to="/workouts/all">My Workouts</NavLink>
         </li>

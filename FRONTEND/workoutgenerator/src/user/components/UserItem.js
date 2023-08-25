@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./UserItem.css";
 import Avatar from "../../shared/components/UIElements/Avatar";
@@ -19,6 +19,7 @@ const UserItem = (props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isLoading, setIsLoading] = useState();
   const [error, setError] = useState();
+  const navigate = useNavigate();
 
   const showDeleteWarningHandler = () => {
     setShowConfirmModal(true);
@@ -44,7 +45,7 @@ const UserItem = (props) => {
       if (!response.ok) {
         throw new Error(responseData.message);
       }
-
+      navigate('/users/' + props.id);
     } catch (error) {
       setError(error.message);
     }
@@ -94,6 +95,10 @@ const UserItem = (props) => {
                 <h3>Profile created: {new Date(props.profileCreated).toLocaleString()}</h3>
                 <h3>Profile updated: {new Date(props.profileUpdated).toLocaleString()}</h3>
                 <h3>Role: {props.role}</h3>
+                {props.height && <h3>Height: {props.height} cm</h3>}
+                {props.weight && <h3>Weight: {props.weight} kg</h3>}
+                {!props.height && <h3>Height:</h3>}
+                {!props.weight && <h3>Weight:</h3>}
               </div>
             </Link>
             <div className="user-item__Update">
@@ -104,14 +109,16 @@ const UserItem = (props) => {
                     lastName: props.lastName,
                     email: props.email,
                     role: props.role,
-                    picture: props.picture
-                    
+                    picture: props.picture,
+                    isActive:props.isActive,
+                    height: props.height,
+                    weight: props.weight
                   }}
               
               >
                 <h2>Edit</h2>
               </Link>
-              {auth.role === "admin " && <Button danger onClick={showDeleteWarningHandler}>
+              {auth.role === "admin" && <Button danger onClick={showDeleteWarningHandler}>
                 DELETE
               </Button>}
             </div>
