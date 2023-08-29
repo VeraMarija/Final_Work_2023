@@ -1,0 +1,22 @@
+.chart-div{
+    font-family: "sans-serif";
+    text-align: "center";
+    background-color: aliceblue;
+    width: 70%;
+    height: 70%;
+    box-shadow: 20px 8px 20px grey;
+
+    display:block;
+    margin: 20px auto;
+}
+
+.chart{
+    font-family: "sans-serif";
+    text-align: "center";
+    background-color: aliceblue;
+    width: 90%;
+    height: 90%;
+    display:block;
+    margin: 20px auto;
+}
+

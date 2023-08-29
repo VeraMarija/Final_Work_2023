@@ -1,0 +1,14 @@
+.button-add {
+  margin-top: 2rem;
+}
+
+.header-workout {
+  display: flex;
+  align-items: center;
+}
+
+.header-workout h2 {
+  text-align: center;
+  margin-right: 10rem;
+  font-size: xx-large;
+}

@@ -1,6 +1,7 @@
 const HttpError = require("../errors/httpError");
 const UserExerciseModel = require("../models/UserExercise");
 const { validationResult } = require("express-validator");
+const RepMaxModel = require("../models/RepMax");
 
 module.exports.getAll = async () => {
   try {
@@ -148,7 +149,6 @@ module.exports.upgrade1RM = async (req) => {
 
       throw new HttpError('Forbidden', 403);
     }
-   
     const newRepMax = fixWeights(Math.ceil(userExercise.repMax + (userExercise.repMax * 0.05)));
     userExercise.repMax = newRepMax;
     userExercise.firstSet= fixWeights(Math.ceil(0.65 * newRepMax));
@@ -156,6 +156,16 @@ module.exports.upgrade1RM = async (req) => {
     userExercise.thirdSet= fixWeights(Math.ceil(0.85 * newRepMax));
     console.log('exercise', userExercise);
     await userExercise.save();
+    const exerciseRepMax = await new RepMaxModel({
+      userExercise: req.params.userExerciseId,
+      repMax: newRepMax
+    });
+    try {
+      exerciseRepMax.save();
+    } catch (error) {
+      throw new HttpError("Can not save your repMax for exercise in database.", 500);
+    }
+
     return userExercise;
   } catch (err) {
     throw err;

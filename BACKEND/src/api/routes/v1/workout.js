@@ -6,7 +6,7 @@ const { checkAuth, checkPermission } = require("../../middleware/auth");
 
 const router = express.Router();
 
-router.get("/all", checkAuth, checkPermission, workoutController.getAll);
+router.get("/all", checkAuth, workoutController.getAll);
 
 router.post(
   "/",
@@ -24,12 +24,13 @@ router.put(
 router.delete(
   "/:workoutId",
   checkAuth,
-  checkPermission,
   workoutController.deleteWorkout
 );
 
 router.get("/allByUserId/:userId", checkAuth, checkPermission, workoutController.getallByUserId);
 
 router.get("/:workoutId", checkAuth, workoutController.getByWorkoutId);
+
+router.put("/addExercise/:workoutId", checkAuth, workoutController.addExerciseToWorkout);
 
 module.exports = router;

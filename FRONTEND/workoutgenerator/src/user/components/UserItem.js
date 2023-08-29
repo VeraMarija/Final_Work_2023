@@ -34,7 +34,7 @@ const UserItem = (props) => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(port_string + "/users/" +  props.id, {
+      const response = await fetch(port_string + "/users/" + props.id, {
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + auth.token.token,
@@ -45,7 +45,7 @@ const UserItem = (props) => {
       if (!response.ok) {
         throw new Error(responseData.message);
       }
-      navigate('/users/' + props.id);
+      navigate("/users/" + props.id);
     } catch (error) {
       setError(error.message);
     }
@@ -55,7 +55,6 @@ const UserItem = (props) => {
   const removeError = () => {
     setError(null);
   };
-
 
   return (
     <React.Fragment>
@@ -77,8 +76,8 @@ const UserItem = (props) => {
         }
       >
         <p>
-          Do you want to proceed and delete this account? Please note that it can't
-          be undone.
+          Do you want to proceed and delete this account? Please note that it
+          can't be undone.
         </p>
       </Modal>
       <li className="user-item">
@@ -87,13 +86,22 @@ const UserItem = (props) => {
             {isLoading && <LoadingSpinner asOverlay />}
             <Link to={`/profile/${props.id}`}>
               <div className="user-item__image">
-                <Avatar image={`http://localhost:3001/uploads/${props.picture}`} alt={props.firstName} />
+                <Avatar
+                  image={`http://localhost:3001/uploads/${props.picture}`}
+                  alt={props.firstName}
+                />
               </div>
               <div className="user-item__info">
                 <h2>{props.firstName + " " + props.lastName} </h2>
                 <h3>Email: {props.email}</h3>
-                <h3>Profile created: {new Date(props.profileCreated).toLocaleString()}</h3>
-                <h3>Profile updated: {new Date(props.profileUpdated).toLocaleString()}</h3>
+                <h3>
+                  Profile created:{" "}
+                  {new Date(props.profileCreated).toLocaleString()}
+                </h3>
+                <h3>
+                  Profile updated:{" "}
+                  {new Date(props.profileUpdated).toLocaleString()}
+                </h3>
                 <h3>Role: {props.role}</h3>
                 {props.height && <h3>Height: {props.height} cm</h3>}
                 {props.weight && <h3>Weight: {props.weight} kg</h3>}
@@ -102,25 +110,33 @@ const UserItem = (props) => {
               </div>
             </Link>
             <div className="user-item__Update">
-              <Link to={`/editUser/${props.id}`} 
-                  state= {{
-                    userId: props.id,
-                    firstName: props.firstName,
-                    lastName: props.lastName,
-                    email: props.email,
-                    role: props.role,
-                    picture: props.picture,
-                    isActive:props.isActive,
-                    height: props.height,
-                    weight: props.weight
-                  }}
-              
+              <Link
+                to={`/editUser/${props.id}`}
+                state={{
+                  userId: props.id,
+                  firstName: props.firstName,
+                  lastName: props.lastName,
+                  email: props.email,
+                  role: props.role,
+                  picture: props.picture,
+                  isActive: props.isActive,
+                  height: props.height,
+                  weight: props.weight,
+                }}
               >
                 <h2>Edit</h2>
               </Link>
-              {auth.role === "admin" && <Button danger onClick={showDeleteWarningHandler}>
-                DELETE
-              </Button>}
+              <div className="user-item__Calories">
+                <Link to={`/calories/${props.id}`}>
+                  <h2>Calories Plan</h2>
+                </Link>
+              </div>
+              {auth.role === "admin" && (
+                <Button danger onClick={showDeleteWarningHandler}>
+                  DELETE
+                </Button>
+              )}
+              
             </div>
           </Card>
         </div>

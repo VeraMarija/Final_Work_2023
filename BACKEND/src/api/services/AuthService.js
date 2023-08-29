@@ -9,6 +9,8 @@ const APIError = require("../errors/apiError");
 const HttpError = require("../errors/httpError");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const { options } = require("../routes/v1/auth");
 
 function generateTokenResponse(user, accessToken) {
   const tokenType = "Bearer";
@@ -34,7 +36,7 @@ module.exports.register = async (req) => {
       password,
       firstName,
       lastName,
-      ...( req.file && { picture : req.file.filename}),
+      ...(req.file && { picture: req.file.filename }),
     }).save();
     const finalUser = await UserModel.findOne(
       { email: email },
@@ -59,7 +61,9 @@ module.exports.login = async (req) => {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
   try {
-    const { user, accessToken } = await UserModel.findAndGenerateToken(req.body)
+    const { user, accessToken } = await UserModel.findAndGenerateToken(
+      req.body
+    );
     const expiresIn = moment().add(jwtExpirationInterval, "minutes");
     const tokenExpiration = expiresIn.toDate();
     return {
@@ -73,3 +77,78 @@ module.exports.login = async (req) => {
     throw error;
   }
 };
+
+module.exports.forgotPassword = async (req) => {
+  const { email, otp } = req.body;
+  console.log(req.body);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError("Invalid inputs passed, please check your data.", 422);
+  }
+  try {
+    const users = await UserModel.find({ email: email });
+    if (!users || users.length === 0) {
+      throw new HttpError("User with that email does not exists", 404);
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: true,
+      auth: {
+        user: "guja.veramarija@gmail.com",
+        pass: "mczlbtghaslyphui",
+      },
+    });
+
+    const mailOptions = {
+      from: "guja.veramarija@gmail.com",
+      to: email,
+      subject: "PASSWORD RESET",
+      html: `<html>
+                 <body>
+                   <h2>Password Recovery</h2>
+                   <p>Click on link below and enter this code: ${otp}</p>
+                   <h3>${"http://localhost:3000/resetPassword"}</h3>
+                 </body>
+               </html>`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        throw new HttpError("An error occurred while sending the email", 500);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+  } catch (error) {
+    console.log("---error--", error.code);
+    throw error;
+  }
+  return "email sent";
+};
+
+module.exports.resetPassword = async (req) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError("Invalid inputs passed, please check your data.", 422);
+  }
+  const { email, password, realOTP, enteredOTP } = req.body;
+  console.log('req.body', req.body);
+  try {
+    if(realOTP != enteredOTP){
+      throw new HttpError("Invalid 4 digit code", 422);
+    }
+    const users = await UserModel.find({ email: email });
+    if (!users || users.length === 0) {
+      throw new HttpError("User with that email does not exists", 404);
+    }
+    const user = users[0];
+    user.password = password;
+    await user.save();
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+//mczlbtghaslyphui

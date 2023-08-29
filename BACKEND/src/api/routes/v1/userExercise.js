@@ -6,7 +6,7 @@ const { checkAuth, checkPermission } = require("../../middleware/auth");
 
 const router = express.Router();
 
-router.get("/all", checkAuth, checkPermission, userExerciseController.getAll);
+router.get("/all", checkAuth, userExerciseController.getAll);
 
 router.post(
   "/",

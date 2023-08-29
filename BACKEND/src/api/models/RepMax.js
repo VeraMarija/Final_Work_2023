@@ -1,5 +1,6 @@
 const { Int32 } = require("mongodb");
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const repMaxSchema = new mongoose.Schema(
   {
@@ -7,8 +8,8 @@ const repMaxSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "UserExercise",
     },
-    liftWeight: {
-      type: Int32,
+    repMax: {
+      type: Number,
       required: true,
     },
   },

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./Auth.css";
 import Card from "../../shared/components/UIElements/Card";
@@ -79,6 +79,7 @@ const Auth = () => {
           responseData.role,
           responseData.tokenExpiration
         );
+        localStorage.removeItem("otp");
         navigate("/");
       } catch (err) {}
     }
@@ -151,6 +152,7 @@ const Auth = () => {
           {isLoginMode ? "LOGIN" : "REGISTER"}
           </Button>
           </form>
+          <Link to="/forgotPassword"><p>Forgot password?</p></Link>
           <p>Not a member yet? Create an Account</p>
           <Button inverse type="submit" onClick={changeModeHandler}>
           {isLoginMode ? " REGISTER" : " LOGIN"}

@@ -27,6 +27,13 @@ import Workouts from "./workout/pages/Workouts";
 import WorkoutProfile from "./workout/pages/WorkoutProfile";
 import NewWorkout from "./workout/pages/NewWorkout";
 import Upgrade1RM from "./workout/components/Upgrade1RM";
+import AddExerciseOnWorkout from "./workout/pages/AddExerciseOnWorkout";
+import WorkoutChart from "./workout/pages/WorkoutChart";
+import ForgotPassword from "./user/pages/ForgotPassword";
+import ResetPassword from "./user/pages/ResetPassword";
+import LineChart from "./workout/pages/ChartExercise";
+import ChartExercise from "./workout/pages/ChartExercise";
+import Calories from "./user/pages/Calories";
 
 /*<Route path="/editUser/:userId" exact>
             <UpdateUser />
@@ -45,8 +52,13 @@ const App = () => {
     localStorage.getItem("tokenExpiration")
   );
 
-  console.log("token", token);
-  console.log("userid", userId);
+  const [otp, setOTP] = useState(localStorage.getItem("otp"));
+
+  const forgotPasswordOTP = useCallback((randomNumber) => {
+    setOTP(randomNumber);
+    localStorage.setItem("otp", randomNumber);
+  }, []);
+
   const logIn = useCallback((userId, token, role, tokenExpiration) => {
     setToken(token);
     setUserId(userId);
@@ -111,16 +123,25 @@ const App = () => {
           <Route path="/users" element={<UserTable />} />
           <Route path="/user/new" element={<NewUser />} />
           <Route path="/profile/:userId" element={<UserProfile />} />
-          <Route path="/editUser/:userId" element={<UpdateUser />} />      
+          <Route path="/editUser/:userId" element={<UpdateUser />} />
           <Route path="/exercises" element={<Exercises />} />
           <Route path="/exercise/new" element={<NewExercise />} />
-          <Route path="/exerciseProfile/:exerciseId" element={<ExerciseProfile />} />
-          <Route path="/editExercise/:exerciseId" element={<UpdateExercise />} />
+          <Route
+            path="/exerciseProfile/:exerciseId"
+            element={<ExerciseProfile />}
+          />
+          <Route
+            path="/editExercise/:exerciseId"
+            element={<UpdateExercise />}
+          />
           <Route path="/:userId/userExercises" element={<UserExercises />} />
           <Route path="/userExercise/new" element={<NewUserExercise />} />
           <Route path="/userExercise/:id" element={<UpdateUserExercise />} />
-         
-
+          <Route path="/workoutChart" element={<WorkoutChart />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route path="/chart/:exerciseId" element={<ChartExercise />} />
+          <Route path="/calories/:userId" element={<Calories />} />
         </Routes>
       );
     } else {
@@ -128,14 +149,25 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/profile/:userId" element={<UserProfile />} />
-          <Route path="/editUser/:userId" element={<UpdateUser />} />  
+          <Route path="/editUser/:userId" element={<UpdateUser />} />
           <Route path="/:userId/userExercises" element={<UserExercises />} />
           <Route path="/userExercise/new" element={<NewUserExercise />} />
           <Route path="/userExercise/:id" element={<UpdateUserExercise />} />
           <Route path="/workouts/all" element={<Workouts />} />
-          <Route path="/workoutProfile/:workoutId" element={<WorkoutProfile />} />
+          <Route
+            path="/workoutProfile/:workoutId"
+            element={<WorkoutProfile />}
+          />
           <Route path="/workout/new" element={<NewWorkout />} />
           <Route path="/upgrade1RM/:exerciseId" element={<Upgrade1RM />} />
+          <Route
+            path="/addExercise/:workoutId"
+            element={<AddExerciseOnWorkout />}
+          />
+          <Route path="/chart/:exerciseId" element={<ChartExercise />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route path="/calories/:userId" element={<Calories />} />
         </Routes>
       );
     }
@@ -145,6 +177,8 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/auth" element={<Navigate to="/" />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
       </Routes>
     );
   }
@@ -157,6 +191,8 @@ const App = () => {
         token: token,
         role: role,
         tokenExpiration: tokenExpiration,
+        otp: otp,
+        forgotPasswordOTP: forgotPasswordOTP,
         login: logIn,
         logout: logOut,
       }}

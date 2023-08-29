@@ -39,7 +39,7 @@ module.exports.updateWorkout = async (req, res, next) => {
 
 module.exports.deleteWorkout = async (req, res, next) => {
   try {
-    const result = await workoutService.deleteWorkout(req.params.workoutId);
+    const result = await workoutService.deleteWorkout(req);
     return res.status(200).json({ message: result });
   } catch (error) {
     return next(error);
@@ -63,3 +63,13 @@ module.exports.getallByUserId = async (req, res, next) => {
     return next(error);
   }
 };
+
+module.exports.addExerciseToWorkout = async (req, res, next) => {
+  try {
+    const result = await workoutService.addExerciseToWorkout(req);
+    return res.status(200).json({ workout: result });
+  } catch (error) {
+    return next(error);
+  }
+};
+

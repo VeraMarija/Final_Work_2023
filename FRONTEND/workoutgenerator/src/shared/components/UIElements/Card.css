@@ -80,12 +80,13 @@
   margin-right: 20%;
   background-color: rgba(255, 123, 0, 0.5);
   margin-bottom: 100px;
+  text-align: center;
 }
 
 .home-description a {
   font-size: 23px;
-  font-weight:bold;
+  font-weight:200;
   margin-bottom:200px;
- 
-
+  color:black;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }

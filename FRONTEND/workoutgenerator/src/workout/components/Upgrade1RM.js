@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { port_string } from "../../config/global";
 import { AuthContext } from "../../shared/context/authContext";
 
 const Upgrade1RM = () => {
+  const location = useLocation();
     const auth = useContext(AuthContext);
     const id = useParams().exerciseId;
     const navigate = useNavigate();
     const [error, setError] = useState();
+    const workoutId =location?.state?.workoutId;
 
   useEffect(() => {
     const confirmUpgradeHandler = async () => {
@@ -26,7 +28,7 @@ const Upgrade1RM = () => {
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-        navigate('/workouts/all');
+        navigate('/workoutProfile/' + workoutId);
 
       } catch (error) {
         setError(error.message);

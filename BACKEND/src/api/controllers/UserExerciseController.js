@@ -3,6 +3,7 @@ const userExerciseService = require("../services/UserExerciseService");
 module.exports.getAll = async (req, res, next) => {
   try {
     const result = await userExerciseService.getAll();
+    console.log('exercises', result);
     return res.status(200).json({exercises: result});
   } catch (error) {
     return next(error);

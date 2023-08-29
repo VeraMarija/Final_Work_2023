@@ -9,6 +9,8 @@ const UserModel = require("../models/UserModel");
 const { findById } = require("../models/ExerciseWeigh");
 const ExerciseModel = require("../models/Exercise");
 const { nextTick } = require("process");
+const RepMaxModel = require("../models/RepMax");
+const RepMax = require("../models/RepMax");
 
 module.exports.getAll = async () => {
   const workouts = await WorkoutModel.find();
@@ -69,6 +71,15 @@ module.exports.createWorkout = async (req) => {
       try {
         console.log("userecerciseid", userExercise._id);
         await userExercise.save();
+        const exerciseRepMax = await new RepMaxModel({
+          userExercise: userExercise._id,
+          repMax: repMax
+        });
+        try {
+          exerciseRepMax.save();
+        } catch (error) {
+          throw new HttpError("Can not save your repMax for exercise in database.", 500);
+        }
         return userExercise._id;
       } catch (err) {
         throw new HttpError("Can not save your exercise to database.", 500);
@@ -99,7 +110,7 @@ module.exports.createWorkout = async (req) => {
     throw error;
   }
 };
-
+/* 
 module.exports.createWorkoutNext = async (req) => {
   console.log("evo");
   const userExercises = req.newUserExercises;
@@ -128,7 +139,7 @@ module.exports.createWorkoutNext = async (req) => {
     );
     throw error;
   }
-};
+}; */
 
 module.exports.updateWorkout = async (req) => {
   const { name, userExercises } = req.body;
@@ -168,20 +179,25 @@ module.exports.updateWorkout = async (req) => {
   }
 };
 
-module.exports.deleteWorkout = async (workoutId) => {
+module.exports.deleteWorkout = async (req) => {
+  const workoutId = req.params.workoutId;
+
   try {
     const workout = await WorkoutModel.findById(workoutId);
     if (!workout) {
       throw new HttpError(
-        "Deleting workout failed, workout with that id doesnt exists.",
+        "Deleting workout failed, workout with that id does not exists.",
         404
       );
+    }
+    if (req.user != workout.user) {
+      throw new HttpError("Forbidden", 403);
     }
     const userExercises = workout.userExercises;
     for (var id of userExercises) {
       await UserExerciseModel.findByIdAndRemove(id);
     }
-    await WorkoutModel.findByIdAndRemove(userId);
+    await WorkoutModel.findByIdAndRemove(workoutId);
     return "Workout deleted successfuly";
   } catch (err) {
     throw err;
@@ -226,7 +242,7 @@ module.exports.getallByUserId = async (userId) => {
         select: "-user",
         populate: { path: "exercise", select: "name" },
       });
-    workouts.forEach( w => console.log(w.userExercises));
+    workouts.forEach((w) => console.log(w.userExercises));
 
     if (!workouts || workouts.length === 0) {
       return [];
@@ -237,3 +253,50 @@ module.exports.getallByUserId = async (userId) => {
   }
 };
 
+
+module.exports.addExerciseToWorkout = async (req) => {
+  const { exerciseName, liftWeight, repetition } = req.body;
+  const workoutId = req.params.workoutId;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError("Invalid inputs passed, please check your data.", 422);
+  }
+
+  try {
+    const workout = await WorkoutModel.findById(workoutId);
+    if (!workout) {
+      throw new HttpError("Workout with that id does not exists", 404);
+    }
+    if (workout.user != req.user) {
+      throw new HttpError("Forbidden", 403);
+    }
+
+    const exerciseArray = await ExerciseModel.find({ name: exerciseName });
+    if (!exerciseArray || exerciseArray.length === 0) {
+      throw new HttpError("exercise with that name does not exists", 404);
+    }
+    const exercise = exerciseArray[0];
+
+    const repMax = fixWeights(
+      Math.ceil(liftWeight * (1 + 0.0333 * repetition))
+    );
+    const userExercise = new UserExerciseModel({
+      user: req.user,
+      exercise,
+      liftWeight,
+      repetition,
+      repMax,
+      firstSet: fixWeights(Math.ceil(0.65 * repMax)),
+      secondSet: fixWeights(Math.ceil(0.75 * repMax)),
+      thirdSet: fixWeights(Math.ceil(0.85 * repMax)),
+    });
+
+    await userExercise.save();
+    workout.userExercises.push(userExercise.id);
+    await workout.save();
+    return workout;
+  } catch (err) {
+    throw err;
+  }
+};
