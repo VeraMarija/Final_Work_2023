@@ -37,6 +37,7 @@ const Calories = () => {
           throw new Error(responseData.message);
         }
         setLoadedCalories(responseData.calories);
+        console.log(responseData);
       } catch (error) {
         setError(error.message);
       }

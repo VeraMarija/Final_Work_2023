@@ -34,6 +34,7 @@ import ResetPassword from "./user/pages/ResetPassword";
 import LineChart from "./workout/pages/ChartExercise";
 import ChartExercise from "./workout/pages/ChartExercise";
 import Calories from "./user/pages/Calories";
+import NewCalories from "./user/pages/NewCalories";
 
 /*<Route path="/editUser/:userId" exact>
             <UpdateUser />
@@ -142,6 +143,7 @@ const App = () => {
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/chart/:exerciseId" element={<ChartExercise />} />
           <Route path="/calories/:userId" element={<Calories />} />
+          <Route path="/calories/new" element={<NewCalories />} />
         </Routes>
       );
     } else {
@@ -168,6 +170,8 @@ const App = () => {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/calories/:userId" element={<Calories />} />
+          
+          <Route path="/calories/new" element={<NewCalories />} />
         </Routes>
       );
     }

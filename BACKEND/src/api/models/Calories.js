@@ -8,15 +8,16 @@ const caloriesSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    TEEmantain: {
-      type: String,
+    TEEmaintain: {
+      type: Number,
       required: true,
     },
-    TEEgoal: [
+    TEEtarget:
       {
-        type: String,
+        type: Number,
+        required: true,
       },
-    ],
+    
   },
   {
     timestamps: true,

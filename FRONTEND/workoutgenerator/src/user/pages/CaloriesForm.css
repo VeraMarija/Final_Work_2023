@@ -1,0 +1,68 @@
+
+
+.calories-form {
+    list-style: none;
+    margin: 5rem auto;
+    padding: 1rem;
+    width: 90%;
+    max-width: 40rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    border-radius: 6px;
+    background: white;
+  }
+  
+  .calories-form p {
+    color: red;
+  }
+  
+  .calories-form  label,
+  .calories-form  input,
+  .calories-form  textarea {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    
+    .calories-form  label {
+      font-weight: bold;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      color: rgb(0, 0, 0);
+    }
+    
+    .calories-form  input,
+    .calories-form  textarea {
+      width: 100%;
+      font: inherit;
+      border: 1px solid #ccc;
+      background: #f8f8f8;
+      padding: 0.15rem 0.25rem;
+  
+    }
+    .calories-form  input:focus,
+    .calories-form  textarea:focus {
+      outline: none;
+      background: #ebebeb;
+      border-color: #510077;
+    }
+    
+    .checkbox{
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      display:inline-block;
+  
+    }
+  
+    .checkbox a {
+      color: black;
+    }
+
+    .radio-div{
+        display: flex;
+
+        justify-items: center;
+        
+    }
+
+    .set-margin{
+        margin-right: 40px;
+    }
