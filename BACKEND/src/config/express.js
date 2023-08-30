@@ -7,7 +7,12 @@ const path = require("path");
 const fs = require("fs");
 
 const app = express();
-app.use("/uploads", express.static('C:/Users/gujav/OneDrive/Radna površina/FinalWork_Backup/Final_Work_2023/BACKEND/src/api/uploads'));
+app.use(
+  "/uploads",
+  express.static(
+    "C:/Users/gujav/OneDrive/Radna površina/FinalWork_Backup/Final_Work_2023/BACKEND/src/api/uploads"
+  )
+);
 app.use(express.json());
 app.use(methodOverride());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
@@ -25,12 +30,18 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/v1", routes);
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'C:/Users/gujav/Documents/Final_Work_2023/FRONTEND/workoutgenerator/public/index.html'), function (err) {
-    if (err) {
-      res.status(500).send(err);
+app.get("/*", function (req, res) {
+  res.sendFile(
+    path.join(
+      __dirname,
+      "C:/Users/gujav/Documents/Final_Work_2023/FRONTEND/workoutgenerator/public/index.html"
+    ),
+    function (err) {
+      if (err) {
+        res.status(500).send(err);
+      }
     }
-  });
+  );
 });
 app.use((error, req, res, next) => {
   if (req.file) {
