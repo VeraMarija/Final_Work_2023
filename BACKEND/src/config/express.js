@@ -2,30 +2,16 @@ const express = require("express");
 const methodOverride = require("method-override");
 const cors = require("cors");
 const helmet = require("helmet");
-const passport = require("passport");
 const routes = require("../api/routes/v1");
-const { logs } = require("./vars");
-const jwt = require("./passport");
-const HttpError = require("../api/errors/httpError");
 const path = require("path");
 const fs = require("fs");
 
 const app = express();
-
-
 app.use("/uploads", express.static('C:/Users/gujav/OneDrive/Radna površina/FinalWork_Backup/Final_Work_2023/BACKEND/src/api/uploads'));
-
 app.use(express.json());
-
-// lets you use HTTP verbs such as PUT or DELETE
-// in places where the client doesn't support it
 app.use(methodOverride());
-
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-
-// enable CORS - Cross Origin Resource Sharing
 app.use(cors());
-
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -38,9 +24,7 @@ app.use((req, res, next) => {
   );
   next();
 });
-
 app.use("/v1", routes);
-
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'C:/Users/gujav/Documents/Final_Work_2023/FRONTEND/workoutgenerator/public/index.html'), function (err) {
     if (err) {
@@ -48,7 +32,6 @@ app.get('/*', function (req, res) {
     }
   });
 });
-
 app.use((error, req, res, next) => {
   if (req.file) {
     fs.unlink(req.file.path, (err) => {
@@ -61,7 +44,5 @@ app.use((error, req, res, next) => {
   res.status(error.code || 500);
   res.json({ message: error.message || "An unknown error occurred!" });
 });
-
-
 
 module.exports = app;

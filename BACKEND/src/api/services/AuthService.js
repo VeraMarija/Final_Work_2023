@@ -61,13 +61,23 @@ module.exports.login = async (req) => {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
   try {
-    const { user, accessToken } = await UserModel.findAndGenerateToken(
-      req.body
-    );
+    const { email, password } = req.body;
+    const users = await UserModel.find({ email: email });
+    if (!users || users.length === 0) {
+      throw new HttpError("Forbidden, user with that email does not exists", 403);
+    }
+    const user = users[0];
+    let token = "";
+
+    if (await user.passwordMatches(password)) {
+      token = user.token();
+    } else {
+      throw new HttpError("Forbidden wrong password", 403);
+    }
     const expiresIn = moment().add(jwtExpirationInterval, "minutes");
     const tokenExpiration = expiresIn.toDate();
     return {
-      token: accessToken,
+      token: token,
       tokenExpiration: tokenExpiration,
       userId: user.id,
       role: user.role,
@@ -133,9 +143,9 @@ module.exports.resetPassword = async (req) => {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
   const { email, password, realOTP, enteredOTP } = req.body;
-  console.log('req.body', req.body);
+  console.log("req.body", req.body);
   try {
-    if(realOTP != enteredOTP){
+    if (realOTP != enteredOTP) {
       throw new HttpError("Invalid 4 digit code", 422);
     }
     const users = await UserModel.find({ email: email });
