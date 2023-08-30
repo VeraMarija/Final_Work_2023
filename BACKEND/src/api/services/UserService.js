@@ -74,7 +74,7 @@ module.exports.updateUser = async (req) => {
       user.email = email;
       user.firstName = firstName;
       user.lastName = lastName;
-      if (isActive === true || isActive === false ) user.isActive = isActive;
+      if (isActive === "true" || isActive === "false" ) user.isActive = isActive;
       if (height) user.height = height;
       if (weight) user.weight = weight;
       if (req.file) user.picture = req.file.filename;

@@ -43,6 +43,9 @@ const UpdateUser = () => {
     if (location?.state?.picture) {
       setImgSrc("http://localhost:3001/uploads/" + location?.state?.picture);
     }
+    else{
+      setImgSrc("/profile.jpeg");
+    }
   }, []);
 
   /*  const [imgSrc, setImgSrc] = useState(
@@ -65,7 +68,7 @@ const UpdateUser = () => {
         formData.append("isActive", data.isActive);
       }
 
-      if (data.picture) {
+      if (data.picture && imgSrc !== "profile.jpeg") {
         formData.append("picture", data.picture[0]);
       }
       if (data.height) {

@@ -93,20 +93,20 @@ const UserItem = (props) => {
               </div>
               <div className="user-item__info">
                 <h2>{props.firstName + " " + props.lastName} </h2>
-                <h3>Email: {props.email}</h3>
+                <h3>Email: <span>{props.email}</span></h3>
                 <h3>
                   Profile created:{" "}
-                  {new Date(props.profileCreated).toLocaleString()}
+                  <span>{new Date(props.profileCreated).toLocaleString()}</span>
                 </h3>
                 <h3>
                   Profile updated:{" "}
-                  {new Date(props.profileUpdated).toLocaleString()}
+                  <span>{new Date(props.profileUpdated).toLocaleString()}</span>
                 </h3>
-                <h3>Role: {props.role}</h3>
-                {props.height && <h3>Height: {props.height} cm</h3>}
+                <h3>Role: <span>{props.role}</span></h3>
+                {/* {props.height && <h3>Height: {props.height} cm</h3>}
                 {props.weight && <h3>Weight: {props.weight} kg</h3>}
                 {!props.height && <h3>Height:</h3>}
-                {!props.weight && <h3>Weight:</h3>}
+                {!props.weight && <h3>Weight:</h3>} */}
               </div>
             </Link>
             <div className="user-item__Update">

@@ -14,12 +14,19 @@
   height: 100%;
   text-decoration: none;
   color: rgb(255, 255, 255);
-  background: rgb(245, 222, 208);
+  background:rgb(2, 20, 97, 0.5);
 }
 
 .user-item a:hover,
 .user-item a:active {
-  background:  #246aec;
+  background:  rgba(255, 123, 0, 0.5);
+ 
+}
+
+
+.user-item__Update a:hover,
+.user-item__Update a:active{
+  background:  rgba(255, 123, 0, 0.5);
 }
 
 .user-item__content {
@@ -28,8 +35,10 @@
 
 
 .user-item__Update {
-  background-color:  #246aec;
+  background-color: rgb(2, 20, 97, 0.5);
+
 }
+
 
 .user-item__image img {
   
@@ -44,7 +53,14 @@
   font-size: 1.5rem;
   margin: 0 0 0 0;
   font-weight: bold;
-  color:  #246aec;
+  color: rgba(255, 255, 255);
+}
+
+.user-item__info span{
+  font-size: 1rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: normal;
+  color:  #ffffff;
 }
 
 
@@ -52,7 +68,7 @@
   font-size: 1rem;
   margin: 0 0 0.5rem 0;
   font-weight: bold;
-  color:  #246aec;
+  color:  #ffffff;
 }
 
 .user-item:hover h2,
@@ -60,8 +76,10 @@
 .user-item:hover h3,
 .user-item:active h3,
 .user-item:hover h4,
-.user-item:active h4 {
-  color:rgb(245, 187, 153);
+.user-item:active h4
+.user-item:hover span
+.user-item:active span {
+  color:black;
 }
 
 .user-item__info h3 {

@@ -10,8 +10,7 @@ import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { AuthContext } from "../../shared/context/authContext";
 
 const Calories = () => {
-
-    const auth = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   const [loadedCalories, setLoadedCalories] = useState();
   const [isLoading, setIsLoading] = useState();
   const id = useParams().userId;
@@ -51,38 +50,41 @@ const Calories = () => {
     setError(null);
   };
 
-  if(!loadedCalories){
+  if (!loadedCalories) {
     return (
-        <React.Fragment>
-          <a>Add your calories plan</a>&nbsp;&nbsp;
-          <button onClick={navigateToCreateCalories}>
-            <BsPersonFillAdd className="icon" />
-          </button>
-          <div className="center">
-            <Card>
-              <h2>No calories plan found.</h2>
-            </Card>
-          </div>
-        </React.Fragment>
-      );
+      <React.Fragment>
+        <a>Add your calories plan</a>&nbsp;&nbsp;
+        <button onClick={navigateToCreateCalories}>
+          <BsPersonFillAdd className="icon" />
+        </button>
+        <div className="center">
+          <Card className="no-calories">
+            <h2>No calories plan found.</h2>
+          </Card>
+        </div>
+      </React.Fragment>
+    );
   }
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={removeError} />
-      <div className="main-div">
-       
-        
+      <div>
         <Card className="calories-item__content">
           {isLoading && <LoadingSpinner asOverlay />}
+          <div>
           <h2>Calories Plan</h2>
-          <h3>
-            Your calories per day to maintain your weight is:{" "}
-            {loadedCalories.TEEmaintain}
-          </h3>
-          <h3>
-            Your calories per day to lose weight is: {loadedCalories.TEEtarget}
-          </h3>
+          </div>
+          <div>
+            <h4>
+              Your calories per day to maintain your weight is:
+              &nbsp;{loadedCalories.TEEmaintain} kcal
+            </h4>
+            <h4>
+              Your calories per day to lose weight is:
+              &nbsp;{loadedCalories.TEEtarget} kcal
+            </h4>
+            </div>
         </Card>
       </div>
     </React.Fragment>

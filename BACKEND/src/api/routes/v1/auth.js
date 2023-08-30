@@ -2,18 +2,7 @@ const express = require("express");
 const {validate} = require("express-validation");
 const authController = require("../../controllers/AuthController");
 
-const {
-  login,
-  register,
-  refresh,
-  sendPasswordReset,
-  passwordReset,
-} = require("../../validation/authValidation");
-
 const router = express.Router();
-
-
-
 
 router.post(
     "/register",
@@ -22,7 +11,6 @@ router.post(
 
 router.post(
     "/login",
-    validate(login),
     authController.login
 );
 

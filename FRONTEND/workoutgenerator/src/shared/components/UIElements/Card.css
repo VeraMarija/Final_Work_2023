@@ -5,7 +5,7 @@
   border-radius: 6px;
   padding: 1rem;
   overflow: hidden;
-  background: rgba(44, 58, 255, 0.444);
+  
 }
 
  .workout-item__content {
@@ -56,6 +56,14 @@
 
 }
 
+.authentication{
+  background-color:rgba(0, 44, 241, 0.5) ;
+}
+
+.no-calories{
+  background-color:rgba(0, 44, 241, 0.5) ;
+}
+
 .exercise-item__content{
   display:inline-block;
   padding: 0;
@@ -90,3 +98,30 @@
   color:black;
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
+
+.calories-item__content {
+  position:relative;
+  margin: 5px;
+  margin-right: 5px;
+  margin-left: 30%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow: hidden;
+  background:rgba(255, 123, 0, 0.5);
+  justify-content: center;
+  width:max-content;
+  min-height: 20rem;
+
+}
+
+.calories-item__content h4 {
+  color: blue;
+  background-color: rgba(255, 255, 255, 0.829);
+}
+
+.calories-item__content h2 {
+  color: rgb(251, 251, 255);
+  background-color: rgba(0, 0, 0, 0.404);
+}
+
