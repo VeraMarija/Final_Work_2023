@@ -21,15 +21,10 @@ app.use(express.json());
 // in places where the client doesn't support it
 app.use(methodOverride());
 
-// secure apps by setting various HTTP headers
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
-
-// enable authentication
-app.use(passport.initialize());
-passport.use("jwt", jwt);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -44,21 +39,14 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
 app.use("/v1", routes);
 
 app.get('/*', function (req, res) {
-  console.log('dosa je ovde');
   res.sendFile(path.join(__dirname, 'C:/Users/gujav/Documents/Final_Work_2023/FRONTEND/workoutgenerator/public/index.html'), function (err) {
     if (err) {
       res.status(500).send(err);
     }
   });
-});
-app.use((req, res, next) => {
-  const error = new HttpError("Could not find this route.", 404);
-  throw error;
 });
 
 app.use((error, req, res, next) => {
