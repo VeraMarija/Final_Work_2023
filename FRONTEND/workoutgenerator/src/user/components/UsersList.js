@@ -32,6 +32,7 @@ const UsersList = (props) => {
 
         <ul className="users-list">
           {props.items.map((user) => (
+            <li>
             <UserItem
               key={user._id}
               id={user._id}
@@ -43,9 +44,8 @@ const UsersList = (props) => {
               profileCreated={user.createdAt}
               profileUpdated={user.updatedAt}
               isActive={user.isActive}
-              height={user.height}
-              weight={user.weight}
             />
+            </li>
           ))}
         </ul>
       </div>

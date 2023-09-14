@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { LineChart, Line, XAxis, YAxis } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 import "./ChartExercise.css";
 import { AuthContext } from "../../shared/context/authContext";
@@ -39,11 +47,13 @@ const ChartExercise = () => {
         const dataArray = [];
         console.log("loadedrepmax", responseData.repMax);
         for (let i of responseData.repMax) {
-          let t1= new Date(i.createdAt).toLocaleString();
-          let t = t1.split(',')[0];
+          let t1 = new Date(i.createdAt).toLocaleString();
+          let t = t1.split(",")[0];
           let d = {
-            date:t,
+            date: t,
             value: i.repMax,
+            pv: 2400,
+            amt: 2400,
           };
 
           dataArray.push(d);
@@ -66,27 +76,28 @@ const ChartExercise = () => {
 
   return (
     <div className="chart">
-
       <ErrorModal error={error} onClear={removeError} />
       {isLoading && <LoadingSpinner asOverlay />}
       <h2>{exerciseName}</h2>
       <p>&nbsp;&nbsp;&nbsp;&nbsp;kg</p>
       <div classname="chart-div">
         <LineChart
-          width={700}
+          width={1100}
           height={470}
           data={data}
           margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
         >
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke="#2284d8"
-            dot={true}
-            fill="#2284d8"
-          />
-          <XAxis dataKey="date" />
-          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date"/>
+          <YAxis dataKey="value"/>
+          <Tooltip />
+
+      <Line
+        type="monotone"
+        dataKey="value"
+        stroke="#8884d8"
+        activeDot={{ r: 8 }}
+      />
         </LineChart>
       </div>
     </div>

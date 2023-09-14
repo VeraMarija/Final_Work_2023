@@ -32,8 +32,6 @@ const UpdateUser = () => {
       firstName: location?.state?.firstName,
       lastName: location?.state?.lastName,
       picture: location?.state?.picture,
-      height: location?.state?.height,
-      weight: location?.state?.weight
     },
   });
 
@@ -70,12 +68,6 @@ const UpdateUser = () => {
 
       if (data.picture && imgSrc !== "profile.jpeg") {
         formData.append("picture", data.picture[0]);
-      }
-      if (data.height) {
-        formData.append("height", data.height);
-      }
-      if (data.weight) {
-        formData.append("weight", data.weight);
       }
 
       const responseData = await sendRequest(
@@ -156,10 +148,6 @@ const UpdateUser = () => {
             </div>
           </React.Fragment>
         )}
-        <label>Height </label>
-        <input type="number" {...register("height")} />
-        <label>Weight </label>
-        <input type="number" {...register("weight")} />
         {imgSrc && (
           <React.Fragment>
             <label>Picture</label>

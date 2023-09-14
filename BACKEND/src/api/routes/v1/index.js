@@ -4,7 +4,6 @@ const authRoutes = require("./auth");
 const exerciseRoutes = require("./exercise");
 const workoutRoutes = require("./workout");
 const userExerciseRoutes = require("./userExercise");
-const exerciseWeightRoutes = require("./exerciseWeight");
 const repMaxRoutes = require("./repMax");
 const caloriesRoutes = require("./calories");
 const path = require("path");
@@ -19,7 +18,6 @@ router.use("/auth", authRoutes);
 router.use("/exercises", exerciseRoutes);
 router.use("/workout", workoutRoutes);
 router.use("/userExercise", userExerciseRoutes);
-router.use("/exerciseWeight", exerciseWeightRoutes);
 router.use("/repMax", repMaxRoutes);
 router.use("/calories", caloriesRoutes);
 

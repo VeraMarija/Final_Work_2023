@@ -24,12 +24,13 @@ router.put(
 router.delete(
   "/:exerciseId",
   checkAuth,
-  checkPermission,
   userExerciseController.deleteExercise
 );
 
 router.get("/:exerciseId", checkAuth, checkPermission, userExerciseController.getByExerciseId);
 
 router.get("/upgrade/:userExerciseId", checkAuth, userExerciseController.upgrade1RM);
+
+router.get("/reduce/:userExerciseId", checkAuth, userExerciseController.reduce1RM);
 
 module.exports = router;

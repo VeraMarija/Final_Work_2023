@@ -1,16 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import "./Auth.css";
 import Card from "../../shared/components/UIElements/Card";
-import {
-  VALIDATOR_EMAIL,
-  VALIDATOR_MINLENGTH,
-  VALIDATOR_REQUIRE,
-} from "../../shared/util/validators";
-import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
-import { useForm } from "react-hook-form";
 import { AuthContext } from "../../shared/context/authContext";
 import { port_string } from "../../config/global";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";

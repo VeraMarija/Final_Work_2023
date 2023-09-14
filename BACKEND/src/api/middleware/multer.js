@@ -1,15 +1,14 @@
-const { date } = require("joi");
 const multer = require("multer");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, "uploads//images");
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../uploads"));
   },
-  filename: function(req, file, cb){
-    cb(uuidv4() + "-" + Date.now() + path.extname(file.originalname));
-  }
+  filename: function (req, file, cb) {
+    cb(null, uuidv4() + "-" + file.originalname);
+  },
 });
 
 const fileFilter = (req, file, cb) => {
@@ -21,5 +20,4 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-exports.upload = multer({ storage, fileFilter });
-
+exports.upload = multer({ storage: storage, fileFilter: fileFilter });

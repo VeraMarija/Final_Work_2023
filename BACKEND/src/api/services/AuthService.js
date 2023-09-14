@@ -2,8 +2,6 @@ const httpStatus = require("http-status");
 const moment = require("moment-timezone");
 const { omit } = require("lodash");
 const UserModel = require("../models/UserModel");
-const RefreshToken = require("../models/RefreshTokenModel");
-const PasswordResetToken = require("../models/PasswordResetToken");
 const { jwtExpirationInterval } = require("../../config/vars");
 const APIError = require("../errors/apiError");
 const HttpError = require("../errors/httpError");
@@ -12,17 +10,6 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const { options } = require("../routes/v1/auth");
 
-function generateTokenResponse(user, accessToken) {
-  const tokenType = "Bearer";
-  const refreshToken = RefreshToken.createRefreshToken(user).token;
-  const expiresIn = moment().add(jwtExpirationInterval, "minutes");
-  return {
-    tokenType,
-    accessToken,
-    refreshToken,
-    expiresIn,
-  };
-}
 
 module.exports.register = async (req) => {
   const { email, password, firstName, lastName, picture } = req.body;
@@ -42,8 +29,9 @@ module.exports.register = async (req) => {
       { email: email },
       "-password -updatedAt -__v"
     );
-    const token = finalUser.token(); //token smo kreirali
-    const tokenExpiration = new Date(token.exp * 1000);
+    const token = finalUser.token();
+    const expiresIn = moment().add(jwtExpirationInterval, "minutes");
+    const tokenExpiration = expiresIn.toDate();
     return {
       token,
       tokenExpiration: tokenExpiration,
@@ -68,7 +56,9 @@ module.exports.login = async (req) => {
     }
     const user = users[0];
     let token = "";
-
+    if(!user.isActive){
+      throw new HttpError("Your profile has been deactivated", 403);
+    }
     if (await user.passwordMatches(password)) {
       token = user.token();
     } else {

@@ -40,7 +40,7 @@ const UserProfile = () => {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   const errorClearHandler = () => {
     setError(null);
@@ -66,8 +66,6 @@ const UserProfile = () => {
           profileCreated={loadedUser.createdAt}
           profileUpdated={loadedUser.updatedAt}
           isActive={loadedUser.isActive}
-          height={loadedUser.height}
-          weight={loadedUser.weight}
         />
       )}
     </React.Fragment>

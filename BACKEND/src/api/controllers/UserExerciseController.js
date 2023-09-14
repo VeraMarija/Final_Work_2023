@@ -58,3 +58,13 @@ module.exports.upgrade1RM = async (req, res, next) => {
   }
 };
 
+
+module.exports.reduce1RM = async (req, res, next) => {
+  try {
+    const result = await userExerciseService.reduce1RM(req);
+    return res.status(200).json({ loadedExercise: result });
+  } catch (error) {
+    return next(error);
+  }
+};
+

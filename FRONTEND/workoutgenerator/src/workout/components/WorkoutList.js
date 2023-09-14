@@ -7,9 +7,6 @@ import Card from "../../shared/components/UIElements/Card";
 import { BsPersonFillAdd } from "react-icons/bs";
 
 const WorkoutList = (props) => {
-  //s backenda dobijem sve treninge od određenog korisnika tj.autenticiranog (auth.userId)
-  // u tim treninzima je id od korisnika i lista id-eva od vjezbi koje je korsnik kreira za taj trening
-  //treba bit populate nad userExercises
   const navigate = useNavigate();
   const navigateToCreateWorkout = () => {
     navigate("/workout/new");
@@ -18,28 +15,30 @@ const WorkoutList = (props) => {
   if (props.items.length === 0) {
     return (
       <React.Fragment>
-        <a>Add new workout</a>&nbsp;&nbsp;
+        <Card className="adding-workout">
+        <span>Add new workout</span>&nbsp;&nbsp;
         <button onClick={navigateToCreateWorkout}>
           <BsPersonFillAdd className="icon" />
         </button>
+        </Card>
         <div className="center">
-          <Card>
+          <Card className="no-workouts">
             <h2>No workouts found.</h2>
           </Card>
         </div>
       </React.Fragment>
     );
   }
-
+  console.log(props);
   return (
     <React.Fragment>
       <div className="workout-list-main">
-      <div>
-        <a className="p-add-workout">Add new workout</a>
+      <Card className="adding-workout">
+        <span>Add new workout</span>&nbsp;&nbsp;
         <button onClick={navigateToCreateWorkout}>
-          <BsPersonFillAdd className="add-icon" />
+          <BsPersonFillAdd className="icon" />
         </button>
-        </div>
+        </Card>
         <ul className="workout-list">
           {props.items.map((workout) => (
             <WorkoutItem

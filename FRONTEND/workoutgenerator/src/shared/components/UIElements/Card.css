@@ -5,123 +5,183 @@
   border-radius: 6px;
   padding: 1rem;
   overflow: hidden;
-  
 }
 
- .workout-item__content {
-  position:relative;
+.workout-item__content {
+  position: relative;
   margin: 5px;
   margin-right: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   border-radius: 6px;
   padding: 1rem;
   overflow: hidden;
-  background: rgba(156, 156, 163, 0.444);
+  background-color: rgba(18, 14, 14, 0.706);
   display: flex;
   justify-content: center;
-  width:max-content;
+  width: max-content;
   min-height: 20rem;
-
-
 }
-
 
 .workout-item__content a {
   text-decoration: none;
 }
 
 .workout-item__content h4 {
-  color: blue;
-  background-color: rgba(255, 255, 255, 0.829);
+  margin-top: 5rem;
+  color: rgb(255, 255, 255);
+
 }
 
 .workout-item__content h2 {
   color: rgb(251, 251, 255);
-  background-color: rgba(0, 0, 0, 0.404);
+ 
 }
 
 .workout-item__content p {
   font-weight: 800;
-  color: rgb(3, 3, 44);
+ color:white;
 }
 
 .user-item__content {
-  display: inline-block;
-  padding: 0;
-  justify-content: center;
+  margin-left: 5%;
+  margin-right: 5%;
+  background-color: rgba(18, 14, 14, 0.706);
+  display: flex;
+}
+
+.user-item__image {
+  flex: 1;
+}
+
+.user-item__image img {
+  max-width: 100%;
+  max-height: 100%;
+border-radius: 10%;
+}
+
+.user-item__about {
+  flex: 1;
+
+}
+
+.authentication {
+  background-color: rgba(0, 44, 241, 0.5);
+  margin-left: 35%;
+}
+
+.no-calories {
+  background-color: rgba(0, 44, 241, 0.5);
+}
+
+.no-workouts {
+  background-color: rgba(0, 44, 241, 0.5);
+}
+
+.exercise-item__content {
+  margin-left: 5%;
+  margin-right: 5%;
+  background-color: rgba(18, 14, 14, 0.706);
+  display: flex;
+}
+
+.exercise-item__image {
+  flex: 1;
+}
+
+.exercise-item__image img {
+  max-width: 100%;
+  max-height: 100%;
+border-radius: 10%;
+}
+
+.exercise-item__about {
+  flex: 1;
+
+}
+
+.exercise-item__Update {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  display:flex;
+  flex-direction: row;
+  margin-left: 35%;
+}
+
+.calories-item__Update {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  display:flex;
+  flex-direction: row;
   margin-left: 40%;
-  min-width: 80%;
-  justify-items: center;
-
-
 }
 
-.authentication{
-  background-color:rgba(0, 44, 241, 0.5) ;
-}
 
-.no-calories{
-  background-color:rgba(0, 44, 241, 0.5) ;
-}
-
-.exercise-item__content{
-  display:inline-block;
-  padding: 0;
-  justify-content: center;
+.adding-workout {
+  background-color:rgba(18, 14, 14, 0.706);
   margin-left: 40%;
-  min-width: 100%;
-  justify-items: center;
+  margin-right: 40%;
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+
+.adding-calories {
+  background-color:rgba(18, 14, 14, 0.706);
+  margin-left: 35%;
+  margin-right: 35%;
+  margin-bottom: 5%;
+  margin-top: 5%;
 
 }
 
-.authentication p{
+.authentication p {
   color: rgb(255, 255, 255);
   font-weight: 800;
 }
 
-.home-description{
-  position:relative;
+.home-description {
+  position: relative;
   justify-content: center;
   justify-self: center;
   margin-top: 6%;
   margin-left: 20%;
   margin-right: 20%;
-  background-color: rgba(255, 123, 0, 0.5);
+  background-color:rgba(18, 14, 14, 0.806);
   margin-bottom: 100px;
   text-align: center;
 }
 
 .home-description a {
   font-size: 23px;
-  font-weight:200;
-  margin-bottom:200px;
-  color:black;
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 200;
+  margin-bottom: 200px;
+  color: rgb(255, 255, 255);
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
 
 .calories-item__content {
-  position:relative;
-  margin: 5px;
-  margin-right: 5px;
-  margin-left: 30%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  border-radius: 6px;
-  padding: 1rem;
-  overflow: hidden;
-  background:rgba(255, 123, 0, 0.5);
-  justify-content: center;
-  width:max-content;
-  min-height: 20rem;
-
+  margin-left: 20%;
+  margin-right: 20%;
+  background-color: rgba(18, 14, 14, 0.706);
+  display: flex;
+  flex-direction: column;
 }
 
 .calories-item__content h4 {
-  color: blue;
-  background-color: rgba(255, 255, 255, 0.829);
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size:20px;
+  color:white;
+  text-align: center;
 }
 
 .calories-item__content h2 {
-  color: rgb(251, 251, 255);
-  background-color: rgba(0, 0, 0, 0.404);
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size:35px;
+  font-weight: 900;
+  color:white;
+  text-align: center;
 }
 
+.calories-item__content span {
+  font-size:25px;
+ 
+}

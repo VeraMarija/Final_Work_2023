@@ -42,7 +42,7 @@ const ExerciseItem = (props) => {
       if (!response.ok) {
         throw new Error(responseData.message);
       }
-      navigate('/exercises');
+      navigate("/exercises");
     } catch (error) {
       setError(error.message);
     }
@@ -78,27 +78,32 @@ const ExerciseItem = (props) => {
           can't be undone.
         </p>
       </Modal>
-      <li className="exercise-item">
-        <div>
-          <Card className="exercise-item__content">
-            {isLoading && <LoadingSpinner asOverlay />}
+
+      <Card className="exercise-item__content">
+        {isLoading && <LoadingSpinner asOverlay />}
+        <div className="exercise-item__image">
+          <img src={`http://localhost:3001/uploads/${props.picture}`} />
+        </div>
+        <div className="exercise-item__about">
+          <div className="exercise-item__info">
             <Link to={`/exerciseProfile/${props.id}`}>
               {/*   <div className="user-item__image">
                 <Avatar image={`http://localhost:3001/uploads/${props.picture}`} alt={props.firstName} />
               </div> */}
-              <div className="exercise-item__info">
-                <h2>{props.name} </h2>
-                <h3>
-                  Instructions:<h4>{props.instructions}</h4>
-                </h3>
-                <h3>
-                  Equipment:
-                  {props.equipment.map((e) => (
-                    <h4>{e}</h4>
-                  ))}
-                </h3>
-              </div>
+
+              <h2>{props.name} </h2>
+              <h3>
+                Instructions:<span>{props.instructions}</span>
+              </h3>
+              <h3>
+                Equipment:
+                {props.equipment.map((e) => (
+                  <span>{e}</span>
+                ))}
+              </h3>
             </Link>
+          </div>
+          {auth.role === "admin" && (
             <div className="exercise-item__Update">
               <Link
                 to={`/editExercise/${props.id}`}
@@ -106,17 +111,18 @@ const ExerciseItem = (props) => {
                   name: props.name,
                   instructions: props.instructions,
                   equipment: props.equipment,
+                  picture: props.picture
                 }}
               >
-                <h2>Edit</h2>
+                <Button>Edit</Button>
               </Link>
               <Button danger onClick={showDeleteWarningHandler}>
                 DELETE
               </Button>
             </div>
-          </Card>
+          )}
         </div>
-      </li>
+      </Card>
     </React.Fragment>
   );
 };

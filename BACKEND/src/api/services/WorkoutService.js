@@ -6,7 +6,6 @@ const { validationResult } = require("express-validator");
 const userExerciseService = require("../services/UserExerciseService");
 const fs = require("fs");
 const UserModel = require("../models/UserModel");
-const { findById } = require("../models/ExerciseWeigh");
 const ExerciseModel = require("../models/Exercise");
 const { nextTick } = require("process");
 const RepMaxModel = require("../models/RepMax");
@@ -213,15 +212,13 @@ module.exports.getByWorkoutId = async (req) => {
         populate: { path: "exercise", select: "name" },
       })
       .populate("user");
-    console.log("workout-----------------", workout);
     if (!workout) {
       throw new HttpError("Could not find workout in database.", 404);
     }
     if (workout.user.id !== req.user) {
-      console.log("evo", workout.user._id);
-      console.log("evo", req.user);
       throw new HttpError("Forbidden, you do not have permission.", 403);
     }
+    console.log('workout', workout);
     return workout;
   } catch (err) {
     const error = new HttpError(
@@ -293,6 +290,15 @@ module.exports.addExerciseToWorkout = async (req) => {
     });
 
     await userExercise.save();
+    const exerciseRepMax = await new RepMaxModel({
+      userExercise: userExercise._id,
+      repMax: repMax
+    });
+    try {
+      exerciseRepMax.save();
+    } catch (error) {
+      throw new HttpError("Can not save your repMax for exercise in database.", 500);
+    }
     workout.userExercises.push(userExercise.id);
     await workout.save();
     return workout;

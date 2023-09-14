@@ -14,4 +14,17 @@ router.post(
 );
 
 
+router.put(
+    '/:caloriesId',
+    checkAuth,
+    caloriesController.updateCalories
+);
+
+router.delete(
+    '/:caloriesId',
+    checkAuth,
+    caloriesController.deleteCalories
+);
+
+
 module.exports = router;

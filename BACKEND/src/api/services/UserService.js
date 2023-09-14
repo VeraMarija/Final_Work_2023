@@ -11,13 +11,11 @@ module.exports.getAll = async () => {
   if (!users) {
     throw new Error("No users in database!");
   }
-  console.log("users---------", users);
   return users;
 };
 
 module.exports.createUser = async (req) => {
   const { email, password, firstName, lastName } = req.body;
-
   let existingUser;
   try {
     existingUser = await UserModel.findOne({ email: email });
@@ -25,7 +23,6 @@ module.exports.createUser = async (req) => {
     const error = new HttpError("Something went wrong", 500);
     throw error;
   }
-
   if (existingUser) {
     const error = new HttpError(
       "User with that email exists already, please try with another email address or login instead.",
@@ -33,12 +30,10 @@ module.exports.createUser = async (req) => {
     );
     throw error;
   }
-
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
-
   const user = await new UserModel({
     email,
     password,
@@ -59,30 +54,23 @@ module.exports.createUser = async (req) => {
 };
 
 module.exports.updateUser = async (req) => {
-  const { firstName, lastName, email, isActive, height, weight } = req.body;
-  console.log("req.body", req.body);
-
+  const { firstName, lastName, email, isActive } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
   try {
-    console.log("userid", req.params.userId);
     const user = await UserModel.findById(req.params.userId);
 
     if (user) {
       user.email = email;
       user.firstName = firstName;
       user.lastName = lastName;
-      if (isActive === "true" || isActive === "false" ) user.isActive = isActive;
-      if (height) user.height = height;
-      if (weight) user.weight = weight;
+      if (isActive === "true" || isActive === "false" ) user.isActive = isActive;      
       if (req.file) user.picture = req.file.filename;
-      console.log(user);
       try {
         await user.save();
       } catch (err) {
-        console.log(err);
         const error = new HttpError(
           "Something went wrong, could not update user.",
           500
@@ -100,16 +88,15 @@ module.exports.updateUser = async (req) => {
   }
 };
 
-module.exports.deleteUser = async (userId) => {
+module.exports.deleteUser = async (req) => {
   try {
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findById(req.params.userId);
     if (!user) {
       throw new HttpError(
         "Deleting user failed, user with that id doesnt exists.",
         404
       );
     }
-
     user.isActive = false;
     await user.save();
     /*  if(user.picture){

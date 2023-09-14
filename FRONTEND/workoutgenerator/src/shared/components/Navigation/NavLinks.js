@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import "./NavLinks.css";
 import { AuthContext } from "../../context/authContext";
@@ -8,8 +8,14 @@ import { AuthContext } from "../../context/authContext";
 const NavLinks = (props) => {
   const auth = useContext(AuthContext);
   const userId = auth.userId;
+  const navigate = useNavigate();
 
   const loggedState = auth.isLoggedIn;
+
+  const logoutHandler = () => {
+    auth.logout();
+    navigate("/");
+  }
 
   return (
     <ul className="nav-links">
@@ -49,7 +55,7 @@ const NavLinks = (props) => {
       )}
       {loggedState && (
         <li>
-          <button onClick={auth.logout}>LOGOUT</button>
+          <button onClick={logoutHandler}>LOGOUT</button>
         </li>
       )}
     </ul>

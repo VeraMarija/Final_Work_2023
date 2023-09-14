@@ -39,6 +39,7 @@ const ExercisesList = (props) => {
 
       <ul className="exercises-list">
         {props.items.map((exercise) => (
+          <li>
           <ExerciseItem
             key={exercise._id}
             id={exercise._id}
@@ -46,6 +47,7 @@ const ExercisesList = (props) => {
             instructions={exercise.instructions}
             equipment={exercise.equipment}
           />
+          </li>
         ))}
       </ul>
       </div>

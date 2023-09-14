@@ -18,16 +18,21 @@ module.exports.getAll = async () => {
 
 module.exports.createExercise = async (req) => {
   const { name, instructions, equipment } = req.body;
+  const exerciseNameExists = await ExerciseModel.find({name: name});
+  if(exerciseNameExists.length !== 0){
+    throw new HttpError("Choose another name, exercise with that name already exists, name must be unique", 403);
+  }
   const exercise = new ExerciseModel({
     name,
     instructions,
     equipment,
+    ...( req.file && { picture : req.file.filename}),
   });
 
   try {
     await exercise.save();
   } catch (err) {
-    throw new HttpError("Saving exercise to database failed.", 500);
+    throw err;
   }
 
   return exercise;
@@ -35,14 +40,15 @@ module.exports.createExercise = async (req) => {
 
 module.exports.updateExercise = async (req) => {
   console.log("helooo");
-  const { name, instructions, equipment } = req.body;
+  const { instructions, equipment } = req.body;
   let exercise;
+
   try {
     exercise = await ExerciseModel.findById(req.params.exerciseId);
     if (exercise) {
-      exercise.name = name;
       exercise.instructions = instructions;
       exercise.equipment = equipment;
+      if (req.file) exercise.picture = req.file.filename;
       try {
         await exercise.save();
       } catch (err) {
@@ -55,11 +61,7 @@ module.exports.updateExercise = async (req) => {
     }
     return exercise;
   } catch (err) {
-    const error = new HttpError(
-      "Updating exercise failed, exercise with that id doesnt exists.",
-      404
-    );
-    throw error;
+    throw err;
   }
 };
 

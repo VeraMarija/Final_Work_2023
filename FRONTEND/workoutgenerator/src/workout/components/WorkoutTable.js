@@ -5,9 +5,9 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import { BsPersonFillAdd } from "react-icons/bs";
+import { BsGraphDownArrow, BsPersonFillAdd } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import { BiEdit, BiSolidUserDetail, BiSolidUserMinus } from "react-icons/bi";
+import { BiEdit, BiMinusCircle, BiSolidUserDetail, BiSolidUserMinus } from "react-icons/bi";
 import { BsGraphUpArrow } from "react-icons/bs";
 import "./WorkoutTable.css";
 import { COLUMNS } from "../../config/user_columns";
@@ -99,16 +99,22 @@ const WorkoutTable = (props) => {
           <tr>
             <th>Exercise</th>
             <th>1 RepMax</th>
-            <th>Increase 1RM</th>
+            <th>Increase</th>
+            <th>Decrease</th>
             <th>First Set (12-15 reps) </th>
             <th>Second Set (8-12 reps) </th>
             <th>Third Set (5-8 reps)</th>
-            <th>Exercise progress</th>
+            <th>Progress</th>
+            <th>Remove</th>
           </tr>
           {props.userExercises.map((val, key) => {
             return (
               <tr key={key}>
-                <td>{val.exercise.name}</td>
+                <td>
+                <Link to={`/exerciseProfile/${val.exercise._id}` } style={{color: 'black'}}>
+                    {val.exercise.name}
+                  </Link>
+                </td>
                 <td>{val.repMax}kg</td>
                 <td>
                   <Link
@@ -118,7 +124,15 @@ const WorkoutTable = (props) => {
                     <BsGraphUpArrow className="icon" />
                   </Link>
                 </td>
-              
+                <td>
+                  <Link
+                    to={`/reduce1RM/${val._id}`}
+                    state={{ workoutId: props.id }}
+                  >
+                    <BsGraphDownArrow className="icon" />
+                  </Link>
+                </td>
+
                 <td>{val.firstSet}kg</td>
                 <td>{val.secondSet}kg</td>
                 <td>{val.thirdSet}kg</td>
@@ -130,6 +144,15 @@ const WorkoutTable = (props) => {
                     <BsGraphUpArrow className="icon" />
                   </Link>
                 </td>
+                <td>
+                <Link
+                    to={`/removeExercise/${val._id}`}
+                    state={{ workoutId: props.id }}
+                  >
+                       <BiMinusCircle className="icon-delete" />
+                  </Link>
+    
+              </td>
               </tr>
             );
           })}

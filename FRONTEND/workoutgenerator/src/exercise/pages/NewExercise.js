@@ -1,7 +1,6 @@
-import React, { useContext, Component } from "react";
+import React, { useContext, Component, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Multiselect } from "multiselect-react-dropdown";
-
 
 import "./ExerciseForm.css";
 import Button from "../../shared/components/FormElements/Button";
@@ -13,7 +12,7 @@ import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Avatar from "../../shared/components/UIElements/Avatar";
 
-import {equipmentOptions} from '../../config/dropdown_equipment';
+import { equipmentOptions } from "../../config/dropdown_equipment";
 import { useNavigate } from "react-router-dom";
 
 const NewExercise = () => {
@@ -27,28 +26,30 @@ const NewExercise = () => {
     formState: { errors },
   } = useForm();
 
-  /*  const [imgSrc, setImgSrc] = useState("/profile.jpeg");
+  const [imgSrc, setImgSrc] = useState("");
 
   const handleImageChange = (e) => {
     setImgSrc(URL.createObjectURL(e.target.files[0]));
-  }; */
+  };
 
   const onSubmit = async (data) => {
     try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("instructions", data.instructions);
+      formData.append("equipment", data.equipment);
+      if (data.picture) {
+        formData.append("picture", data.picture[0]);
+      }
       const responseData = await sendRequest(
         port_string + "exercises/",
         "POST",
-        JSON.stringify({
-          name: data.name,
-          instructions: data.instructions,
-          equipment: data.equipment,
-        }),
+        formData,
         {
-          "Content-Type": "application/json",
           Authorization: "Bearer " + auth.token.token,
         }
       );
-      navigate('/exercises');
+      navigate("/exercises");
     } catch (err) {}
   };
 
@@ -90,7 +91,7 @@ const NewExercise = () => {
         {errors.instructions && (
           <p className="errorMsg">{errors.instructions.message}</p>
         )}
-        <label>Equipment</label>       
+        <label>Equipment</label>
         {/* <input
           type="text"
           name="equipment"
@@ -117,6 +118,15 @@ const NewExercise = () => {
             />
           )}
         />
+        <label>Picture</label>
+        <input
+          type="file"
+          name="picture"
+          {...register("picture")}
+          onChange={handleImageChange}
+        />
+        {errors.picture && <p className="errorMsg">{errors.picture.message}</p>}
+        <Avatar image={imgSrc} alt="picture" />
         <div className="form-control">
           <label></label>
           <Button type="submit">Create</Button>

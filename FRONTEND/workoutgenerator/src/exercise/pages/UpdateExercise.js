@@ -13,16 +13,15 @@ import { port_string } from "../../config/global";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Avatar from "../../shared/components/UIElements/Avatar";
-import {equipmentOptions} from '../../config/dropdown_equipment';
+import { equipmentOptions } from "../../config/dropdown_equipment";
 import ExerciseProfile from "./ExerciseProfile";
-
 
 const UpdateExercise = () => {
   const location = useLocation();
   const id = useParams().exerciseId;
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, removeError } = useHttpHook();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const {
     control,
     register,
@@ -30,39 +29,46 @@ const UpdateExercise = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: location?.state?.name,
+
       instructions: location?.state?.instructions,
       equipment: location?.state?.equipment,
+      picture: location?.state?.picture,
     },
   });
+  const name = location?.state?.name;
+  const [imgSrc, setImgSrc] = useState(false);
 
-  /*const [imgSrc, setImgSrc] = useState(
-    "http://localhost:3001/uploads/" + location?.state?.picture
-  );
+  useEffect(() => {
+    if (location?.state?.picture) {
+      setImgSrc("http://localhost:3001/uploads/" + location?.state?.picture);
+    } else {
+      setImgSrc("/exercise.jpeg");
+    }
+  }, []);
 
   const handleImageChange = (e) => {
     setImgSrc(URL.createObjectURL(e.target.files[0]));
   };
 
-  const picture = location?.state?.picture;*/
+  const picture = location?.state?.picture;
   const updateOnSubmit = async (data) => {
     try {
-      //stavi neke default vrijednosti za equipment niz njih i to korisnti da korisnik dropdown uzme
-    
+      const formData = new FormData();
+      formData.append("instructions", data.instructions);
+      formData.append("equipment", data.equipment);
+      if (data.picture && imgSrc !== "exercise.jpeg") {
+        formData.append("picture", data.picture[0]);
+      }
+
       const responseData = await sendRequest(
         port_string + "exercises/" + id,
         "PUT",
-        JSON.stringify({
-            name: data.name,
-            instructions: data.instructions,
-            equipment: data.equipment,
-          }),
-          {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + auth.token.token,
-          }
+        formData,
+        {
+          Authorization: "Bearer " + auth.token.token,
+        }
       );
-      navigate('/exerciseProfile/' + id);
+      navigate("/exerciseProfile/" + id);
     } catch (err) {}
   };
 
@@ -84,15 +90,7 @@ const UpdateExercise = () => {
         encType="multipart/form-data"
       >
         <h3>Update exercise</h3>
-        <label>Name</label>
-        <input
-          type="text"
-          name="name"
-          {...register("name", {
-            required: "Name is required.",
-          })}
-        />
-        {errors.name && <p className="errorMsg">{errors.name.message}</p>}
+        <h3>{name}</h3>
         <label>Instructions</label>
         <textarea
           id="textarea"
@@ -123,6 +121,22 @@ const UpdateExercise = () => {
         />
         {errors.equipment && (
           <p className="errorMsg">{errors.equipment.message}</p>
+        )}
+        {imgSrc && (
+          <React.Fragment>
+            <label>Picture</label>
+            <input
+              type="file"
+              name="picture"
+              {...register("picture")}
+              onChange={handleImageChange}
+            />
+            {errors.picture && (
+              <p className="errorMsg">{errors.picture.message}</p>
+            )}
+
+            <Avatar image={imgSrc} alt="picture-update" />
+          </React.Fragment>
         )}
         <div className="form-control">
           <label></label>

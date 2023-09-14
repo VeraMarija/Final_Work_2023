@@ -15,7 +15,7 @@ const WorkoutItem = (props) => {
   const removeError = () => {
     setError(null);
   };
-
+  console.log(props.id);
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={removeError} />
@@ -28,7 +28,7 @@ const WorkoutItem = (props) => {
               <a href={`/workoutProfile/${props.id}`}>
               <div className="workout-item__info">
                 <h2>{props.name} </h2>
-                <h4>Exercises used in workout: </h4>
+                <h4>Exercises: </h4>
                 { props.userExercises.map( e => <p>{e.exercise.name}</p>)} 
               </div>
               </a>           

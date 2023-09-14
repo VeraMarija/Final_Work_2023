@@ -3,10 +3,8 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import "./UserItem.css";
-import Avatar from "../../shared/components/UIElements/Avatar";
 import Card from "../../shared/components/UIElements/Card";
 import { AuthContext } from "../../shared/context/authContext";
-import { useHttpHook } from "../../shared/hooks/httpHook";
 import { port_string } from "../../config/global";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Modal from "../../shared/components/UIElements/Modal";
@@ -20,6 +18,7 @@ const UserItem = (props) => {
   const [isLoading, setIsLoading] = useState();
   const [error, setError] = useState();
   const navigate = useNavigate();
+  const adminProfileDelete = (auth.role === "admin" && props.id == auth.userId) ? true : false;
 
   const showDeleteWarningHandler = () => {
     setShowConfirmModal(true);
@@ -45,7 +44,14 @@ const UserItem = (props) => {
       if (!response.ok) {
         throw new Error(responseData.message);
       }
-      navigate("/users/" + props.id);
+      if(auth.userId === props.id){
+        auth.logout();
+        navigate("/");
+      }
+      else{
+        navigate("/users/");
+      }
+ 
     } catch (error) {
       setError(error.message);
     }
@@ -80,67 +86,55 @@ const UserItem = (props) => {
           can't be undone.
         </p>
       </Modal>
-      <li className="user-item">
-        <div>
-          <Card className="user-item__content">
-            {isLoading && <LoadingSpinner asOverlay />}
-            <Link to={`/profile/${props.id}`}>
-              <div className="user-item__image">
-                <Avatar
-                  image={`http://localhost:3001/uploads/${props.picture}`}
-                  alt={props.firstName}
-                />
-              </div>
-              <div className="user-item__info">
-                <h2>{props.firstName + " " + props.lastName} </h2>
-                <h3>Email: <span>{props.email}</span></h3>
-                <h3>
-                  Profile created:{" "}
-                  <span>{new Date(props.profileCreated).toLocaleString()}</span>
-                </h3>
-                <h3>
-                  Profile updated:{" "}
-                  <span>{new Date(props.profileUpdated).toLocaleString()}</span>
-                </h3>
-                <h3>Role: <span>{props.role}</span></h3>
-                {/* {props.height && <h3>Height: {props.height} cm</h3>}
-                {props.weight && <h3>Weight: {props.weight} kg</h3>}
-                {!props.height && <h3>Height:</h3>}
-                {!props.weight && <h3>Weight:</h3>} */}
-              </div>
+
+      <Card className="user-item__content">
+        {isLoading && <LoadingSpinner asOverlay />}
+
+        <div className="user-item__image">
+          <img src={`http://localhost:3001/uploads/${props.picture}`} />
+        </div>
+        <div className="user-item__about">
+          <div className="user-item__info">
+            <h2>{props.firstName + " " + props.lastName} </h2>
+            <h3>
+             {props.email}
+            </h3>
+            <h4>
+              Profile created:{" "}
+              <span>{new Date(props.profileCreated).toLocaleString()}</span>{" "}
+            </h4>
+          </div>
+
+          <div className="user-item__Update">
+            <Link
+              to={`/editUser/${props.id}`}
+              state={{
+                userId: props.id,
+                firstName: props.firstName,
+                lastName: props.lastName,
+                email: props.email,
+                role: props.role,
+                picture: props.picture,
+                isActive: props.isActive,
+              }}
+            >
+              <Button>Edit</Button>
             </Link>
-            <div className="user-item__Update">
-              <Link
-                to={`/editUser/${props.id}`}
-                state={{
-                  userId: props.id,
-                  firstName: props.firstName,
-                  lastName: props.lastName,
-                  email: props.email,
-                  role: props.role,
-                  picture: props.picture,
-                  isActive: props.isActive,
-                  height: props.height,
-                  weight: props.weight,
-                }}
-              >
-                <h2>Edit</h2>
-              </Link>
+            {auth.role !== "admin" && (
               <div className="user-item__Calories">
                 <Link to={`/calories/${props.id}`}>
-                  <h2>Calories Plan</h2>
+                  <Button>Calories Plan</Button>
                 </Link>
               </div>
-              {auth.role === "admin" && (
-                <Button danger onClick={showDeleteWarningHandler}>
-                  DELETE
-                </Button>
-              )}
-              
-            </div>
-          </Card>
+            )}
+            { props.isActive && !adminProfileDelete &&  (
+              <Button danger onClick={showDeleteWarningHandler}>
+                DELETE
+              </Button>
+            )}
+          </div>
         </div>
-      </li>
+      </Card>
     </React.Fragment>
   );
 };

@@ -34,6 +34,7 @@ const NewCalories = () => {
           weight: data.weight,
           height: data.height,
           targetWeight: data.targetWeight,
+          weeks: data.weeks,
           activity: data.activity
         }),
         {
@@ -125,6 +126,16 @@ const NewCalories = () => {
           })}
         />
         {errors.targetWeight && <p className="errorMsg">{errors.targetWeight.message}</p>}
+        <label>In how much weeks do you want to reach target weight</label>
+        <input
+          type="number"
+          name="weeks"
+          {...register("weeks", {
+            required: "Weeks are required.",
+            min: 1,
+          })}
+        />
+        {errors.weeks && <p className="errorMsg">{errors.weeks.message}</p>}
         <div className="radio-div">
         <label>
           <div className="set-margin">

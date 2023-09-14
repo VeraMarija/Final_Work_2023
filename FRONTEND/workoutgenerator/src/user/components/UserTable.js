@@ -79,7 +79,7 @@ const UserTable = () => {
           <th>Last Name</th>
           <th>Email</th>
           <th>Profile status</th>
-         
+
           <th>Role</th>
           <th>Profile</th>
           <th>Edit</th>
@@ -90,17 +90,16 @@ const UserTable = () => {
               <td>{val.firstName}</td>
               <td>{val.lastName}</td>
               <td>{val.email}</td>
-            {val.isActive && <td>Active</td>}
-            {!val.isActive && <td style={{color:"red"}}>Deactivated</td>}
+              {val.isActive && <td>Active</td>}
+              {!val.isActive && <td style={{ color: "red" }}>Deactivated</td>}
               <td>{val.role}</td>
-              {val.isActive && (
-                <td>
-                  <Link to={`/profile/${val._id}`}>
-                    <BiSolidUserDetail className="icon" />
-                  </Link>
-                </td>
-              )}
-              {!val.isActive && <td></td>}
+
+              <td>
+                <Link to={`/profile/${val._id}`}>
+                  <BiSolidUserDetail className="icon" />
+                </Link>
+              </td>
+
               <td>
                 <Link
                   to={`/editUser/${val._id}`}
@@ -112,8 +111,6 @@ const UserTable = () => {
                     role: val.role,
                     picture: val.picture,
                     isActive: val.isActive,
-                    height: val.height,
-                    weight : val.weight
                   }}
                 >
                   <BiEdit className="icon" />

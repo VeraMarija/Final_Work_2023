@@ -31,7 +31,7 @@ module.exports.updateUser = async (req, res, next) => {
 
 module.exports.deleteUser = async (req, res, next) => {
   try {
-    const result = await UserService.deleteUser(req.params.userId);
+    const result = await UserService.deleteUser(req);
     return res.status(200).json({ message: result });
   } catch (error) {
     return next(error);

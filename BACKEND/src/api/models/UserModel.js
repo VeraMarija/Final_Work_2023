@@ -51,12 +51,6 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    height: {
-      type: Number
-    },
-    weight: {
-      type: Number
-    }
   },
   {
     timestamps: true,
@@ -86,10 +80,10 @@ userSchema.method({
     const payload = {
       exp: moment().add(jwtExpirationInterval, "minutes").unix(),
       iat: moment().unix(),
-      userId: this._id, //u sub spremim id usera ciji je token
+      userId: this._id, 
     };
     const token = jwt.encode(payload, jwtSecret);
-    return { token }; //vrati stvoren token
+    return { token }; 
   },
 
   async passwordMatches(password) {
@@ -103,45 +97,6 @@ userSchema.method({
  */
 userSchema.statics = {
   roles,
-
-  /**
-   * Find user by email and tries to generate a JWT token
-   *
-   * @param {ObjectId} id - The objectId of user.
-   * @returns {Promise<User, APIError>}
-   */
-  async findAndGenerateToken(options) {
-    const { email, password, refreshObject } = options;
-    if (!email)
-      throw new APIError({
-        message: "An email is required to generate a token",
-      });
-
-    const user = await this.findOne({ email }).exec();
-    const err = {
-      code: httpStatus.UNAUTHORIZED,
-      isPublic: true,
-    };
-    if(!user.isActive){
-      err.message = "Your account is deactivated";
-      throw new APIError(err);
-    }
-    if (password) {
-      if (user && (await user.passwordMatches(password))) {
-        return { user, accessToken: user.token() };
-      }
-      err.message = "Incorrect email or password";
-    } else if (refreshObject && refreshObject.userEmail === email) {
-      if (moment(refreshObject.expires).isBefore()) {
-        err.message = "Invalid refresh token.";
-      } else {
-        return { user, accessToken: user.token() };
-      }
-    } else {
-      err.message = "Incorrect email or refreshToken";
-    }
-    throw new APIError(err);
-  },
 
   /**
    * Return new validation error
