@@ -12,8 +12,9 @@ module.exports.createCalories = async (req) => {
   if (!gender) {
     throw new HttpError("Gender is required", 500);
   }
-  console.log(req.body);
-  if (targetWeight >= weight) {
+  let numberTargetWeight = parseInt(targetWeight);
+  let numberWeight = parseInt(weight);
+  if (numberTargetWeight >= numberWeight) {
     throw new HttpError(
       "This calculator is only for loosing weight, please enter smaller value for your target weigh, than your current weight",
       403
@@ -37,20 +38,20 @@ module.exports.createCalories = async (req) => {
   }
 
   const BMRmaintain = Math.ceil(
-    10 * weight + 6.25 * height - 5 * age + (gender === "female" ? -161 : 5)
+    10 * numberWeight + 6.25 * height - 5 * age + (gender === "female" ? -161 : 5)
   );
   console.log(BMRmaintain);
   const TEE = Math.ceil(BMRmaintain * activityNumber);
   console.log(TEE);
   const BMRtarget = Math.ceil(
-    10 * targetWeight +
+    10 * numberTargetWeight +
       6.25 * height -
       5 * age +
       (gender === "female" ? -161 : 5)
   );
   const TEEgoal = Math.ceil(BMRtarget * activityNumber);
   const calorieDeficit = Math.ceil(
-    ((weight - targetWeight) * 1000 * 9) / (weeks * 7)
+    ((numberWeight - numberTargetWeight) * 1000 * 9) / (weeks * 7)
   );
   const calories = new CaloriesModel({
     user: userId,
@@ -58,8 +59,8 @@ module.exports.createCalories = async (req) => {
     TEEtarget: TEEgoal,
     weeks: weeks,
     calorieDeficit: calorieDeficit,
-    currentWeight: weight,
-    targetWeight: targetWeight,
+    currentWeight: numberWeight,
+    targetWeight: numberTargetWeight,
     gender: gender,
     age: age,
     activity: activity,
@@ -100,7 +101,7 @@ module.exports.updateCalories = async (req) => {
     weeks,
     activity,
   } = req.body;
-console.log(req.body);
+  
   const caloriesId = req.params.caloriesId;
   const calories = await CaloriesModel.findById(caloriesId);
   if (req.user != userId) {
@@ -109,8 +110,10 @@ console.log(req.body);
   if (!gender) {
     throw new HttpError("Gender is required", 500);
   }
-
-  if (targetWeight >= currentWeight) {
+  let numberTargetWeight = parseInt(targetWeight);
+  let numberCurrentWeight = parseInt(currentWeight);
+  if (numberTargetWeight >= numberCurrentWeight) {
+  
     throw new HttpError(
       "This calculator is only for loosing weight, please enter smaller value for your target weigh, than your current weight",
       403
@@ -135,7 +138,7 @@ console.log(req.body);
   }
   console.log("gender", genderNumber);
   const BMRmaintain = Math.ceil(
-    10 * currentWeight +
+    10 * numberCurrentWeight +
       6.25 * height -
       5 * age +
       (gender === "female" ? -161 : 5)
@@ -144,22 +147,22 @@ console.log(req.body);
   const TEE = Math.ceil(BMRmaintain * activityNumber);
   console.log(TEE);
   const BMRtarget = Math.ceil(
-    10 * targetWeight +
+    10 * numberTargetWeight +
       6.25 * height -
       5 * age +
       (gender === "female" ? -161 : 5)
   );
   const TEEgoal = Math.ceil(BMRtarget * activityNumber);
   const calorieDeficit = Math.ceil(
-    ((currentWeight - targetWeight) * 1000 * 9) / (weeks * 7)
+    ((numberCurrentWeight - numberTargetWeight) * 1000 * 9) / (weeks * 7)
   );
   calories.user = userId;
   calories.TEEmaintain = TEE;
   calories.TEEtarget = TEEgoal;
   calories.weeks = weeks;
   calories.calorieDeficit = calorieDeficit;
-  calories.currentWeight = currentWeight;
-  calories.targetWeight = targetWeight;
+  calories.currentWeight = numberCurrentWeight;
+  calories.targetWeight = numberTargetWeight;
   calories.age = age;
   calories.activity = activity;
   calories.height = height;

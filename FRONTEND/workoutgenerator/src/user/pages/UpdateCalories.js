@@ -38,6 +38,7 @@ const UpdateCalories = () => {
   const genderData =  location?.state?.gender;
 
   const updateOnSubmit = async (data) => {
+    console.log('data', data);
     try {
         console.log('data', data);
         const responseData = await sendRequest(

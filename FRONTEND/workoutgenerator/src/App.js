@@ -124,7 +124,7 @@ const App = () => {
           <Route path="/workoutChart" element={<WorkoutChart />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
-          <Route path="/chart/:exerciseId" element={<ChartExercise />} />
+          <Route path="/chart/:exerciseId" element={<ChartExercise2 />} />
           <Route path="/calories/:userId" element={<Calories />} />
           <Route path="/calories/new" element={<NewCalories />} />
         </Routes>
